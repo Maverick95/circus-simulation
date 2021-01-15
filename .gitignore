@@ -1,0 +1,9 @@
+.vs
+Debug
+Release
+CircusSimulation/Debug
+CircusSimulation/Release
+CircusSimulation/CircusSimulation.aps
+CircusSimulation/Resource.aps
+CircusSimulation.sdf
+SiteswapGraph.sdf
