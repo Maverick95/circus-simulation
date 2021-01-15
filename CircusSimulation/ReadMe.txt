@@ -1,3 +1,7 @@
+Note to self for running - this project will currently only compile in Debug/Release for x86, I don't think you've got 64-bit versions of wxWidgets installed.
+
+wxWidgets version 3.1.2 must be installed in C:\wxWidgets-3.1.2, if you need to change this alter the $(WXWIN) macro in the project properties.
+
 ========================================================================
     CONSOLE APPLICATION : SiteswapGraph Project Overview
 ========================================================================
