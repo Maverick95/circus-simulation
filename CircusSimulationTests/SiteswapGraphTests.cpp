@@ -18,10 +18,10 @@ namespace CircusSimulationTests
 
 	public:
 		
-		TEST_METHOD(Patterns_3balls_5height_3length)
+		TEST_METHOD(Patterns_3balls_5height_4length)
 		{
 			SiteswapGraph sg(3U, 5U);
-			SiteswapPattern** sp = sg.GetPatterns(3U);
+			SiteswapPattern** sp = sg.GetPatterns(4U);
 			Assert::IsNotNull(sp);
 
 			// TODO - memory leak here.
