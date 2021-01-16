@@ -7,3 +7,5 @@ CircusSimulation/CircusSimulation.aps
 CircusSimulation/Resource.aps
 CircusSimulation.sdf
 SiteswapGraph.sdf
+CircusSimulationTests/Debug
+CircusSimulationTests/Release
