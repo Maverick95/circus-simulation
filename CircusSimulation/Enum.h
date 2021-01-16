@@ -39,4 +39,10 @@ enum DisplayPatternHandlerSpeedChange
 	SPD_CHG_DOUBLE
 };
 
+enum SiteswapGraphShortestPathMethod
+{
+	METHOD_LOOKUP,
+	METHOD_DERIVED
+};
+
 #endif

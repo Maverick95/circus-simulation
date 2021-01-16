@@ -18,6 +18,8 @@ namespace Settings
 
 	unsigned int Pattern_MaxHeight_Pixels();
 	unsigned int Pattern_MaxWidth_Pixels();
+
+	SiteswapGraphShortestPathMethod SiteswapGraph_ShortestPathMethod();
 }
 
 #endif

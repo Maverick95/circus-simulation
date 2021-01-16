@@ -115,6 +115,40 @@ unsigned int SiteswapGraph::Choose(const unsigned int & n, unsigned int k)
 	return choose_return;
 }
 
+unsigned int SiteswapGraph::Bits(unsigned int s)
+{
+	unsigned int result = 0U;
+
+	while (s)
+	{
+		if (s & 1U)
+		{
+			result++;
+		}
+
+		s >>= 1U;
+	}
+
+	return result;
+}
+
+unsigned int SiteswapGraph::DeriveShortestPath(unsigned int s_begin, const unsigned int& s_end)
+{
+	unsigned int actions_reserved = 0U, result = 0U;
+
+	while ((s_begin & ~s_end) && actions_reserved >= Bits(~s_begin & s_end))
+	{
+		if (s_begin & 1U)
+		{
+			actions_reserved++;
+		}
+
+		s_begin >>= 1U; result++;
+	}
+
+	return result;
+}
+
 void SiteswapGraph::ComputeMaxState()
 {
 	unsigned int return_max_state = 0;
@@ -462,7 +496,7 @@ void SiteswapGraph::Initialize()
 	ComputeMaxState();
 	ComputeStates();
 	ComputeConnections();
-	ComputeShortestPaths();
+	//ComputeShortestPaths();
 }
 
 void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnection>> & p,
@@ -485,7 +519,7 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 	{
 		for (auto i = connections[s_current].begin(); i != connections[s_current].end(); i++)
 		{
-			if (shortest_paths[i->state_end_index][s_end] <= n - 1 && a[i->state_end_index])
+			if (GetShortestPath(i->state_end_index, s_end) <= n - 1 && a[i->state_end_index])
 			{
 				p_current.push_back(*i);
 				a[i->state_end_index] = false;
@@ -500,11 +534,22 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 void SiteswapGraph::AddPaths(std::deque<std::deque<SiteswapGraphConnection>> & p,
 	bool * a, const unsigned int & s_begin, const unsigned int & s_end, const unsigned int & n)
 {
-	if (a[s_begin] && a[s_end] && shortest_paths[s_begin][s_end] <= n)
+	if (a[s_begin] && a[s_end] && GetShortestPath(s_begin, s_end) <= n)
 	{
 		a[s_begin] = false;
 		AddPaths_Recursive(p, std::deque<SiteswapGraphConnection>(), a, s_begin, s_end, n);
 		a[s_begin] = true;
+	}
+}
+
+unsigned int SiteswapGraph::GetShortestPath(const unsigned int& s_begin, const unsigned int& s_end) const
+{
+	switch (Settings::SiteswapGraph_ShortestPathMethod())
+	{
+	case SiteswapGraphShortestPathMethod::METHOD_LOOKUP:
+		return shortest_paths[s_begin][s_end];
+	case SiteswapGraphShortestPathMethod::METHOD_DERIVED:
+		return DeriveShortestPath(s_begin, s_end);
 	}
 }
 
@@ -515,7 +560,7 @@ SiteswapGraph::SiteswapGraph(const unsigned int & b, const unsigned int & t)
 	num_states(Choose(max_throw, num_balls)),
 	states(new unsigned int[num_states]),
 	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
-	shortest_paths(new unsigned int * [num_states])
+	shortest_paths(NULL)// new unsigned int * [num_states])
 {
 	Initialize();
 }
@@ -528,19 +573,21 @@ SiteswapGraph::SiteswapGraph(const SiteswapGraph & sg)
 	max_state(sg.max_state),
 	states(new unsigned int[num_states]),
 	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
-	shortest_paths(new unsigned int * [num_states])
+	shortest_paths(NULL)//new unsigned int * [num_states])
 {
 	for (unsigned int i = 0; i < num_states; i++)
 	{
 		states[i] = sg.states[i];
 		connections[i] = sg.connections[i];
 		
+		/*
 		shortest_paths[i] = new unsigned int[num_states];
 
 		for (unsigned int j = 0; j < num_states; j++)
 		{
 			shortest_paths[i][j] = sg.shortest_paths[i][j];
 		}
+		*/
 	}
 }
 
@@ -549,12 +596,14 @@ SiteswapGraph::~SiteswapGraph()
 	delete[] states;
 	delete[] connections;
 
+	/*
 	for (unsigned int i = 0; i < num_states; i++)
 	{
 		delete[] shortest_paths[i];
 	}
 
 	delete[] shortest_paths;
+	*/
 }
 
 SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & n)
