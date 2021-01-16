@@ -132,18 +132,18 @@ unsigned int SiteswapGraph::Bits(unsigned int s)
 	return result;
 }
 
-unsigned int SiteswapGraph::DeriveShortestPath(unsigned int s_begin, const unsigned int& s_end)
+unsigned int SiteswapGraph::DeriveShortestPath(unsigned int state_start, const unsigned int& state_end)
 {
 	unsigned int actions_reserved = 0U, result = 0U;
 
-	while ((s_begin & ~s_end) && actions_reserved >= Bits(~s_begin & s_end))
+	while ((state_start & ~state_end) || actions_reserved < Bits(~state_start & state_end))
 	{
-		if (s_begin & 1U)
+		if (state_start & 1U)
 		{
 			actions_reserved++;
 		}
 
-		s_begin >>= 1U; result++;
+		state_start >>= 1U; result++;
 	}
 
 	return result;
@@ -549,7 +549,7 @@ unsigned int SiteswapGraph::GetShortestPath(const unsigned int& s_begin, const u
 	case SiteswapGraphShortestPathMethod::METHOD_LOOKUP:
 		return shortest_paths[s_begin][s_end];
 	case SiteswapGraphShortestPathMethod::METHOD_DERIVED:
-		return DeriveShortestPath(s_begin, s_end);
+		return DeriveShortestPath(states[s_begin], states[s_end]);
 	}
 }
 

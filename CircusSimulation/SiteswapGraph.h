@@ -6,14 +6,6 @@ class SiteswapGraph
 
 private:
 
-	static std::map<unsigned int, unsigned int> * PrimeFactorise(unsigned int);
-	static void PrimeFactorise_Multiply(std::map<unsigned int, unsigned int> *, std::map<unsigned int, unsigned int> *);
-	static void PrimeFactorise_Divide(std::map<unsigned int, unsigned int> *, std::map<unsigned int, unsigned int> *);
-	static unsigned int Choose(const unsigned int &, unsigned int);
-
-	static unsigned int Bits(unsigned int);
-	static unsigned int DeriveShortestPath(unsigned int, const unsigned int&);
-
 	unsigned int num_balls;
 	unsigned int max_throw;
 	unsigned int num_states;
@@ -44,6 +36,14 @@ private:
 	unsigned int GetShortestPath(const unsigned int&, const unsigned int&) const;
 
 public:
+
+	static std::map<unsigned int, unsigned int>* PrimeFactorise(unsigned int);
+	static void PrimeFactorise_Multiply(std::map<unsigned int, unsigned int>*, std::map<unsigned int, unsigned int>*);
+	static void PrimeFactorise_Divide(std::map<unsigned int, unsigned int>*, std::map<unsigned int, unsigned int>*);
+	static unsigned int Choose(const unsigned int&, unsigned int);
+
+	static unsigned int Bits(unsigned int);
+	static unsigned int DeriveShortestPath(unsigned int, const unsigned int&);
 
 	SiteswapGraph(const unsigned int &, const unsigned int &);
 	SiteswapGraph(const SiteswapGraph &);

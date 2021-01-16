@@ -18,13 +18,18 @@ namespace CircusSimulationTests
 
 	public:
 		
-		TEST_METHOD(Patterns_3balls_5height_4length)
-		{
-			SiteswapGraph sg(3U, 5U);
-			SiteswapPattern** sp = sg.GetPatterns(4U);
-			Assert::IsNotNull(sp);
+		/*
+		* Test cases -
+		* XXX-----		to		X-XX----		7		to		13		= 2
+		* X-XXX--X		to		-X-XX-XX		157		to		218		= 6
+		* X------X		to		--X---X-		129		to		68		= 1
+		*/
 
-			// TODO - memory leak here.
+		TEST_METHOD(DeriveShortestPath)
+		{
+			Assert::AreEqual(2U, SiteswapGraph::DeriveShortestPath(7U, 13U));
+			Assert::AreEqual(6U, SiteswapGraph::DeriveShortestPath(157U, 218U));
+			Assert::AreEqual(1U, SiteswapGraph::DeriveShortestPath(129U, 68U));
 		}
 	};
 }
