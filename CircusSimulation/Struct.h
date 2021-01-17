@@ -14,6 +14,8 @@ struct SiteswapPattern
 {
 	unsigned int num_balls;
 	std::deque<SiteswapGraphConnection> throws;
+
+	bool operator<(const SiteswapPattern&) const;
 };
 
 namespace StructFunctions

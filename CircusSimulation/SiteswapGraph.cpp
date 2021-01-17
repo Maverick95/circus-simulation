@@ -646,10 +646,8 @@ SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & n)
 	};
 }
 
-SiteswapPattern** SiteswapGraph::GetPatterns(const unsigned int& n)
+std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& n)
 {
-	// TODO - clean up memory leak.
-
 	bool* a = new bool[num_states];
 	for (unsigned int i = 0; i < num_states; i++) { a[i] = true; }
 	std::deque<std::deque<SiteswapGraphConnection>> p;
@@ -676,12 +674,11 @@ SiteswapPattern** SiteswapGraph::GetPatterns(const unsigned int& n)
 		return NULL;
 	}
 
-	SiteswapPattern** patterns = new SiteswapPattern * [p.size()];
-	unsigned int p_index = 0U;
-
+	std::set<SiteswapPattern>* patterns = new std::set<SiteswapPattern>();
+	
 	for (auto i = p.begin(); i != p.end(); i++)
 	{
-		patterns[p_index++] = new SiteswapPattern{ num_balls, *i };
+		patterns->insert({ num_balls, *i });
 	}
 
 	return patterns;

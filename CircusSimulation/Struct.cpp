@@ -1,5 +1,30 @@
 #include "stdafx.h"
 
+bool SiteswapPattern::operator<(const SiteswapPattern& sp) const
+{
+	if (num_balls < sp.num_balls || throws.size() < sp.throws.size())
+	{
+		return true;
+	}
+
+	if (throws.size() == sp.throws.size())
+	{
+		for (unsigned int i = 0U; i < throws.size(); i++)
+		{
+			if (throws[i].state_transfer_throw < sp.throws[i].state_transfer_throw)
+			{
+				return true;
+			}
+			else if (throws[i].state_transfer_throw > sp.throws[i].state_transfer_throw)
+			{
+				return false;
+			}
+		}
+	}
+
+	return false;
+}
+
 bool StructFunctions::IsSiteswapPatternValid(const SiteswapPattern & sp)
 {
 	bool return_value = false;

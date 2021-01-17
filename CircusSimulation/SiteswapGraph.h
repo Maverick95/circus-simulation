@@ -51,7 +51,7 @@ public:
 	~SiteswapGraph();
 
 	SiteswapPattern * GetRandomPattern(const unsigned int &);
-	SiteswapPattern ** GetPatterns(const unsigned int&);
+	std::set<SiteswapPattern>* GetPatterns(const unsigned int&);
 
 };
 

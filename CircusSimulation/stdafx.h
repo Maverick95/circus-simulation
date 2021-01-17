@@ -18,6 +18,7 @@
 #include <string>
 #include <random>
 #include <chrono>
+#include <set>
 #include <vector>
 
 #include <wx/wxprec.h>
