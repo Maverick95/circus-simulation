@@ -10,3 +10,5 @@ CircusSimulation.sdf
 SiteswapGraph.sdf
 CircusSimulationTests/Debug
 CircusSimulationTests/Release
+CircusSimulationBoostTest/Debug
+CircusSimulationBoostTest/Release

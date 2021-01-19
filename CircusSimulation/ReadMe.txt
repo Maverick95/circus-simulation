@@ -1,5 +1,9 @@
 Note to self for running - this project will currently only compile in Debug/Release for x86, I don't think you've got 64-bit versions of wxWidgets installed.
 
+Also you've used vcpkg to download / install Boost, if you use this project you'll need to follow these instructions -
+https://docs.microsoft.com/en-us/cpp/build/install-vcpkg?view=msvc-160&tabs=windows
+https://docs.microsoft.com/en-us/visualstudio/test/how-to-use-boost-test-for-cpp?view=vs-2019#add-include-directives
+
 wxWidgets version 3.1.2 must be installed in C:\wxWidgets-3.1.2, if you need to change this alter the $(WXWIN) macro in the project properties.
 
 ========================================================================
