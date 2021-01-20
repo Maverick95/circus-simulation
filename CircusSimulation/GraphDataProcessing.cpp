@@ -1,4 +1,10 @@
-#include "stdafx.h"
+#include <map>
+
+#include "Settings.h"
+
+#include "GraphDataProcessing.h"
+
+
 
 static std::map<unsigned int, SiteswapGraph *> DATA_GRAPHS;
 

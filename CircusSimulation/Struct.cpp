@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Struct.h"
 
 bool SiteswapPattern::operator<(const SiteswapPattern& sp) const
 {

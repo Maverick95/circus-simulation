@@ -1,6 +1,8 @@
 #ifndef ENUM_H
 #define ENUM_H
 
+#include "stdafx.h"
+
 enum PatternBallState
 {
 	STATE_NONE,

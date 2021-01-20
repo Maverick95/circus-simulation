@@ -1,4 +1,7 @@
-#include "stdafx.h"
+#include "GraphDataProcessing.h"
+#include "CircusSimulationFrame.h"
+
+#include "CircusSimulationApp.h"
 
 bool CircusSimulationApp::OnInit()
 {

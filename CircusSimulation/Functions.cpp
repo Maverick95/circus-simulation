@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Functions.h"
 
 unsigned int Functions::LowestCommonMultiple(unsigned int * a, const unsigned int & l)
 {

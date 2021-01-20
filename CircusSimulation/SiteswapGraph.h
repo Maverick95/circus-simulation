@@ -1,6 +1,15 @@
 #ifndef SITESWAP_GRAPH_H
 #define SITESWAP_GRAPH_H
 
+#include "stdafx.h"
+
+#include <deque>
+#include <forward_list>
+#include <map>
+#include <set>
+
+#include "Struct.h"
+
 class SiteswapGraph
 {
 

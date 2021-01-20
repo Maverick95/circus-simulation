@@ -1,6 +1,12 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "stdafx.h"
+
+#include <wx\wx.h>
+
+#include "Enum.h"
+
 namespace Settings
 {
 	unsigned int NumberBalls_Minimum();

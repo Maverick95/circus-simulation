@@ -1,4 +1,6 @@
-#include "stdafx.h"
+#include "DisplayPattern.h"
+
+
 
 DisplayPattern::DisplayPattern(const SiteswapPattern & sp)
 	:

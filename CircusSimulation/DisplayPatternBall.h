@@ -1,6 +1,10 @@
 #ifndef DISPLAY_PATTERN_BALL_H
 #define DISPLAY_PATTERN_BALL_H
 
+#include "stdafx.h"
+
+#include "Enum.h"
+
 class DisplayPatternBall
 {
 

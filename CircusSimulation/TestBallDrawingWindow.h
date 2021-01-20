@@ -1,7 +1,11 @@
 #ifndef STDAFWX_H
 #define STDAFWX_H
 
+#include "stdafx.h"
 
+#include <wx\wx.h>
+
+#include "DisplayJugglingWindow.h"
 
 class TestBallDrawingWindow : public DisplayJugglingWindow
 {

@@ -1,7 +1,9 @@
 #ifndef DISPLAY_JUGGLING_WINDOW_H
 #define DISPLAY_JUGGLING_WINDOW_H
 
+#include "stdafx.h"
 
+#include "DisplayPatternWindow.h"
 
 class DisplayJugglingWindow : public DisplayPatternWindow
 {

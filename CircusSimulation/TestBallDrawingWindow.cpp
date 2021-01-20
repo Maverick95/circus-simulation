@@ -1,4 +1,7 @@
-#include "stdafx.h"
+#include "DisplayPatternBall.h"
+#include "DisplayPatternHandler.h"
+
+#include "TestBallDrawingWindow.h"
 
 
 

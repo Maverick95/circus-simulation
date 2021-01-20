@@ -1,4 +1,12 @@
-#include "stdafx.h"
+#include <chrono>
+#include <queue>
+#include <random>
+
+#include "Enum.h"
+#include "Settings.h"
+#include "SiteswapGraphShortestPathChain.h"
+
+#include "SiteswapGraph.h"
 
 
 

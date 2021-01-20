@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "CircusSimulationApp.h"
 
 // TODO : annotate and clean up at a certain point when you're happy.
 // TODO : public functions for obtaining patterns.

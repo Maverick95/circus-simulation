@@ -1,4 +1,11 @@
-#include "stdafx.h"
+#include <wx\spinctrl.h>
+
+#include "GraphDataProcessing.h"
+#include "Settings.h"
+#include "BallStatusWindow.h"
+#include "TestBallDrawingWindow.h"
+
+#include "CircusSimulationFrame.h"
 
 
 

@@ -1,6 +1,12 @@
 #ifndef BALL_STATUS_WINDOW
 #define BALL_STATUS_WINDOW
 
+#include "stdafx.h"
+
+#include <wx\wx.h>
+
+#include "DisplayPatternWindow.h"
+
 class BallStatusWindow : public DisplayPatternWindow
 {
 

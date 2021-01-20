@@ -1,5 +1,8 @@
-#include "stdafx.h"
+#include "Settings.h"
 
+#include "DisplayPatternHandler.h"
+
+#include "DisplayPatternWindow.h"
 
 
 static const int TIMER_BALLS_UPDATE = 2;

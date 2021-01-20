@@ -1,6 +1,10 @@
 #ifndef DISPLAY_PATTERN_H
 #define DISPLAY_PATTERN_H
 
+#include "stdafx.h"
+
+#include "Struct.h"
+
 class DisplayPattern
 {
 

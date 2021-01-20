@@ -1,6 +1,10 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
+#include "stdafx.h"
+
+#include <deque>
+
 struct SiteswapGraphConnection
 {
 	unsigned int state_begin;

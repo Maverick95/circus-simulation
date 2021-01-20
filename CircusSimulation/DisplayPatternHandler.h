@@ -1,6 +1,17 @@
 #ifndef DISPLAY_PATTERN_HANDLER_H
 #define DISPLAY_PATTERN_HANDLER_H
 
+#include "stdafx.h"
+
+#include <wx\wx.h>
+
+#include "Enum.h"
+#include "Struct.h"
+#include "DisplayPattern.h"
+#include "DisplayPatternBall.h"
+
+class DisplayPatternWindow;
+
 class DisplayPatternHandler : public wxWindow
 {
 
