@@ -159,14 +159,18 @@ unsigned int SiteswapGraph::DeriveShortestPath(unsigned int state_start, const u
 
 void SiteswapGraph::ComputeMaxState()
 {
-	unsigned int return_max_state = 0;
+	max_state = ((1U << num_balls) - 1U) << (max_throw - num_balls);
 
-	for (unsigned int i = 0; i < num_balls; i++)
+	/*
+	unsigned int return_max_state = 0U;
+
+	for (unsigned int i = 0U; i < num_balls; i++)
 	{
 		return_max_state += (1 << i);
 	}
 
 	max_state = return_max_state << (max_throw - num_balls);
+	*/
 }
 
 void SiteswapGraph::ComputeStates()
@@ -690,6 +694,11 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& n)
 	}
 
 	return patterns;
+}
+
+unsigned int SiteswapGraph::MaxState() const
+{
+	return max_state;
 }
 
 

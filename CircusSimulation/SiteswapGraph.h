@@ -62,6 +62,8 @@ public:
 	SiteswapPattern * GetRandomPattern(const unsigned int &);
 	std::set<SiteswapPattern>* GetPatterns(const unsigned int&);
 
+	unsigned int MaxState() const;
+
 };
 
 #endif

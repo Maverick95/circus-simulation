@@ -26,6 +26,9 @@
       <Project>{45e66136-62a0-4e51-b31c-bfb9918ad53b}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SiteswapGraphTestDatasets.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

@@ -58,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="SiteswapGraphReadMe.txt">
+      <Filter>Source Files\Graph data processing</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

@@ -3,6 +3,23 @@
 
 #include "SiteswapGraph.h"
 
+BOOST_AUTO_TEST_CASE(CheckMaxState)
+{
+	SiteswapGraph
+		sg1(2U, 4U),
+		sg2(3U, 5U),
+		sg3(4U, 7U),
+		sg4(5U, 9U),
+		sg5(2U, 9U);
+
+	BOOST_TEST(sg1.MaxState() == 12U);
+	BOOST_TEST(sg2.MaxState() == 28U);
+	BOOST_TEST(sg3.MaxState() == 120U);
+	BOOST_TEST(sg4.MaxState() == 496U);
+	BOOST_TEST(sg5.MaxState() == 384U);
+
+}
+
 /*
 	* Test cases - 8 bits
 	*
