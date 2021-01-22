@@ -9,8 +9,6 @@ struct SiteswapGraphConnection
 {
 	unsigned int state_begin;
 	unsigned int state_end;
-	unsigned int state_begin_index;
-	unsigned int state_end_index;
 	unsigned int state_transfer_throw;
 };
 
