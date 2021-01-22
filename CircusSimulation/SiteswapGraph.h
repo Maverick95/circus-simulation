@@ -20,6 +20,8 @@ private:
 	unsigned int max_state;
 
 	std::forward_list<SiteswapGraphConnection> * connections;
+	std::map<unsigned int, std::deque<unsigned int>> balls_states;
+
 
 	void ComputeConnections();
 
@@ -45,7 +47,7 @@ public:
 	
 	~SiteswapGraph();
 
-	SiteswapPattern * GetRandomPattern(const unsigned int &);
+	SiteswapPattern * GetRandomPattern(const unsigned int &, const unsigned int &);
 	std::set<SiteswapPattern>* GetPatterns(const unsigned int&);
 
 	unsigned int GetMaxThrow() const;

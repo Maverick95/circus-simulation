@@ -19,7 +19,7 @@ void GraphDataProcessing::Shutdown()
 	delete DATA_GRAPHS;
 }
 
-SiteswapGraph * GraphDataProcessing::GetSiteswapGraph(const unsigned int & num_balls)
+SiteswapGraph * GraphDataProcessing::GetSiteswapGraph()
 {
 	return DATA_GRAPHS;
 }

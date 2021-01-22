@@ -159,8 +159,10 @@ unsigned int SiteswapGraph::DeriveShortestPath(unsigned int state_start, const u
 
 void SiteswapGraph::ComputeConnections()
 {
-	for (unsigned int i = 1U; i < num_states; i++)
+	for (unsigned int i = 0U; i < num_states; i++)
 	{
+		balls_states[Bits(i)].push_back(i);
+		
 		// State may require a zero throw next.
 
 		if ((i & 1U) == 0)
@@ -228,7 +230,8 @@ SiteswapGraph::SiteswapGraph(const unsigned int & t)
 	max_throw(t < Settings::ThrowHeight_Maximum() ? t : Settings::ThrowHeight_Maximum()),
 	num_states(1U << max_throw),
 	max_state((1U << max_throw) - 1U),
-	connections(new std::forward_list<SiteswapGraphConnection>[num_states])
+	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
+	balls_states()
 {
 	ComputeConnections();
 }
@@ -244,6 +247,8 @@ SiteswapGraph::SiteswapGraph(const SiteswapGraph & sg)
 	{
 		connections[i] = sg.connections[i];
 	}
+
+	// TODO - add in balls_states copier
 }
 
 SiteswapGraph::~SiteswapGraph()
@@ -251,22 +256,30 @@ SiteswapGraph::~SiteswapGraph()
 	delete[] connections;
 }
 
-SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & n)
+SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & b, const unsigned int & t)
 {
+	if (b > max_throw)
+	{
+		return NULL;
+	}
+
 	bool * a = new bool[num_states];
-	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
+
+	for (unsigned int i = 0U; i < num_states; i++) { a[i] = true; }
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 
-	for (unsigned int i = 0; i < num_states; i++)
+	for (auto i = balls_states[b].begin(); i != balls_states[b].end(); i++)
 	{
-		if (a[i])
-		{
-			AddPaths(p, a, i, i, n);
-			a[i] = false;
+		unsigned int st = *i;
 
-			for (unsigned int j = 1; (i << j) <= max_state; j++)
+		if (a[st])
+		{
+			AddPaths(p, a, st, st, t);// HERE
+			a[st] = false;
+
+			for (unsigned int j = 1U; (st << j) <= max_state; j++)
 			{
-				a[i << j] = false;
+				a[st << j] = false;
 			}
 		}
 	}
@@ -280,7 +293,7 @@ SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & n)
 
 	return new SiteswapPattern
 	{
-		1U, // TODO, alter
+		b,
 		*(
 			p.begin() +
 			std::uniform_int_distribution<unsigned int>(0, p.size() - 1)(
@@ -292,6 +305,8 @@ SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & n)
 
 std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& n)
 {
+	// TODO - alter for new structure.
+
 	bool* a = new bool[num_states];
 	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
 	std::deque<std::deque<SiteswapGraphConnection>> p;

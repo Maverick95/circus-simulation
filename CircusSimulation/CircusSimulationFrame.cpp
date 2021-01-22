@@ -45,7 +45,7 @@ void CircusSimulationFrame::OnAbout(wxCommandEvent & event)
 
 SiteswapPattern * CircusSimulationFrame::GetRandomPattern()
 {
-	return GraphDataProcessing::GetSiteswapGraph(num_balls)->GetRandomPattern(num_throws);
+	return GraphDataProcessing::GetSiteswapGraph()->GetRandomPattern(num_balls, num_throws);
 }
 
 void CircusSimulationFrame::UpdateNumberBalls(wxSpinEvent & e)

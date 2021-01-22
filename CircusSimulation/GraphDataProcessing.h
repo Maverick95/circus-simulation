@@ -10,7 +10,7 @@ namespace GraphDataProcessing
 	void Initialize();
 	void Shutdown();
 
-	SiteswapGraph * GetSiteswapGraph(const unsigned int &);
+	SiteswapGraph * GetSiteswapGraph();
 }
 
 #endif

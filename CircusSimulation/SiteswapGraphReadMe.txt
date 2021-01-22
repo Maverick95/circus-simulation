@@ -52,7 +52,8 @@ For current purposes however, all patterns in a set will be equal for 1) and 2).
 However what I'm unsure of is, given a pattern 531, 315, 153,
 in what order does the algorithm present things?
 
-
+So now you need to add in an unordered_map mapping integers (num balls) to states,
+std::queue
 
 
 
