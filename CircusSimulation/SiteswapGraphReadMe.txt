@@ -1,14 +1,17 @@
-Currently SiteswapGraph is built for parameters b and t
+SiteswapGraph is built for parameter t, the maximum throw height allowed
 
-b = Number of balls in the pattern
-t = The maximum throw height allowed (e.g. 3 for 3-ball pattern, 4 for 4-ball pattern, etc.)
+The maximum throw height does not have to be included in a pattern -
+it just places a limit on how many patterns are covered by the SiteswapGraph.
 
-Note the maximum throw height does not have to be included in a pattern
+It also implicitly places a limit on how many balls are included -
+e.g. patterns with maximum throw height of 5 cannot cater for 6 balls, 7 balls, etc.
 
-Pattern states are internally stored as unsigned ints, in bitwise notation these denote future
-"beats" in the pattern by ascending bits.
+The pattern states themselves are not stored internally, however their properties are stored
+in arrays where the array index unique defines the pattern state.
 
-e.g. b = 3, t = 5
+In bitwise notation these indices denote future "beats" in the pattern by ascending bits.
+
+e.g. t = 5, 3 ball patterns
 
 state XXX-- = 11100 = 1 + 2 + 4		= 7
 state X-X-X = 10101 = 1 + 4 + 16	= 21

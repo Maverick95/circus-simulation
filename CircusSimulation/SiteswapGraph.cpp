@@ -159,27 +159,6 @@ unsigned int SiteswapGraph::DeriveShortestPath(unsigned int state_start, const u
 
 void SiteswapGraph::ComputeConnections()
 {
-	for (unsigned int i = 0U; i < num_states; i++)
-	{
-		balls_states[Bits(i)].push_back(i);
-		
-		// State may require a zero throw next.
-
-		if ((i & 1U) == 0)
-		{
-			connections[i].push_front({ i, i >> 1U, 0 });
-		}
-		else
-		{
-			for (unsigned int j = 1U; j <= max_throw; j++)
-			{
-				if ((i & (1U << j)) == 0)
-				{
-					connections[i].push_front({ i, (i | (1U << j)) >> 1, j });
-				}
-			}
-		}
-	}
 }
 
 void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnection>> & p,
@@ -233,7 +212,27 @@ SiteswapGraph::SiteswapGraph(const unsigned int & t)
 	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
 	balls_states()
 {
-	ComputeConnections();
+	for (unsigned int i = 0U; i < num_states; i++)
+	{
+		balls_states[Bits(i)].push_back(i);
+
+		// State may require a zero throw next.
+
+		if ((i & 1U) == 0)
+		{
+			connections[i].push_front({ i, i >> 1U, 0 });
+		}
+		else
+		{
+			for (unsigned int j = 1U; j <= max_throw; j++)
+			{
+				if ((i & (1U << j)) == 0)
+				{
+					connections[i].push_front({ i, (i | (1U << j)) >> 1, j });
+				}
+			}
+		}
+	}
 }
 
 SiteswapGraph::SiteswapGraph(const SiteswapGraph & sg)
@@ -241,14 +240,16 @@ SiteswapGraph::SiteswapGraph(const SiteswapGraph & sg)
 	max_throw(sg.max_throw),
 	num_states(sg.num_states),
 	max_state(sg.max_state),
-	connections(new std::forward_list<SiteswapGraphConnection>[num_states])
+	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
+	balls_states()
 {
-	for (unsigned int i = 0; i < num_states; i++)
+	for (unsigned int i = 0U; i < num_states; i++)
 	{
 		connections[i] = sg.connections[i];
 	}
 
-	// TODO - add in balls_states copier
+	balls_states = sg.balls_states;
+
 }
 
 SiteswapGraph::~SiteswapGraph()
@@ -258,14 +259,10 @@ SiteswapGraph::~SiteswapGraph()
 
 SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & b, const unsigned int & t)
 {
-	if (b > max_throw)
-	{
-		return NULL;
-	}
+	if (b > max_throw) { return NULL; }
 
-	bool * a = new bool[num_states];
-
-	for (unsigned int i = 0U; i < num_states; i++) { a[i] = true; }
+	bool* a = new bool[num_states];
+	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 
 	for (auto i = balls_states[b].begin(); i != balls_states[b].end(); i++)
@@ -274,7 +271,7 @@ SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & b, const 
 
 		if (a[st])
 		{
-			AddPaths(p, a, st, st, t);// HERE
+			AddPaths(p, a, st, st, t);
 			a[st] = false;
 
 			for (unsigned int j = 1U; (st << j) <= max_state; j++)
@@ -291,36 +288,36 @@ SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & b, const 
 		return NULL;
 	}
 
-	return new SiteswapPattern
-	{
-		b,
-		*(
+	return new SiteswapPattern({
+			b,
+			*(
 			p.begin() +
 			std::uniform_int_distribution<unsigned int>(0, p.size() - 1)(
 				std::default_random_engine(
-					std::chrono::system_clock::now().time_since_epoch().count() ))
-			)
-	};
+					std::chrono::system_clock::now().time_since_epoch().count()))
+			) });
 }
 
-std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& n)
+std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, const unsigned int& t)
 {
-	// TODO - alter for new structure.
+	if (b > max_throw) { return NULL; }
 
 	bool* a = new bool[num_states];
 	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 
-	for (unsigned int i = 0; i < num_states; i++)
+	for (auto i = balls_states[b].begin(); i != balls_states[b].end(); i++)
 	{
-		if (a[i])
-		{
-			AddPaths(p, a, i, i, n);
-			a[i] = false;
+		unsigned int st = *i;
 
-			for (unsigned int j = 1U; (i << j) <= max_state; j++)
+		if (a[st])
+		{
+			AddPaths(p, a, st, st, t);
+			a[st] = false;
+
+			for (unsigned int j = 1U; (st << j) <= max_state; j++)
 			{
-				a[i << j] = false;
+				a[st << j] = false;
 			}
 		}
 	}
@@ -336,8 +333,7 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& n)
 	
 	for (auto i = p.begin(); i != p.end(); i++)
 	{
-		patterns->insert({ 1U, // TODO alter
-			*i }); 
+		patterns->insert({ b, *i }); 
 	}
 
 	return patterns;

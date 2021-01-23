@@ -48,7 +48,7 @@ public:
 	~SiteswapGraph();
 
 	SiteswapPattern * GetRandomPattern(const unsigned int &, const unsigned int &);
-	std::set<SiteswapPattern>* GetPatterns(const unsigned int&);
+	std::set<SiteswapPattern>* GetPatterns(const unsigned int &, const unsigned int&);
 
 	unsigned int GetMaxThrow() const;
 	unsigned int GetNumStates() const;

@@ -11,8 +11,8 @@ double GetProportionRatio(const double & r)
 }
 
 static const unsigned int SETTINGS_NUMBER_BALLS_MINIMUM = 3;
-static const unsigned int SETTINGS_NUMBER_BALLS_MAXIMUM = 7;
-static const unsigned int SETTINGS_THROW_HEIGHT_MAXIMUM = 5;
+static const unsigned int SETTINGS_NUMBER_BALLS_MAXIMUM = 9;
+static const unsigned int SETTINGS_THROW_HEIGHT_MAXIMUM = 15;
 
 static const wxSize SETTINGS_WINDOW_SIZE_INITIAL(400, 400);
 

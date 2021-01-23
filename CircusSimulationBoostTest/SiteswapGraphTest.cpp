@@ -1,5 +1,8 @@
 #define BOOST_TEST_MODULE CircusSimulationBoostTest
 #include <boost/test/included/unit_test.hpp>
+
+#include <vector>
+
 #include "SiteswapGraph.h"
 
 /*
@@ -12,20 +15,28 @@
 */
 BOOST_AUTO_TEST_CASE(DeriveShortestPath_8bit)
 {
+	struct DeriveShortestPathTest
+	{
+		unsigned int state_begin, state_end, path_length;
+	};
 
-  BOOST_TEST(SiteswapGraph::DeriveShortestPath(7U, 13U) == 2U);
-  BOOST_TEST(SiteswapGraph::DeriveShortestPath(157U, 218U) == 6U);
-  BOOST_TEST(SiteswapGraph::DeriveShortestPath(129U, 68U) == 1U);
-  BOOST_TEST(SiteswapGraph::DeriveShortestPath(90U, 15U) == 3U);
+	std::vector<DeriveShortestPathTest> tests;
+	tests.push_back({ 7U, 13U, 2U });
+	tests.push_back({ 157U, 218U, 6U });
+	tests.push_back({ 129U, 68U, 1U });
+	tests.push_back({ 90U, 15U, 3U });
 
+	for (auto i = tests.begin(); i != tests.end(); i++)
+	{
+		BOOST_TEST(SiteswapGraph::DeriveShortestPath(i->state_begin, i->state_end) == i->path_length);
+	}
 }
 
 BOOST_AUTO_TEST_CASE(GetPatterns_Balls3_Height5_Throws2)
 {
 	SiteswapGraph sg(5U);
-	auto* paths = sg.GetPatterns(2U);
+	auto* paths = sg.GetPatterns(3U, 2U);
 
-	//BOOST_TEST(paths != NULL);
 	BOOST_TEST(paths->size() == 2U);
 
 	unsigned int index = 0U;
