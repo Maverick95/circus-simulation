@@ -13,35 +13,29 @@ In bitwise notation these indices denote future "beats" in the pattern by ascend
 
 e.g. t = 5, 3 ball patterns
 
-state XXX-- = 11100 = 1 + 2 + 4		= 7
+state XXX-- = 11100 = 1 + 2 + 4		= 7		<-- standard state
 state X-X-X = 10101 = 1 + 4 + 16	= 21
 state XX-X- = 11010 = 1 + 2 + 8		= 11
 
-On construction, a lot of internal data is computed and stored to maximise efficiency, this is...
+On construction, internal data is computed and stored to maximise efficiency -
 
-a) the maximum state, ComputeMaxState()
+a) balls_states, a map of integers to a collection of states
+Stores the states for a varying number of balls 0 to t.
 
-This is the largest unsigned int representing a state
-Given inputs b and t, this is fairly easy to compute.
+b) connections, an array of collections of state transitions
+Stores the possible moves in each state,
+as a dataset describing the connection between one state and another.
 
-e.g. b = 3, t = 5
 
-max state = --XXX = 4 + 8 + 16 = 28
 
-b) the individual states, ComputeStates()
+The function GetPatterns(b = num_balls, t = num_throws) returns a collection
+of valid patterns (if any), these are patterns containing b balls that begin
+at a state and loop back to the same state after t throws.
 
-There are Choose(t, b) states to compute.
-Currently unsure of what order these come out in.
-I think it would be better to rework this now.
+Each pattern will contain no cycles w.r.t. states - the states at the beginning
+of each throw will be unique.
 
-YEP MAKE THIS A TODO.
-
-c) the connections, ComputeConnections()
-
-There are Choose(t, b) separate forward_list<> structures that correspond to each of the states.
-Each forward list contains a dataset describing the connection between one state and another.
-
-The function GetPatterns() returns the siteswap patterns in the order given by comparisons
+These patterns are returned in the order given by comparisons
 between patterns A and B as follows -
 
 1) If A contains fewer balls than B, A comes first.
@@ -50,15 +44,15 @@ between patterns A and B as follows -
 For current purposes however, all patterns in a set will be equal for 1) and 2).
 
 3) Starting from the 1st position, compare the throw value of A to B.
-   If A < B, A comes first.
+If A < B, A comes first.
 
-However what I'm unsure of is, given a pattern 531, 315, 153,
-in what order does the algorithm present things?
+For a valid siteswap pattern, the permutation is whichever begins at the state
+with the lowest state index (remember from above, all states are unique)
+e.g. for the pattern b = 3, t = 5, options 531, 315, 153
+These are all permutations of the same pattern.
 
-So now you need to add in an unordered_map mapping integers (num balls) to states,
-std::queue
+531		begins at state		XXX--	= 7		<-- lowest state
+315		begins at state		XX--X	= 19
+153		begins at state		X-XX-	= 13
 
-
-
-
-
+Therefore 531 is the permutation returned.
