@@ -1,4 +1,12 @@
-#include "stdafx.h"
+#include <chrono>
+#include <queue>
+#include <random>
+
+#include "Enum.h"
+#include "Settings.h"
+#include "SiteswapGraphShortestPathChain.h"
+
+#include "SiteswapGraph.h"
 
 
 
@@ -115,354 +123,42 @@ unsigned int SiteswapGraph::Choose(const unsigned int & n, unsigned int k)
 	return choose_return;
 }
 
-void SiteswapGraph::ComputeMaxState()
+unsigned int SiteswapGraph::Bits(unsigned int s)
 {
-	unsigned int return_max_state = 0;
+	unsigned int result = 0U;
 
-	for (unsigned int i = 0; i < num_balls; i++)
+	while (s)
 	{
-		return_max_state += (1 << i);
+		if (s & 1U)
+		{
+			result++;
+		}
+
+		s >>= 1U;
 	}
 
-	max_state = return_max_state << (max_throw - num_balls);
+	return result;
 }
 
-void SiteswapGraph::ComputeStates()
+unsigned int SiteswapGraph::DeriveShortestPath(unsigned int state_start, const unsigned int& state_end)
 {
-	unsigned int ** store_combos = new unsigned int *[num_states];
+	unsigned int actions_reserved = 0U, result = 0U;
 
-	for (unsigned int i = 0; i < num_states; i++)
+	while ((state_start & ~state_end) || actions_reserved < Bits(~state_start & state_end))
 	{
-		store_combos[i] = new unsigned int[num_balls];
-		states[i] = 0;
-	}
-
-	// Set up data for algorithm.
-
-	unsigned int * lp_combos = new unsigned int[num_balls];
-
-	for (unsigned int i = 0; i < num_balls; i++)
-	{
-		lp_combos[i] = i + 1;
-	}
-
-	unsigned int store_index = 0;
-
-	// Store initial combo.
-
-	for (unsigned int i = 0; i < num_balls; i++)
-	{
-		store_combos[store_index][i] = lp_combos[i];
-	}
-
-	store_index++;
-
-	// Main algorithm loop.
-
-	unsigned int lp_index = 0;
-	bool lp_continue = true;
-
-	while (lp_continue)
-	{
-		if (lp_index == num_balls - 1)
+		if (state_start & 1U)
 		{
-			if (lp_combos[lp_index] < max_throw)
-			{
-				lp_combos[lp_index]++;
-
-				for (unsigned int i = 0; i < lp_index; i++)
-				{
-					lp_combos[i] = i + 1;
-				}
-
-				// Store combo.
-
-				for (unsigned int i = 0; i < num_balls; i++)
-				{
-					store_combos[store_index][i] = lp_combos[i];
-				}
-
-				store_index++;
-
-				lp_index = 0;
-			}
-			else
-			{
-				lp_continue = false;
-			}
+			actions_reserved++;
 		}
-		else
-		{
-			if (lp_combos[lp_index] < lp_combos[lp_index + 1] - 1)
-			{
-				lp_combos[lp_index]++;
 
-				for (unsigned int i = 0; i < lp_index; i++)
-				{
-					lp_combos[i] = i + 1;
-				}
-
-				// Store combo.
-
-				for (unsigned int i = 0; i < num_balls; i++)
-				{
-					store_combos[store_index][i] = lp_combos[i];
-				}
-
-				store_index++;
-
-				lp_index = 0;
-			}
-			else
-			{
-				lp_index++;
-			}
-		}
+		state_start >>= 1U; result++;
 	}
 
-	// Use the results to compute the final states.
-
-	for (unsigned int i = 0; i < num_states; i++)
-	{
-		for (unsigned int j = 0; j < num_balls; j++)
-		{
-			states[i] += 1u << (store_combos[i][j] - 1);
-		}
-	}
-
-	// Deallocate all the memory.
-
-	for (unsigned int i = 0; i < num_states; i++)
-	{
-		delete[] store_combos[i];
-	}
-
-	delete[] store_combos;
-	delete[] lp_combos;
-}
-
-unsigned int SiteswapGraph::LookupState(const unsigned int & s)
-{
-	return LookupState(s, 0, num_states);
-}
-
-unsigned int SiteswapGraph::LookupState(const unsigned int & s, const unsigned int & a, const unsigned int & b)
-{
-	unsigned int m = a + ((b - a - (((b - a) & 1u) == 0 ? 0 : 1)) / 2);
-
-	if (states[m] == s)
-	{
-		return m;
-	}
-	else if (states[m] > s)
-	{
-		return LookupState(s, a, m);
-	}
-	else
-	{
-		return LookupState(s, m + 1, b);
-	}
+	return result;
 }
 
 void SiteswapGraph::ComputeConnections()
 {
-	for (unsigned int i = 0; i < num_states; i++)
-	{
-		// State may require a zero throw next.
-
-		if ((states[i] & 1u) == 0)
-		{
-			connections[i].push_front(
-			{
-				states[i],
-				states[i] >> 1,
-				i,
-				LookupState(states[i] >> 1),
-				0
-			});
-		}
-		else
-		{
-			for (unsigned int j = 1; j <= max_throw; j++)
-			{
-				if ((states[i] & (1u << j)) == 0)
-				{
-					connections[i].push_front(
-					{
-						states[i],
-						(states[i] | (1u << j)) >> 1,
-						i,
-						LookupState((states[i] | (1u << j)) >> 1),
-						j
-					});
-				}
-			}
-		}
-	}
-}
-
-void SiteswapGraph::ComputeShortestPaths()
-{
-	// Initialize shortest paths.
-
-	for (unsigned int i = 0; i < num_states; i++)
-	{
-		shortest_paths[i] = new unsigned int[num_states];
-		for (unsigned int j = 0; j < num_states; j++)
-		{
-			shortest_paths[i][j] = 0;
-		}
-	}
-
-	// Run the algorithm.
-
-	// Set up state data structures.
-
-	bool * state_properties_end = new bool[num_states];
-	unsigned int * state_properties_sink = new unsigned int[num_states];
-
-	for (unsigned int i = 0; i < num_states; i++)
-	{
-		state_properties_end[i] = false;
-		state_properties_sink[i] = num_states;
-	}
-
-	// Set up the obvious shortest paths.
-
-	for (unsigned int i = 0; (states[i] << 1) <= max_state; i++)
-	{
-		for (unsigned int j = 1; (states[i] << j) <= max_state; j++)
-		{
-			shortest_paths[LookupState(states[i] << j)][i] = j;
-			state_properties_sink[i]--;
-		}
-	}
-
-	// Set up initial chain.
-
-	std::queue<SiteswapGraphShortestPathChain> * chains = new std::queue<SiteswapGraphShortestPathChain>;
-	std::queue<SiteswapGraphShortestPathChain> * chains_new = NULL;
-
-	chains->push(SiteswapGraphShortestPathChain(0, 1));
-	state_properties_end[0] = true;
-
-	// Begin main loop.
-
-	while (!chains->empty())
-	{
-		chains_new = new std::queue<SiteswapGraphShortestPathChain>;
-
-		while (!chains->empty())
-		{
-			SiteswapGraphShortestPathChain & c_old = chains->front();
-
-			// Create new chains based on connections.
-
-			for (auto it = connections[c_old.End()->StateIndex()].begin();
-				it != connections[c_old.End()->StateIndex()].end(); it++)
-			{
-				// Case depending on sink status.
-
-				if (state_properties_sink[it->state_end_index] > 0)
-				{
-					SiteswapGraphShortestPathChain c_old_extension(c_old);
-					c_old_extension.PushBack(it->state_end_index, 1);
-
-					// Now loop through the new chain from begin to end.
-
-					while (c_old_extension.Current() != c_old_extension.End())
-					{
-						// If shortest path not yet found, populate.
-
-						if (shortest_paths[c_old_extension.Current()->StateIndex()][c_old_extension.End()->StateIndex()] == 0)
-						{
-							shortest_paths[c_old_extension.Current()->StateIndex()][c_old_extension.End()->StateIndex()] = c_old_extension.ChainLengthCurrent();
-							state_properties_sink[c_old_extension.End()->StateIndex()]--;
-
-							// If values are not equal, fill in the other shortest paths by multiplying up from the current node.
-
-							if (c_old_extension.Current()->StateIndex() != c_old_extension.End()->StateIndex())
-							{
-								for (unsigned int i = 1; (states[c_old_extension.Current()->StateIndex()] << i) <= max_state; i++)
-								{
-									unsigned int
-										x = LookupState(states[c_old_extension.Current()->StateIndex()] << i),
-										y = c_old_extension.End()->StateIndex();
-
-									if (shortest_paths[x][y] == 0)
-									{
-										shortest_paths[x][y] = c_old_extension.ChainLengthCurrent() + i;
-										state_properties_sink[y]--;
-									}
-								}
-							}
-
-							// If values are equal, chop off.
-
-							if (c_old_extension.Current()->StateIndex() == c_old_extension.End()->StateIndex())
-							{
-								c_old_extension.RemoveCurrentNode();
-							}
-
-							else
-							{
-								c_old_extension.GetNext();
-							}
-						}
-
-						// Otherwise delete.
-
-						else
-						{
-							c_old_extension.RemoveCurrentNode();
-						}
-					}
-
-					c_old_extension.Reset();
-
-					// Only push chain if ends with an odd state.
-
-					if ((states[c_old_extension.End()->StateIndex()] & 1) != 0)
-					{
-						if (c_old_extension.ChainCount() > 1)
-						{
-							if (!state_properties_end[c_old_extension.End()->StateIndex()])
-							{
-								state_properties_end[c_old_extension.End()->StateIndex()] = true;
-							}
-
-							chains_new->push(c_old_extension);
-						}
-						else if (!state_properties_end[c_old_extension.End()->StateIndex()])
-						{
-							chains_new->push(c_old_extension);
-							state_properties_end[c_old_extension.End()->StateIndex()] = true;
-						}
-					}
-				}
-			}
-
-			chains->pop();
-		}
-
-		// Move new chains into chains to be examined (next iteration).
-
-		delete chains;
-		chains = chains_new;
-		chains_new = NULL;
-	}
-
-	delete chains;
-	delete[] state_properties_end;
-	delete[] state_properties_sink;
-}
-
-void SiteswapGraph::Initialize()
-{
-	ComputeMaxState();
-	ComputeStates();
-	ComputeConnections();
-	ComputeShortestPaths();
 }
 
 void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnection>> & p,
@@ -473,7 +169,7 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 	{
 		for (auto i = connections[s_current].begin(); i != connections[s_current].end(); i++)
 		{
-			if (i->state_end_index == s_end)
+			if (i->state_end == s_end)
 			{
 				p_current.push_back(*i);
 				p.push_back(p_current);
@@ -485,13 +181,13 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 	{
 		for (auto i = connections[s_current].begin(); i != connections[s_current].end(); i++)
 		{
-			if (shortest_paths[i->state_end_index][s_end] <= n - 1 && a[i->state_end_index])
+			if (DeriveShortestPath(i->state_end, s_end) <= n - 1 && a[i->state_end])
 			{
 				p_current.push_back(*i);
-				a[i->state_end_index] = false;
-				SiteswapGraph::AddPaths_Recursive(p, p_current, a, i->state_end_index, s_end, n - 1);
+				a[i->state_end] = false;
+				SiteswapGraph::AddPaths_Recursive(p, p_current, a, i->state_end, s_end, n - 1);
 				p_current.pop_back();
-				a[i->state_end_index] = true;
+				a[i->state_end] = true;
 			}
 		}
 	}
@@ -500,7 +196,7 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 void SiteswapGraph::AddPaths(std::deque<std::deque<SiteswapGraphConnection>> & p,
 	bool * a, const unsigned int & s_begin, const unsigned int & s_end, const unsigned int & n)
 {
-	if (a[s_begin] && a[s_end] && shortest_paths[s_begin][s_end] <= n)
+	if (a[s_begin] && a[s_end] && DeriveShortestPath(s_begin, s_end) <= n)
 	{
 		a[s_begin] = false;
 		AddPaths_Recursive(p, std::deque<SiteswapGraphConnection>(), a, s_begin, s_end, n);
@@ -508,72 +204,79 @@ void SiteswapGraph::AddPaths(std::deque<std::deque<SiteswapGraphConnection>> & p
 	}
 }
 
-SiteswapGraph::SiteswapGraph(const unsigned int & b, const unsigned int & t)
+SiteswapGraph::SiteswapGraph(const unsigned int & t)
 	:
-	num_balls(b == 0 ? 1 : b),
-	max_throw(t < num_balls ? num_balls : t),
-	num_states(Choose(max_throw, num_balls)),
-	states(new unsigned int[num_states]),
+	max_throw(t < Settings::ThrowHeight_Maximum() ? t : Settings::ThrowHeight_Maximum()),
+	num_states(1U << max_throw),
+	max_state((1U << max_throw) - 1U),
 	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
-	shortest_paths(new unsigned int * [num_states])
+	balls_states()
 {
-	Initialize();
-}
-
-SiteswapGraph::SiteswapGraph(const SiteswapGraph & sg)
-	:
-	num_balls(sg.num_balls),
-	max_throw(sg.max_throw),
-	num_states(sg.num_states),
-	max_state(sg.max_state),
-	states(new unsigned int[num_states]),
-	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
-	shortest_paths(new unsigned int * [num_states])
-{
-	for (unsigned int i = 0; i < num_states; i++)
+	for (unsigned int i = 0U; i < num_states; i++)
 	{
-		states[i] = sg.states[i];
-		connections[i] = sg.connections[i];
-		
-		shortest_paths[i] = new unsigned int[num_states];
+		balls_states[Bits(i)].push_back(i);
 
-		for (unsigned int j = 0; j < num_states; j++)
+		// State may require a zero throw next.
+
+		if ((i & 1U) == 0)
 		{
-			shortest_paths[i][j] = sg.shortest_paths[i][j];
+			connections[i].push_front({ i, i >> 1U, 0 });
+		}
+		else
+		{
+			for (unsigned int j = 1U; j <= max_throw; j++)
+			{
+				if ((i & (1U << j)) == 0)
+				{
+					connections[i].push_front({ i, (i | (1U << j)) >> 1, j });
+				}
+			}
 		}
 	}
 }
 
-SiteswapGraph::~SiteswapGraph()
+SiteswapGraph::SiteswapGraph(const SiteswapGraph & sg)
+	:
+	max_throw(sg.max_throw),
+	num_states(sg.num_states),
+	max_state(sg.max_state),
+	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
+	balls_states()
 {
-	delete[] states;
-	delete[] connections;
-
-	for (unsigned int i = 0; i < num_states; i++)
+	for (unsigned int i = 0U; i < num_states; i++)
 	{
-		delete[] shortest_paths[i];
+		connections[i] = sg.connections[i];
 	}
 
-	delete[] shortest_paths;
+	balls_states = sg.balls_states;
+
 }
 
-SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & n)
+SiteswapGraph::~SiteswapGraph()
 {
-	bool * a = new bool[num_states];
-	for (unsigned int i = 0; i < num_states; i++) { a[i] = true; }
+	delete[] connections;
+}
+
+SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & b, const unsigned int & t)
+{
+	if (b > max_throw) { return NULL; }
+
+	bool* a = new bool[num_states];
+	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 
-	for (unsigned int i = 0; i < num_states; i++)
+	for (auto i = balls_states[b].begin(); i != balls_states[b].end(); i++)
 	{
-		if (a[i])
-		{
-			AddPaths(p, a, i, i, n);
-			a[i] = false;
+		unsigned int st = *i;
 
-			for (unsigned int j = 1; (states[i] << j) <= max_state; j++)
+		if (a[st])
+		{
+			AddPaths(p, a, st, st, t);
+			a[st] = false;
+
+			for (unsigned int j = 1U; (st << j) <= max_state; j++)
 			{
-				unsigned int x = LookupState(states[i] << j);
-				a[x] = false;
+				a[st << j] = false;
 			}
 		}
 	}
@@ -585,17 +288,68 @@ SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & n)
 		return NULL;
 	}
 
-	return new SiteswapPattern
-	{
-		num_balls,
-		*(
+	return new SiteswapPattern({
+			b,
+			*(
 			p.begin() +
 			std::uniform_int_distribution<unsigned int>(0, p.size() - 1)(
 				std::default_random_engine(
-					std::chrono::system_clock::now().time_since_epoch().count() ))
-			)
-	};
+					std::chrono::system_clock::now().time_since_epoch().count()))
+			) });
 }
 
+std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, const unsigned int& t)
+{
+	if (b > max_throw) { return NULL; }
 
+	bool* a = new bool[num_states];
+	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
+	std::deque<std::deque<SiteswapGraphConnection>> p;
 
+	for (auto i = balls_states[b].begin(); i != balls_states[b].end(); i++)
+	{
+		unsigned int st = *i;
+
+		if (a[st])
+		{
+			AddPaths(p, a, st, st, t);
+			a[st] = false;
+
+			for (unsigned int j = 1U; (st << j) <= max_state; j++)
+			{
+				a[st << j] = false;
+			}
+		}
+	}
+
+	delete[] a;
+
+	if (p.size() == 0)
+	{
+		return NULL;
+	}
+
+	std::set<SiteswapPattern>* patterns = new std::set<SiteswapPattern>();
+	
+	for (auto i = p.begin(); i != p.end(); i++)
+	{
+		patterns->insert({ b, *i }); 
+	}
+
+	return patterns;
+}
+
+unsigned int SiteswapGraph::GetMaxThrow() const
+{
+	return max_throw;
+}
+
+unsigned int SiteswapGraph::GetNumStates() const
+{
+	return num_states;
+}
+
+unsigned int SiteswapGraph::GetMaxState() const
+{
+	return max_state;
+}

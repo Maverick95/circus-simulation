@@ -1,6 +1,8 @@
 #ifndef ENUM_H
 #define ENUM_H
 
+#include "stdafx.h"
+
 enum PatternBallState
 {
 	STATE_NONE,
@@ -37,6 +39,12 @@ enum DisplayPatternHandlerSpeedChange
 	SPD_CHG_HALF,
 	SPD_CHG_NORMAL,
 	SPD_CHG_DOUBLE
+};
+
+enum SiteswapGraphShortestPathMethod
+{
+	METHOD_LOOKUP,
+	METHOD_DERIVED
 };
 
 #endif

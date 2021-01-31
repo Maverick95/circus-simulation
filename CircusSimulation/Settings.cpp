@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Settings.h"
 
 // Here are your program settings.
 
@@ -11,8 +11,8 @@ double GetProportionRatio(const double & r)
 }
 
 static const unsigned int SETTINGS_NUMBER_BALLS_MINIMUM = 3;
-static const unsigned int SETTINGS_NUMBER_BALLS_MAXIMUM = 7;
-static const unsigned int SETTINGS_THROW_HEIGHT_MAXIMUM = 10;
+static const unsigned int SETTINGS_NUMBER_BALLS_MAXIMUM = 9;
+static const unsigned int SETTINGS_THROW_HEIGHT_MAXIMUM = 15;
 
 static const wxSize SETTINGS_WINDOW_SIZE_INITIAL(400, 400);
 
@@ -35,6 +35,8 @@ static const long SETTINGS_PATTERN_BEAT_TIME_MILLISECONDS = 500L;
 
 static const unsigned int SETTINGS_PATTERN_MAX_HEIGHT_PIXELS = 100;
 static const unsigned int SETTINGS_PATTERN_MAX_WIDTH_PIXELS = 50;
+
+static const SiteswapGraphShortestPathMethod SETTINGS_GRAPH_SP_METHOD = SiteswapGraphShortestPathMethod::METHOD_DERIVED;
 
 
 // Function definitions.
@@ -92,4 +94,9 @@ unsigned int Settings::Pattern_MaxHeight_Pixels()
 unsigned int Settings::Pattern_MaxWidth_Pixels()
 {
 	return SETTINGS_PATTERN_MAX_WIDTH_PIXELS == 0 ? 1 : SETTINGS_PATTERN_MAX_WIDTH_PIXELS;
+}
+
+SiteswapGraphShortestPathMethod Settings::SiteswapGraph_ShortestPathMethod()
+{
+	return SETTINGS_GRAPH_SP_METHOD;
 }

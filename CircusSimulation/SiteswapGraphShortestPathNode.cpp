@@ -1,4 +1,5 @@
-#include "stdafx.h"
+#include "SiteswapGraphShortestPathNode.h"
+
 
 
 SiteswapGraphShortestPathNode::SiteswapGraphShortestPathNode(const unsigned int & si)

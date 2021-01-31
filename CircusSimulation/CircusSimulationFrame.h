@@ -1,6 +1,15 @@
 #ifndef CIRCUS_SIMULATION_FRAME_H
 #define CIRCUS_SIMULATION_FRAME_H
 
+#include "stdafx.h"
+
+#include <wx\wx.h>
+
+#include "Struct.h"
+
+#include "DisplayPatternHandler.h"
+#include "DisplayPatternWindow.h"
+
 class CircusSimulationFrame : public wxFrame
 {
 

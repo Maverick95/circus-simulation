@@ -1,6 +1,13 @@
 #ifndef DISPLAY_PATTERN_WINDOW_H
 #define DISPLAY_PATTERN_WINDOW_H
 
+#include "stdafx.h"
+
+#include <wx\wx.h>
+#include <wx\dcbuffer.h>
+
+#include "DisplayPatternHandler.h"
+
 class DisplayPatternWindow : public wxWindow
 {
 

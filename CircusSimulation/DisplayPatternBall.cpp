@@ -1,4 +1,6 @@
-#include "stdafx.h"
+#include "DisplayPatternBall.h"
+
+
 
 void DisplayPatternBall::Ball_StateRemoved()
 {

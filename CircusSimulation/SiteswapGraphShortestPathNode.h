@@ -1,6 +1,8 @@
 #ifndef SSG_SHORTEST_PATH_NODE_H
 #define SSG_SHORTEST_PATH_NODE_H
 
+#include "stdafx.h"
+
 class SiteswapGraphShortestPathNode
 {
 

@@ -1,5 +1,6 @@
 .vs
 Debug
+x64
 Release
 CircusSimulation/Debug
 CircusSimulation/Release
@@ -7,3 +8,7 @@ CircusSimulation/CircusSimulation.aps
 CircusSimulation/Resource.aps
 CircusSimulation.sdf
 SiteswapGraph.sdf
+CircusSimulationTests/Debug
+CircusSimulationTests/Release
+CircusSimulationBoostTest/Debug
+CircusSimulationBoostTest/Release

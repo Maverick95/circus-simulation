@@ -1,4 +1,7 @@
-#include "stdafx.h"
+#include "DisplayPatternHandler.h"
+#include "Functions.h"
+
+#include "DisplayJugglingWindow.h"
 
 
 

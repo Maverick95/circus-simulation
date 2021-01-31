@@ -19,9 +19,6 @@
     <Filter Include="Source Files\wxWidgets elements">
       <UniqueIdentifier>{60d2938e-2491-49c6-9621-4fd7de527b19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\wxWidgets elements\Key Files">
-      <UniqueIdentifier>{248df0da-39c5-4f98-b1f8-7286ef9db689}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\wxWidgets elements\wxWidgets main elements">
       <UniqueIdentifier>{2a58443e-f062-42eb-88bc-6006761f0a71}</UniqueIdentifier>
     </Filter>
@@ -46,14 +43,8 @@
     <Filter Include="Source Files\Graph data processing">
       <UniqueIdentifier>{e7d4cbaf-3c71-4bc1-98ba-945532180646}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graph data processing\Key Files">
-      <UniqueIdentifier>{9a93daca-4747-4f58-9258-b2eb55d64e5f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Pattern processing">
       <UniqueIdentifier>{a1ff2ec0-3531-4eb3-bf87-09cb86f4bff5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Pattern processing\Key Files">
-      <UniqueIdentifier>{7a8ee13b-5a6c-4e3e-b9b5-9b1ec5de6c48}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Pattern processing">
       <UniqueIdentifier>{11bed1f8-6f7a-42e4-a4b2-5177be7c132f}</UniqueIdentifier>
@@ -64,22 +55,16 @@
     <Filter Include="Source Files\Program maintenance">
       <UniqueIdentifier>{b7d8c066-5df2-4a56-9c3a-0ee73033e084}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Program maintenance\Key Files">
-      <UniqueIdentifier>{023663c5-f78a-44c3-bdc1-26f62d65c91d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="SiteswapGraphReadMe.txt">
+      <Filter>Source Files\Graph data processing</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Class_wxWidgetsElements.h">
-      <Filter>Header Files\wxWidgets elements\Key Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_wxWidgetsElements.h">
-      <Filter>Header Files\wxWidgets elements\Key Files</Filter>
     </ClInclude>
     <ClInclude Include="CircusSimulationApp.h">
       <Filter>Header Files\wxWidgets elements\wxWidgets main elements</Filter>
@@ -99,12 +84,6 @@
     <ClInclude Include="TestBallDrawingWindow.h">
       <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
     </ClInclude>
-    <ClInclude Include="Class_GraphDataProcessing.h">
-      <Filter>Header Files\Graph data processing\Key Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_GraphDataProcessing.h">
-      <Filter>Header Files\Graph data processing\Key Files</Filter>
-    </ClInclude>
     <ClInclude Include="GraphDataProcessing.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
@@ -117,12 +96,6 @@
     <ClInclude Include="SiteswapGraphShortestPathNode.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
-    <ClInclude Include="Class_PatternProcessing.h">
-      <Filter>Header Files\Pattern processing\Key Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_PatternProcessing.h">
-      <Filter>Header Files\Pattern processing\Key Files</Filter>
-    </ClInclude>
     <ClInclude Include="DisplayPatternHandler.h">
       <Filter>Header Files\Pattern processing</Filter>
     </ClInclude>
@@ -131,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="DisplayPatternBall.h">
       <Filter>Header Files\Pattern processing</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_ProgramMaintenance.h">
-      <Filter>Header Files\Program maintenance\Key Files</Filter>
     </ClInclude>
     <ClInclude Include="Enum.h">
       <Filter>Header Files\Program maintenance</Filter>

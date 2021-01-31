@@ -1,6 +1,12 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "stdafx.h"
+
+#include <wx\wx.h>
+
+#include "Enum.h"
+
 namespace Settings
 {
 	unsigned int NumberBalls_Minimum();
@@ -18,6 +24,8 @@ namespace Settings
 
 	unsigned int Pattern_MaxHeight_Pixels();
 	unsigned int Pattern_MaxWidth_Pixels();
+
+	SiteswapGraphShortestPathMethod SiteswapGraph_ShortestPathMethod();
 }
 
 #endif
