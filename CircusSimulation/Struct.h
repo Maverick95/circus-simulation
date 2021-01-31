@@ -4,6 +4,7 @@
 #include "stdafx.h"
 
 #include <deque>
+#include <ostream>
 
 struct SiteswapGraphConnection
 {
@@ -16,13 +17,21 @@ struct SiteswapPattern
 {
 	unsigned int num_balls;
 	std::deque<SiteswapGraphConnection> throws;
-
-	bool operator<(const SiteswapPattern&) const;
 };
 
 namespace StructFunctions
 {
 	bool IsSiteswapPatternValid(const SiteswapPattern &);
 }
+
+bool operator==(const SiteswapGraphConnection&, const SiteswapGraphConnection&);
+bool operator!=(const SiteswapGraphConnection&, const SiteswapGraphConnection&);
+
+bool operator<(const SiteswapPattern&, const SiteswapPattern&);
+bool operator==(const SiteswapPattern&, const SiteswapPattern&);
+bool operator!=(const SiteswapPattern&, const SiteswapPattern&);
+
+std::ostream& operator<<(std::ostream&, const SiteswapPattern&);
+
 
 #endif
