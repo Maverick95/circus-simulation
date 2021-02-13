@@ -253,3 +253,29 @@ BOOST_AUTO_TEST_CASE(GetPatterns_Balls5_Throws3_Max8)
 
 	delete patterns;
 }
+
+
+
+BOOST_AUTO_TEST_CASE(SiteswapState_Single)
+{
+	const unsigned int state = 7U;
+
+	SiteswapState ss(state);
+	BOOST_TEST(ss() == state);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(SiteswapState_Multi)
+{
+	const unsigned int state = 7U;
+	const unsigned int state_size = 3U;
+
+	unsigned int* states = new unsigned int[state_size];
+	states[0U] = state;
+	states[1U] = 0U;
+	states[2U] = 0U;
+
+	SiteswapState ss(state_size, states);
+	BOOST_TEST(ss() == state);
+}

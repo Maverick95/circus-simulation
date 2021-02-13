@@ -6,6 +6,24 @@
 #include <deque>
 #include <ostream>
 
+struct SiteswapState
+{
+
+private:
+
+	unsigned int states_size;
+	unsigned int* states;
+
+public:
+
+	SiteswapState(const unsigned int&, const unsigned int*);
+	SiteswapState(const unsigned int&);
+	virtual ~SiteswapState();
+
+	unsigned int operator()() const;
+
+};
+
 struct SiteswapGraphConnection
 {
 	unsigned int state_begin;

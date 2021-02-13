@@ -1,5 +1,32 @@
 #include "Struct.h"
 
+SiteswapState::SiteswapState(const unsigned int& s, const unsigned int* st) :
+	states_size(s == 0U ? 1U : s),
+	states(new unsigned int[states_size])
+{
+	for (unsigned int i = 0U; i < states_size; i++)
+	{
+		states[i] = (st == NULL ? 0U : st[i]);
+	}
+}
+
+SiteswapState::SiteswapState(const unsigned int& st) :
+	states_size(1U),
+	states(new unsigned int[1U])
+{
+	states[0U] = st;
+}
+
+SiteswapState::~SiteswapState()
+{
+	delete[] states;
+}
+
+unsigned int SiteswapState::operator()() const
+{
+	return states[0U];
+}
+
 bool operator==(const SiteswapGraphConnection& sgc1, const SiteswapGraphConnection& sgc2)
 {
 	return (sgc1.state_begin == sgc2.state_begin &&
