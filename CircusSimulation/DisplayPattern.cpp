@@ -47,7 +47,7 @@ DisplayPattern::DisplayPattern(const SiteswapPattern & sp)
 		{
 			if (i->state_transfer_throw > pattern_max_throw_value)
 			{
-				pattern_max_throw_value = i->state_transfer_throw;
+				pattern_max_throw_value = i->state_transfer_throw();
 			}
 		}
 
@@ -76,7 +76,7 @@ DisplayPattern::DisplayPattern(const SiteswapPattern & sp)
 				while (!throw_accessed[j])
 				{
 					throw_accessed[j] = true;
-					j += pf[j].state_transfer_throw;
+					j += pf[j].state_transfer_throw();
 					cycle_length += j / pf.size();
 					j %= pf.size();
 				}
@@ -151,7 +151,7 @@ DisplayPattern::DisplayPattern(const SiteswapPattern & sp)
 		{
 			for (auto j = pf.begin(); j != pf.end(); j++)
 			{
-				mapping_throws[mapping_throws_counter][0] = j->state_transfer_throw;
+				mapping_throws[mapping_throws_counter][0] = j->state_transfer_throw();
 				mapping_throws_counter++;
 			}
 		}

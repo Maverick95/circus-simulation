@@ -22,9 +22,6 @@ private:
 	std::forward_list<SiteswapGraphConnection> * connections;
 	std::map<unsigned int, std::deque<unsigned int>> balls_states;
 
-
-	void ComputeConnections();
-
 	void AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnection>> &,
 		std::deque<SiteswapGraphConnection> &,
 		bool *, const unsigned int, const unsigned int &, const unsigned int);
@@ -39,7 +36,6 @@ public:
 	static void PrimeFactorise_Divide(std::map<unsigned int, unsigned int>*, std::map<unsigned int, unsigned int>*);
 	static unsigned int Choose(const unsigned int&, unsigned int);
 
-	static unsigned int Bits(unsigned int);
 	static unsigned int DeriveShortestPath(unsigned int, const unsigned int&);
 
 	SiteswapGraph(const unsigned int &);

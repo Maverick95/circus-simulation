@@ -46,33 +46,33 @@ BOOST_AUTO_TEST_CASE(GetPatterns_Balls3_Throws3_Max6)
 
 	std::vector<SiteswapGraphConnection> results;
 
-	results.push_back({ 7U, 11U, 4U });		// 4 4 1
-	results.push_back({ 11U, 13U, 4U });
-	results.push_back({ 13U, 7U, 1U });
+	results.push_back({ SiteswapState(7U), SiteswapState(11U), SiteswapThrow(4U) });		// 4 4 1
+	results.push_back({ SiteswapState(11U), SiteswapState(13U), SiteswapThrow(4U) });
+	results.push_back({ SiteswapState(13U), SiteswapState(7U), SiteswapThrow(1U) });
 
-	results.push_back({ 11U, 13U, 4U });	// 4 5 0
-	results.push_back({ 13U, 22U, 5U });
-	results.push_back({ 22U, 11U, 0U });
+	results.push_back({ SiteswapState(11U), SiteswapState(13U), SiteswapThrow(4U) });		// 4 5 0
+	results.push_back({ SiteswapState(13U), SiteswapState(22U), SiteswapThrow(5U) });
+	results.push_back({ SiteswapState(22U), SiteswapState(11U), SiteswapThrow(0U) });
 
-	results.push_back({ 7U, 19U, 5U });		// 5 2 2
-	results.push_back({ 19U, 11U, 2U });
-	results.push_back({ 11U, 7U, 2U });
+	results.push_back({ SiteswapState(7U), SiteswapState(19U), SiteswapThrow(5U) });		// 5 2 2
+	results.push_back({ SiteswapState(19U), SiteswapState(11U), SiteswapThrow(2U) });
+	results.push_back({ SiteswapState(11U), SiteswapState(7U), SiteswapThrow(2U) });
 
-	results.push_back({ 7U, 19U, 5U });		// 5 3 1
-	results.push_back({ 19U, 13U, 3U });
-	results.push_back({ 13U, 7U, 1U });
+	results.push_back({ SiteswapState(7U), SiteswapState(19U), SiteswapThrow(5U) });		// 5 3 1
+	results.push_back({ SiteswapState(19U), SiteswapState(13U), SiteswapThrow(3U) });
+	results.push_back({ SiteswapState(13U), SiteswapState(7U), SiteswapThrow(1U) });
 
-	results.push_back({ 13U, 38U, 6U });	// 6 0 3
-	results.push_back({ 38U, 19U, 0U });
-	results.push_back({ 19U, 13U, 3U });
+	results.push_back({ SiteswapState(13U), SiteswapState(38U), SiteswapThrow(6U) });		// 6 0 3
+	results.push_back({ SiteswapState(38U), SiteswapState(19U), SiteswapThrow(0U) });
+	results.push_back({ SiteswapState(19U), SiteswapState(13U), SiteswapThrow(3U) });
 
-	results.push_back({ 11U, 37U, 6U });	// 6 1 2
-	results.push_back({ 37U, 19U, 1U });
-	results.push_back({ 19U, 11U, 2U });
+	results.push_back({ SiteswapState(11U), SiteswapState(37U), SiteswapThrow(6U) });		// 6 1 2
+	results.push_back({ SiteswapState(37U), SiteswapState(19U), SiteswapThrow(1U) });
+	results.push_back({ SiteswapState(19U), SiteswapState(11U), SiteswapThrow(2U) });
 
-	results.push_back({ 11U, 37U, 6U });	// 6 3 0
-	results.push_back({ 37U, 22U, 3U });
-	results.push_back({ 22U, 11U, 0U });
+	results.push_back({ SiteswapState(11U), SiteswapState(37U), SiteswapThrow(6U) });		// 6 3 0
+	results.push_back({ SiteswapState(37U), SiteswapState(22U), SiteswapThrow(3U) });
+	results.push_back({ SiteswapState(22U), SiteswapState(11U), SiteswapThrow(0U) });
 
 	std::set<SiteswapPattern> patterns_test;
 
@@ -256,17 +256,17 @@ BOOST_AUTO_TEST_CASE(GetPatterns_Balls5_Throws3_Max8)
 
 
 
-BOOST_AUTO_TEST_CASE(SiteswapState_Single)
+BOOST_AUTO_TEST_CASE(UIntStore_Single)
 {
 	const unsigned int state = 7U;
 
-	SiteswapState ss(state);
+	UIntStore ss(state);
 	BOOST_TEST(ss() == state);
 }
 
 
 
-BOOST_AUTO_TEST_CASE(SiteswapState_Multi)
+BOOST_AUTO_TEST_CASE(UIntStore_Multi)
 {
 	const unsigned int state = 7U;
 	const unsigned int state_size = 3U;
@@ -276,6 +276,6 @@ BOOST_AUTO_TEST_CASE(SiteswapState_Multi)
 	states[1U] = 0U;
 	states[2U] = 0U;
 
-	SiteswapState ss(state_size, states);
+	UIntStore ss(state_size, states);
 	BOOST_TEST(ss() == state);
 }

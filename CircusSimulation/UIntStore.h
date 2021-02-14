@@ -1,0 +1,56 @@
+#ifndef U_INT_STORE_H
+#define U_INT_STORE_H
+
+#include "stdafx.h"
+#include <ostream>
+
+class UIntStore
+{
+
+private:
+
+	unsigned int states_size;
+	unsigned int* states;
+
+public:
+
+	UIntStore(const unsigned int&, const unsigned int*);
+	UIntStore(const unsigned int&);
+	UIntStore(const UIntStore&);
+
+	virtual ~UIntStore();
+
+	unsigned int operator()() const;
+
+	unsigned int Bits() const;
+
+	UIntStore& operator=(const UIntStore&);
+
+	friend bool operator==(const UIntStore&, const UIntStore&);
+	friend bool operator!=(const UIntStore&, const UIntStore&);
+	friend bool operator<(const UIntStore&, const UIntStore&);
+	friend bool operator>(const UIntStore&, const UIntStore&);
+	friend std::ostream& operator<<(std::ostream&, const UIntStore&);
+
+	/*
+	friend UIntStore operator+(const UIntStore&, const UIntStore&);
+	friend UIntStore& operator+=(UIntStore&, const UIntStore&);
+	*/
+
+};
+
+typedef UIntStore SiteswapState;
+typedef UIntStore SiteswapThrow;
+
+bool operator==(const UIntStore&, const UIntStore&);
+bool operator!=(const UIntStore&, const UIntStore&);
+bool operator<(const UIntStore&, const UIntStore&);
+bool operator>(const UIntStore&, const UIntStore&);
+std::ostream& operator<<(std::ostream&, const UIntStore&);
+
+/*
+UIntStore operator+(const UIntStore&, const UIntStore&);
+UIntStore& operator+=(UIntStore&, const UIntStore&);
+*/
+
+#endif

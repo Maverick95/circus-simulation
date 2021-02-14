@@ -65,3 +65,20 @@ unsigned int Functions::LowestCommonMultiple(unsigned int * a, const unsigned in
 
 	return return_value;
 }
+
+unsigned int Functions::Bits(unsigned int s)
+{
+	unsigned int result = 0U;
+
+	while (s)
+	{
+		if (s & 1U)
+		{
+			result++;
+		}
+
+		s >>= 1U;
+	}
+
+	return result;
+}

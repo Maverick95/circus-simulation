@@ -6,6 +6,7 @@
 namespace Functions
 {
 	unsigned int LowestCommonMultiple(unsigned int *, const unsigned int &);
+	unsigned int Bits(unsigned int);
 }
 
 #endif

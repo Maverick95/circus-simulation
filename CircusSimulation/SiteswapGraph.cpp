@@ -3,6 +3,7 @@
 #include <random>
 
 #include "Enum.h"
+#include "Functions.h"
 #include "Settings.h"
 #include "SiteswapGraphShortestPathChain.h"
 
@@ -123,28 +124,11 @@ unsigned int SiteswapGraph::Choose(const unsigned int & n, unsigned int k)
 	return choose_return;
 }
 
-unsigned int SiteswapGraph::Bits(unsigned int s)
-{
-	unsigned int result = 0U;
-
-	while (s)
-	{
-		if (s & 1U)
-		{
-			result++;
-		}
-
-		s >>= 1U;
-	}
-
-	return result;
-}
-
 unsigned int SiteswapGraph::DeriveShortestPath(unsigned int state_start, const unsigned int& state_end)
 {
 	unsigned int actions_reserved = 0U, result = 0U;
 
-	while ((state_start & ~state_end) || actions_reserved < Bits(~state_start & state_end))
+	while ((state_start & ~state_end) || actions_reserved < Functions::Bits(~state_start & state_end))
 	{
 		if (state_start & 1U)
 		{
@@ -157,10 +141,6 @@ unsigned int SiteswapGraph::DeriveShortestPath(unsigned int state_start, const u
 	return result;
 }
 
-void SiteswapGraph::ComputeConnections()
-{
-}
-
 void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnection>> & p,
 	std::deque<SiteswapGraphConnection> & p_current,
 	bool * a, const unsigned int s_current, const unsigned int & s_end, const unsigned int n)
@@ -169,7 +149,7 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 	{
 		for (auto i = connections[s_current].begin(); i != connections[s_current].end(); i++)
 		{
-			if (i->state_end == s_end)
+			if (i->state_end() == s_end)
 			{
 				p_current.push_back(*i);
 				p.push_back(p_current);
@@ -181,13 +161,13 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 	{
 		for (auto i = connections[s_current].begin(); i != connections[s_current].end(); i++)
 		{
-			if (DeriveShortestPath(i->state_end, s_end) <= n - 1 && a[i->state_end])
+			if (DeriveShortestPath(i->state_end(), s_end) <= n - 1 && a[i->state_end()])
 			{
 				p_current.push_back(*i);
-				a[i->state_end] = false;
-				SiteswapGraph::AddPaths_Recursive(p, p_current, a, i->state_end, s_end, n - 1);
+				a[i->state_end()] = false;
+				SiteswapGraph::AddPaths_Recursive(p, p_current, a, i->state_end(), s_end, n - 1);
 				p_current.pop_back();
-				a[i->state_end] = true;
+				a[i->state_end()] = true;
 			}
 		}
 	}
@@ -208,19 +188,24 @@ SiteswapGraph::SiteswapGraph(const unsigned int & t)
 	:
 	max_throw(t < Settings::ThrowHeight_Maximum() ? t : Settings::ThrowHeight_Maximum()),
 	num_states(1U << max_throw),
-	max_state((1U << max_throw) - 1U),
+	max_state(num_states - 1U),
 	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
 	balls_states()
 {
 	for (unsigned int i = 0U; i < num_states; i++)
 	{
-		balls_states[Bits(i)].push_back(i);
+		balls_states[Functions::Bits(i)].push_back(i);
 
 		// State may require a zero throw next.
 
 		if ((i & 1U) == 0)
 		{
-			connections[i].push_front({ i, i >> 1U, 0 });
+			connections[i].push_front(
+				{
+					SiteswapState(i),
+					SiteswapState(i >> 1U),
+					SiteswapThrow(0)
+				});
 		}
 		else
 		{
@@ -228,7 +213,12 @@ SiteswapGraph::SiteswapGraph(const unsigned int & t)
 			{
 				if ((i & (1U << j)) == 0)
 				{
-					connections[i].push_front({ i, (i | (1U << j)) >> 1, j });
+					connections[i].push_front(
+						{
+							SiteswapState(i),
+							SiteswapState((i | (1U << j)) >> 1),
+							SiteswapThrow(j)
+						});
 				}
 			}
 		}
