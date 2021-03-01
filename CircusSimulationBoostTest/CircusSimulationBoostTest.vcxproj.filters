@@ -26,5 +26,11 @@
     <ClInclude Include="UIntStoreTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SiteswapGraphMultiActionTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SiteswapGraphMultiActionBitStatesTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

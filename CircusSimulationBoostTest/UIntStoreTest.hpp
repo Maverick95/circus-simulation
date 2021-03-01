@@ -168,6 +168,70 @@ BOOST_AUTO_TEST_CASE(Bits)
 
 
 
+BOOST_AUTO_TEST_CASE(Spread_False)
+{
+	auto* states = new unsigned int[5U];
+
+	states[0] = 1U;			
+	states[1] = 1U;
+	states[2] = 1U;
+	states[3] = 1U;
+	states[4] = 1U;
+
+	UIntStore store(5U, states);
+
+	BOOST_TEST(store.Spread(2U, 5U, 17U) == false);
+	BOOST_TEST(store.Spread(5U, 5U, 17U) == false);
+
+	delete[] states;
+}
+
+
+
+BOOST_AUTO_TEST_CASE(Spread_True_All_Positive)
+{
+	auto* states = new unsigned int[5U];
+
+	states[0] = 1U;
+	states[1] = 1U;
+	states[2] = 1U;
+	states[3] = 1U;
+	states[4] = 1U;
+
+	UIntStore store(5U, states);
+
+	BOOST_TEST(store.Spread(2U, 5U, 14U) == true);
+	BOOST_TEST(store[2U] == 5U);
+	BOOST_TEST(store[3U] == 5U);
+	BOOST_TEST(store[4U] == 4U);
+
+	delete[] states;
+}
+
+
+
+BOOST_AUTO_TEST_CASE(Spread_True_Some_Positive)
+{
+	auto* states = new unsigned int[5U];
+
+	states[0] = 1U;
+	states[1] = 1U;
+	states[2] = 1U;
+	states[3] = 1U;
+	states[4] = 1U;
+
+	UIntStore store(5U, states);
+
+	BOOST_TEST(store.Spread(2U, 8U, 14U) == true);
+	BOOST_TEST(store[2U] == 8U);
+	BOOST_TEST(store[3U] == 6U);
+	BOOST_TEST(store[4U] == 0U);
+
+	delete[] states;
+}
+
+
+
 BOOST_AUTO_TEST_SUITE_END()
 
 

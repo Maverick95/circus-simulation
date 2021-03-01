@@ -8,6 +8,7 @@
 #include "SiteswapGraphShortestPathChain.h"
 
 #include "SiteswapGraph.h"
+#include "SiteswapGraphMultiActionFunctions.h"
 
 
 
@@ -189,13 +190,10 @@ SiteswapGraph::SiteswapGraph(const unsigned int & t)
 	max_throw(t < Settings::ThrowHeight_Maximum() ? t : Settings::ThrowHeight_Maximum()),
 	num_states(1U << max_throw),
 	max_state(num_states - 1U),
-	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
-	balls_states()
+	connections(new std::forward_list<SiteswapGraphConnection>[num_states])
 {
 	for (unsigned int i = 0U; i < num_states; i++)
 	{
-		balls_states[Functions::Bits(i)].push_back(i);
-
 		// State may require a zero throw next.
 
 		if ((i & 1U) == 0)
@@ -230,16 +228,12 @@ SiteswapGraph::SiteswapGraph(const SiteswapGraph & sg)
 	max_throw(sg.max_throw),
 	num_states(sg.num_states),
 	max_state(sg.max_state),
-	connections(new std::forward_list<SiteswapGraphConnection>[num_states]),
-	balls_states()
+	connections(new std::forward_list<SiteswapGraphConnection>[num_states])
 {
 	for (unsigned int i = 0U; i < num_states; i++)
 	{
 		connections[i] = sg.connections[i];
 	}
-
-	balls_states = sg.balls_states;
-
 }
 
 SiteswapGraph::~SiteswapGraph()
@@ -255,9 +249,11 @@ SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & b, const 
 	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 
-	for (auto i = balls_states[b].begin(); i != balls_states[b].end(); i++)
+	auto states = SiteswapGraphMultiAction::AllStates(1U, max_throw, b);
+
+	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		unsigned int st = *i;
+		unsigned int st = (*i)();
 
 		if (a[st])
 		{
@@ -296,9 +292,11 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, con
 	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 
-	for (auto i = balls_states[b].begin(); i != balls_states[b].end(); i++)
+	auto states = SiteswapGraphMultiAction::AllStates(1U, max_throw, b);
+
+	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		unsigned int st = *i;
+		unsigned int st = (*i)();
 
 		if (a[st])
 		{

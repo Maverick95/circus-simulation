@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "UIntStore.h"
 #include "Functions.h"
 
@@ -35,6 +37,22 @@ UIntStore::~UIntStore()
 	delete[] states;
 }
 
+bool UIntStore::Spread(const unsigned int& s, const unsigned int& m, unsigned int t)
+{
+	if (s < states_size && (states_size - s) * m >= t)
+	{
+		for (unsigned int i = s; i < states_size; i++)
+		{
+			unsigned int v = t < m ? t : m;
+			states[i] = v;
+			t -= v;
+		}
+		return true;
+	}
+
+	return false;
+}
+
 unsigned int UIntStore::operator()() const
 {
 	return states[0U];
@@ -67,6 +85,41 @@ UIntStore& UIntStore::operator=(const UIntStore& us)
 	}
 
 	return *this;
+}
+
+unsigned int& UIntStore::operator[](const unsigned int& i)
+{
+	assert(i < states_size);
+	return states[i];
+}
+
+const unsigned int& UIntStore::operator[](const unsigned int& i) const
+{
+	assert(i < states_size);
+	return states[i];
+}
+
+bool UIntStore::IsValidBitSpread(const unsigned int& m) const
+{
+	if (m < states[0U])
+	{
+		return false;
+	}
+
+	for (unsigned int i = 1U; i < states_size; i++)
+	{
+		if (states[i] > states[i - 1U])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+unsigned int UIntStore::Size() const
+{
+	return states_size;
 }
 
 bool operator==(const UIntStore& us1, const UIntStore& us2)

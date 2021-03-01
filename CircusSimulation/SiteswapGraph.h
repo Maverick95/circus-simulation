@@ -20,7 +20,6 @@ private:
 	unsigned int max_state;
 
 	std::forward_list<SiteswapGraphConnection> * connections;
-	std::map<unsigned int, std::deque<unsigned int>> balls_states;
 
 	void AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnection>> &,
 		std::deque<SiteswapGraphConnection> &,

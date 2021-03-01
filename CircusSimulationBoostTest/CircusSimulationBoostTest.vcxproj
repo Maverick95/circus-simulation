@@ -27,6 +27,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SiteswapGraphMultiActionBitStatesTest.hpp" />
+    <ClInclude Include="SiteswapGraphMultiActionTest.hpp" />
     <ClInclude Include="SiteswapGraphTest.hpp" />
     <ClInclude Include="UIntStoreTest.hpp" />
   </ItemGroup>

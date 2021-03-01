@@ -20,18 +20,28 @@ public:
 
 	virtual ~UIntStore();
 
+	bool Spread(const unsigned int&, const unsigned int&, unsigned int);
+
 	unsigned int operator()() const;
 
 	unsigned int Bits() const;
 
+	bool IsValidBitSpread(const unsigned int&) const;
+
+	unsigned int Size() const;
+
 	UIntStore& operator=(const UIntStore&);
+
+	unsigned int& operator[](const unsigned int&);
+
+	const unsigned int& operator[](const unsigned int&) const;
 
 	friend bool operator==(const UIntStore&, const UIntStore&);
 	friend bool operator!=(const UIntStore&, const UIntStore&);
 	friend bool operator<(const UIntStore&, const UIntStore&);
 	friend bool operator>(const UIntStore&, const UIntStore&);
 	friend std::ostream& operator<<(std::ostream&, const UIntStore&);
-
+	
 	/*
 	friend UIntStore operator+(const UIntStore&, const UIntStore&);
 	friend UIntStore& operator+=(UIntStore&, const UIntStore&);
