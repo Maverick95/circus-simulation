@@ -27,6 +27,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChooseGeneratorTest.hpp" />
     <ClInclude Include="SiteswapGraphMultiActionBitStatesTest.hpp" />
     <ClInclude Include="SiteswapGraphMultiActionTest.hpp" />
     <ClInclude Include="SiteswapGraphTest.hpp" />

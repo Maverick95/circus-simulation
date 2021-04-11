@@ -8,5 +8,6 @@
 
 #include "SiteswapGraphTest.hpp"
 #include "UIntStoreTest.hpp"
+#include "ChooseGeneratorTest.hpp"
 #include "SiteswapGraphMultiActionTest.hpp"
 #include "SiteswapGraphMultiActionBitStatesTest.hpp"

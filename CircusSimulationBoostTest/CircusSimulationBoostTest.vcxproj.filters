@@ -32,5 +32,8 @@
     <ClInclude Include="SiteswapGraphMultiActionBitStatesTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ChooseGeneratorTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

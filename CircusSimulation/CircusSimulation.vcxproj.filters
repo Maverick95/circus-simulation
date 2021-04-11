@@ -126,6 +126,9 @@
     <ClInclude Include="SiteswapGraphMultiActionFunctions.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
+    <ClInclude Include="ChooseGenerator.h">
+      <Filter>Header Files\Graph data processing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -183,6 +186,9 @@
       <Filter>Source Files\Graph data processing</Filter>
     </ClCompile>
     <ClCompile Include="SiteswapGraphMultiActionFunctions.cpp">
+      <Filter>Source Files\Graph data processing</Filter>
+    </ClCompile>
+    <ClCompile Include="ChooseGenerator.cpp">
       <Filter>Source Files\Graph data processing</Filter>
     </ClCompile>
   </ItemGroup>

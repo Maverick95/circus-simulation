@@ -1,6 +1,7 @@
 #include "SiteswapGraphMultiActionFunctions.h"
 
 #include "Settings.h"
+#include "ChooseGenerator.h"
 
 
 std::vector<UIntStore> SiteswapGraphMultiAction::BitSpread(const unsigned int& length, const unsigned int& max, const unsigned int& total)
@@ -217,6 +218,60 @@ std::vector<UIntStore> SiteswapGraphMultiAction::AllStates(const unsigned int& l
 		{
 			result.push_back(*j);
 		}
+	}
+
+	return result;
+}
+
+
+
+std::forward_list<SiteswapGraphConnection> SiteswapGraphMultiAction::NextStates(const UIntStore& current, const unsigned int& max)
+{
+	std::forward_list<SiteswapGraphConnection> result;
+
+	UIntStore next(current);
+	auto next_bits = next.Next();
+
+	if (next_bits > 0U)
+	{
+		auto next_spaces = next.EmptyBits(max);
+
+		if (next_spaces.size() >= next_bits)
+		{
+			ChooseGenerator choose(next_bits, next_spaces.size());
+
+			do
+			{
+				for (unsigned int i = 0U; i < choose.Size(); i++)
+				{
+					auto& space = next_spaces[*(choose.Data() + i)];
+					next.Populate(space);
+				}
+
+				result.push_front(
+					{
+						UIntStore(current),
+						UIntStore(next),
+						next_spaces[*(choose.Data())].index_bit + 1U		// Placeholder value to retain current functionality.
+					});
+
+				for (unsigned int i = 0U; i < choose.Size(); i++)
+				{
+					auto& space = next_spaces[*(choose.Data() + i)];
+					next.Empty(space);
+				}
+
+			} while (choose.Next());
+		}
+	}
+	else
+	{
+		result.push_front(
+			{
+				UIntStore(current),
+				UIntStore(next),
+				0U		// Placeholder value to retain current functionality.
+			});
 	}
 
 	return result;

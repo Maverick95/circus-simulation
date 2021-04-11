@@ -122,6 +122,58 @@ unsigned int UIntStore::Size() const
 	return states_size;
 }
 
+unsigned int UIntStore::Next()
+{
+	unsigned int result = 0U;
+
+	for (unsigned int i = 0U; i < states_size; i++)
+	{
+		if ((states[i] & 1U) > 0)
+		{
+			result++;
+		}
+
+		states[i] = states[i] >> 1U;
+	}
+
+	return result;
+}
+
+void UIntStore::Populate(const UIntStoreEmptyBit& bit)
+{
+	if (bit.index_state < states_size)
+	{
+		states[bit.index_state] |= (1U << bit.index_bit);
+	}
+}
+
+void UIntStore::Empty(const UIntStoreEmptyBit& bit)
+{
+	if (bit.index_state < states_size)
+	{
+		states[bit.index_state] &= ~(1U << bit.index_bit);
+	}
+
+}
+
+std::vector<UIntStoreEmptyBit> UIntStore::EmptyBits(const unsigned int& max) const
+{
+	std::vector<UIntStoreEmptyBit> result;
+
+	for (auto i = 0U; i < states_size; i++)
+	{
+		for (auto j = 0U; j < max && (1U << j) > 0U; j++)
+		{
+			if ((~states[i] & (1U << j)) > 0U)
+			{
+				result.push_back({ i, j });
+			}
+		}
+	}
+
+	return result;
+}
+
 bool operator==(const UIntStore& us1, const UIntStore& us2)
 {
 	if (us1.states_size != us2.states_size)

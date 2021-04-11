@@ -19,8 +19,6 @@ private:
 	unsigned int num_states;
 	unsigned int max_state;
 
-	std::forward_list<SiteswapGraphConnection> * connections;
-
 	void AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnection>> &,
 		std::deque<SiteswapGraphConnection> &,
 		bool *, const unsigned int, const unsigned int &, const unsigned int);

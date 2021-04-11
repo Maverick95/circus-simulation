@@ -3,6 +3,13 @@
 
 #include "stdafx.h"
 #include <ostream>
+#include <vector>
+
+struct UIntStoreEmptyBit
+{
+	unsigned int index_state;
+	unsigned int index_bit;
+};
 
 class UIntStore
 {
@@ -29,6 +36,14 @@ public:
 	bool IsValidBitSpread(const unsigned int&) const;
 
 	unsigned int Size() const;
+
+	unsigned int Next();
+
+	void Populate(const UIntStoreEmptyBit&);
+
+	void Empty(const UIntStoreEmptyBit&);
+
+	std::vector<UIntStoreEmptyBit> EmptyBits(const unsigned int&) const;
 
 	UIntStore& operator=(const UIntStore&);
 

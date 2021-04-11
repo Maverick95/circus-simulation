@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BallStatusWindow.h" />
+    <ClInclude Include="ChooseGenerator.h" />
     <ClInclude Include="CircusSimulationApp.h" />
     <ClInclude Include="CircusSimulationFrame.h" />
     <ClInclude Include="DisplayPatternHandler.h" />
@@ -179,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BallStatusWindow.cpp" />
+    <ClCompile Include="ChooseGenerator.cpp" />
     <ClCompile Include="CircusSimulationApp.cpp" />
     <ClCompile Include="GraphDataProcessing.cpp" />
     <ClCompile Include="DisplayPattern.cpp" />

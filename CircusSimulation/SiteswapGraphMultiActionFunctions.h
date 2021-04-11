@@ -5,8 +5,10 @@
 
 #include "stdafx.h"
 
+#include <forward_list>
 #include <vector>
 
+#include "Struct.h"
 #include "UIntStore.h"
 
 namespace SiteswapGraphMultiAction
@@ -20,6 +22,8 @@ namespace SiteswapGraphMultiAction
 	std::vector<UIntStore> BitStates(const UIntStore& bitSpread, unsigned int max);
 
 	std::vector<UIntStore> AllStates(const unsigned int& length, const unsigned int& max, const unsigned int& total);
+
+	std::forward_list<SiteswapGraphConnection> NextStates(const UIntStore& current, const unsigned int& max);
 }
 
 

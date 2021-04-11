@@ -146,9 +146,12 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 	std::deque<SiteswapGraphConnection> & p_current,
 	bool * a, const unsigned int s_current, const unsigned int & s_end, const unsigned int n)
 {
+	UIntStore current(s_current);
+	auto connections = SiteswapGraphMultiAction::NextStates(current, max_throw);
+
 	if (n == 1)
 	{
-		for (auto i = connections[s_current].begin(); i != connections[s_current].end(); i++)
+		for (auto i = connections.begin(); i != connections.end(); i++)
 		{
 			if (i->state_end() == s_end)
 			{
@@ -160,7 +163,7 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 	}
 	else
 	{
-		for (auto i = connections[s_current].begin(); i != connections[s_current].end(); i++)
+		for (auto i = connections.begin(); i != connections.end(); i++)
 		{
 			if (DeriveShortestPath(i->state_end(), s_end) <= n - 1 && a[i->state_end()])
 			{
@@ -189,56 +192,23 @@ SiteswapGraph::SiteswapGraph(const unsigned int & t)
 	:
 	max_throw(t < Settings::ThrowHeight_Maximum() ? t : Settings::ThrowHeight_Maximum()),
 	num_states(1U << max_throw),
-	max_state(num_states - 1U),
-	connections(new std::forward_list<SiteswapGraphConnection>[num_states])
+	max_state(num_states - 1U)
 {
-	for (unsigned int i = 0U; i < num_states; i++)
-	{
-		// State may require a zero throw next.
 
-		if ((i & 1U) == 0)
-		{
-			connections[i].push_front(
-				{
-					SiteswapState(i),
-					SiteswapState(i >> 1U),
-					SiteswapThrow(0)
-				});
-		}
-		else
-		{
-			for (unsigned int j = 1U; j <= max_throw; j++)
-			{
-				if ((i & (1U << j)) == 0)
-				{
-					connections[i].push_front(
-						{
-							SiteswapState(i),
-							SiteswapState((i | (1U << j)) >> 1),
-							SiteswapThrow(j)
-						});
-				}
-			}
-		}
-	}
 }
 
 SiteswapGraph::SiteswapGraph(const SiteswapGraph & sg)
 	:
 	max_throw(sg.max_throw),
 	num_states(sg.num_states),
-	max_state(sg.max_state),
-	connections(new std::forward_list<SiteswapGraphConnection>[num_states])
+	max_state(sg.max_state)
 {
-	for (unsigned int i = 0U; i < num_states; i++)
-	{
-		connections[i] = sg.connections[i];
-	}
+
 }
 
 SiteswapGraph::~SiteswapGraph()
 {
-	delete[] connections;
+
 }
 
 SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & b, const unsigned int & t)
