@@ -18,22 +18,24 @@ BOOST_AUTO_TEST_SUITE(SiteswapGraphTest)
 
 
 
-BOOST_AUTO_TEST_CASE(DeriveShortestPath_8bit)
+BOOST_AUTO_TEST_CASE(DoesPathExist_8bit)
 {
 	struct DeriveShortestPathTest
 	{
-		unsigned int state_begin, state_end, path_length;
+		UIntStore state_begin, state_end;
+		unsigned int path_length;
 	};
 
 	std::vector<DeriveShortestPathTest> tests;
-	tests.push_back({ 7U, 13U, 2U });
-	tests.push_back({ 157U, 218U, 6U });
-	tests.push_back({ 129U, 68U, 1U });
-	tests.push_back({ 90U, 15U, 3U });
+	tests.push_back({ UIntStore(7U), UIntStore(13U), 2U });
+	tests.push_back({ UIntStore(157U), UIntStore(218U), 6U });
+	tests.push_back({ UIntStore(129U), UIntStore(68U), 1U });
+	tests.push_back({ UIntStore(90U), UIntStore(15U), 3U });
 
 	for (auto i = tests.begin(); i != tests.end(); i++)
 	{
-		BOOST_TEST(SiteswapGraph::DeriveShortestPath(i->state_begin, i->state_end) == i->path_length);
+		BOOST_TEST(SiteswapGraph::DoesPathExist(i->state_begin, i->state_end, i->path_length) == true);
+		BOOST_TEST(SiteswapGraph::DoesPathExist(i->state_begin, i->state_end, i->path_length - 1U) == false);
 	}
 }
 
@@ -41,7 +43,7 @@ BOOST_AUTO_TEST_CASE(DeriveShortestPath_8bit)
 
 BOOST_AUTO_TEST_CASE(GetPatterns_Balls3_Throws3_Max6)
 {
-	auto* patterns = SiteswapGraph(6).GetPatterns(3, 3);
+	auto* patterns = SiteswapGraph::GetPatterns(3U, 3U, 6U);
 	BOOST_CHECK(patterns != NULL);
 	BOOST_TEST(patterns->size() == 7U);
 
@@ -107,7 +109,7 @@ BOOST_AUTO_TEST_CASE(GetPatterns_Balls3_Throws3_Max6)
 
 BOOST_AUTO_TEST_CASE(GetPatterns_Balls4_Throws3_Max7)
 {
-	auto* patterns = SiteswapGraph(7).GetPatterns(4, 3);
+	auto* patterns = SiteswapGraph::GetPatterns(4U, 3U, 7U);
 	BOOST_CHECK(patterns != NULL);
 	BOOST_TEST(patterns->size() == 9U);
 
@@ -181,7 +183,7 @@ BOOST_AUTO_TEST_CASE(GetPatterns_Balls4_Throws3_Max7)
 
 BOOST_AUTO_TEST_CASE(GetPatterns_Balls5_Throws3_Max8)
 {
-	auto* patterns = SiteswapGraph(8).GetPatterns(5, 3);
+	auto* patterns = SiteswapGraph::GetPatterns(5U, 3U, 8U);
 	BOOST_CHECK(patterns != NULL);
 	BOOST_TEST(patterns->size() == 10U);
 

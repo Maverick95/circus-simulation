@@ -12,6 +12,10 @@
 
 
 
+static unsigned int SETTINGS_MAX_THROW = Settings::ThrowHeight_Maximum();
+
+
+
 std::map<unsigned int, unsigned int> * SiteswapGraph::PrimeFactorise(unsigned int n)
 {
 	std::map<unsigned int, unsigned int> * return_map = new std::map<unsigned int, unsigned int>;
@@ -142,18 +146,66 @@ unsigned int SiteswapGraph::DeriveShortestPath(unsigned int state_start, const u
 	return result;
 }
 
-void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnection>> & p,
-	std::deque<SiteswapGraphConnection> & p_current,
-	bool * a, const unsigned int s_current, const unsigned int & s_end, const unsigned int n)
+bool SiteswapGraph::IsDestinationExtensionOfSource(const UIntStore& source, const UIntStore& destination)
 {
-	UIntStore current(s_current);
-	auto connections = SiteswapGraphMultiAction::NextStates(current, max_throw);
+	if (source.Size() != destination.Size())
+	{
+		return false;
+	}
+
+	for (unsigned int i = 0U; i < source.Size(); i++)
+	{
+		if (source[i] & ~destination[i])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool SiteswapGraph::DoesPathExist(const UIntStore& state_start, const UIntStore& state_end, const unsigned int& max_steps)
+{
+	if (state_start == state_end)
+	{
+		return true;
+	}
+
+	if (state_start.Bits() == state_end.Bits())
+	{
+		UIntStore state_start_copy = state_start;
+
+		for (unsigned int i = 0U; i < max_steps; i++)
+		{
+			state_start_copy.Next();
+
+			if (IsDestinationExtensionOfSource(state_start_copy, state_end))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	return false;
+}
+
+void SiteswapGraph::AddPaths_Recursive(
+	std::deque<std::deque<SiteswapGraphConnection>>& p,
+	std::deque<SiteswapGraphConnection>& p_current,
+	std::set<SiteswapState>& a,
+	const SiteswapState& s_current,
+	const SiteswapState& s_end,
+	const unsigned int n)
+{
+	auto connections = SiteswapGraphMultiAction::NextStates(s_current, SETTINGS_MAX_THROW);
 
 	if (n == 1)
 	{
 		for (auto i = connections.begin(); i != connections.end(); i++)
 		{
-			if (i->state_end() == s_end)
+			if (i->state_end == s_end)
 			{
 				p_current.push_back(*i);
 				p.push_back(p_current);
@@ -165,79 +217,65 @@ void SiteswapGraph::AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnec
 	{
 		for (auto i = connections.begin(); i != connections.end(); i++)
 		{
-			if (DeriveShortestPath(i->state_end(), s_end) <= n - 1 && a[i->state_end()])
+			if (DoesPathExist(i->state_end, s_end, n - 1) && a.find(i->state_end) == a.end())
 			{
 				p_current.push_back(*i);
-				a[i->state_end()] = false;
-				SiteswapGraph::AddPaths_Recursive(p, p_current, a, i->state_end(), s_end, n - 1);
+				a.insert(i->state_end);
+				SiteswapGraph::AddPaths_Recursive(p, p_current, a, i->state_end, s_end, n - 1);
 				p_current.pop_back();
-				a[i->state_end()] = true;
+				a.erase(i->state_end);
 			}
 		}
 	}
 }
 
-void SiteswapGraph::AddPaths(std::deque<std::deque<SiteswapGraphConnection>> & p,
-	bool * a, const unsigned int & s_begin, const unsigned int & s_end, const unsigned int & n)
+void SiteswapGraph::AddPaths(
+	std::deque<std::deque<SiteswapGraphConnection>>& p,
+	std::set<SiteswapState>& a,
+	const SiteswapState& s_begin,
+	const SiteswapState& s_end,
+	const unsigned int& n)
 {
-	if (a[s_begin] && a[s_end] && DeriveShortestPath(s_begin, s_end) <= n)
+	if (a.find(s_begin) == a.end() &&
+		a.find(s_end) == a.end() &&
+		DoesPathExist(s_begin, s_end, n))
 	{
-		a[s_begin] = false;
+		a.insert(s_begin);
 		AddPaths_Recursive(p, std::deque<SiteswapGraphConnection>(), a, s_begin, s_end, n);
-		a[s_begin] = true;
+		a.erase(s_begin);
 	}
 }
 
-SiteswapGraph::SiteswapGraph(const unsigned int & t)
-	:
-	max_throw(t < Settings::ThrowHeight_Maximum() ? t : Settings::ThrowHeight_Maximum()),
-	num_states(1U << max_throw),
-	max_state(num_states - 1U)
+SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int &b, const unsigned int &t, const unsigned int& max_throw)
 {
+	SETTINGS_MAX_THROW = max_throw > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : max_throw;
 
-}
+	if (b > SETTINGS_MAX_THROW) { return NULL; }
 
-SiteswapGraph::SiteswapGraph(const SiteswapGraph & sg)
-	:
-	max_throw(sg.max_throw),
-	num_states(sg.num_states),
-	max_state(sg.max_state)
-{
-
-}
-
-SiteswapGraph::~SiteswapGraph()
-{
-
-}
-
-SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & b, const unsigned int & t)
-{
-	if (b > max_throw) { return NULL; }
-
-	bool* a = new bool[num_states];
-	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
+	std::set<SiteswapState> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 
-	auto states = SiteswapGraphMultiAction::AllStates(1U, max_throw, b);
+	auto states = SiteswapGraphMultiAction::AllStates(1U, SETTINGS_MAX_THROW, b);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		unsigned int st = (*i)();
-
-		if (a[st])
+		if (a.find(*i) == a.end())
 		{
-			AddPaths(p, a, st, st, t);
-			a[st] = false;
+			// New condition - use state if at least 1 bit in the Next().
+
+			AddPaths(p, a, *i, *i, t);
+			
+			a.insert(*i);
+			
+			/*
 
 			for (unsigned int j = 1U; (st << j) <= max_state; j++)
 			{
 				a[st << j] = false;
 			}
+			*/
 		}
 	}
-
-	delete[] a;
 
 	if (p.size() == 0)
 	{
@@ -254,33 +292,36 @@ SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int & b, const 
 			) });
 }
 
-std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, const unsigned int& t)
+std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, const unsigned int& t, const unsigned int& max_throw)
 {
-	if (b > max_throw) { return NULL; }
+	SETTINGS_MAX_THROW = max_throw > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : max_throw;
 
-	bool* a = new bool[num_states];
-	for (unsigned int i = 1U; i < num_states; i++) { a[i] = true; }
+	if (b > SETTINGS_MAX_THROW) { return NULL; }
+
+	std::set<SiteswapState> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 
-	auto states = SiteswapGraphMultiAction::AllStates(1U, max_throw, b);
+	auto states = SiteswapGraphMultiAction::AllStates(1U, SETTINGS_MAX_THROW, b);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		unsigned int st = (*i)();
-
-		if (a[st])
+		if (a.find(*i) == a.end())
 		{
-			AddPaths(p, a, st, st, t);
-			a[st] = false;
+			// New condition - use state if at least 1 bit in the Next().
+
+			AddPaths(p, a, *i, *i, t);
+
+			a.insert(*i);
+
+			/*
 
 			for (unsigned int j = 1U; (st << j) <= max_state; j++)
 			{
 				a[st << j] = false;
 			}
+			*/
 		}
 	}
-
-	delete[] a;
 
 	if (p.size() == 0)
 	{
@@ -297,17 +338,3 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, con
 	return patterns;
 }
 
-unsigned int SiteswapGraph::GetMaxThrow() const
-{
-	return max_throw;
-}
-
-unsigned int SiteswapGraph::GetNumStates() const
-{
-	return num_states;
-}
-
-unsigned int SiteswapGraph::GetMaxState() const
-{
-	return max_state;
-}

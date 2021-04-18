@@ -15,16 +15,20 @@ class SiteswapGraph
 
 private:
 
-	unsigned int max_throw;
-	unsigned int num_states;
-	unsigned int max_state;
+	static void AddPaths_Recursive(
+		std::deque<std::deque<SiteswapGraphConnection>>&,
+		std::deque<SiteswapGraphConnection>&,
+		std::set<SiteswapState>&,
+		const SiteswapState&,
+		const SiteswapState&,
+		const unsigned int);
 
-	void AddPaths_Recursive(std::deque<std::deque<SiteswapGraphConnection>> &,
-		std::deque<SiteswapGraphConnection> &,
-		bool *, const unsigned int, const unsigned int &, const unsigned int);
-
-	void AddPaths(std::deque<std::deque<SiteswapGraphConnection>> &,
-		bool *, const unsigned int &, const unsigned int &, const unsigned int &);
+	static void AddPaths(
+		std::deque<std::deque<SiteswapGraphConnection>>&,
+		std::set<SiteswapState>&,
+		const SiteswapState&,
+		const SiteswapState&,
+		const unsigned int&);
 
 public:
 
@@ -35,17 +39,11 @@ public:
 
 	static unsigned int DeriveShortestPath(unsigned int, const unsigned int&);
 
-	SiteswapGraph(const unsigned int &);
-	SiteswapGraph(const SiteswapGraph &);
-	
-	~SiteswapGraph();
+	static bool IsDestinationExtensionOfSource(const UIntStore&, const UIntStore&);
+	static bool DoesPathExist(const UIntStore&, const UIntStore&, const unsigned int&);
 
-	SiteswapPattern * GetRandomPattern(const unsigned int &, const unsigned int &);
-	std::set<SiteswapPattern>* GetPatterns(const unsigned int &, const unsigned int&);
-
-	unsigned int GetMaxThrow() const;
-	unsigned int GetNumStates() const;
-	unsigned int GetMaxState() const;
+	static SiteswapPattern * GetRandomPattern(const unsigned int&, const unsigned int&, const unsigned int&);
+	static std::set<SiteswapPattern>* GetPatterns(const unsigned int&, const unsigned int&, const unsigned int&);
 
 };
 

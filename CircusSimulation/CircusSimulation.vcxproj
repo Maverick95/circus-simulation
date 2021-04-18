@@ -160,7 +160,6 @@
     <ClInclude Include="CircusSimulationApp.h" />
     <ClInclude Include="CircusSimulationFrame.h" />
     <ClInclude Include="DisplayPatternHandler.h" />
-    <ClInclude Include="GraphDataProcessing.h" />
     <ClInclude Include="DisplayPattern.h" />
     <ClInclude Include="DisplayPatternBall.h" />
     <ClInclude Include="DisplayPatternWindow.h" />
@@ -182,7 +181,6 @@
     <ClCompile Include="BallStatusWindow.cpp" />
     <ClCompile Include="ChooseGenerator.cpp" />
     <ClCompile Include="CircusSimulationApp.cpp" />
-    <ClCompile Include="GraphDataProcessing.cpp" />
     <ClCompile Include="DisplayPattern.cpp" />
     <ClCompile Include="DisplayPatternBall.cpp" />
     <ClCompile Include="Functions.cpp" />

@@ -84,9 +84,6 @@
     <ClInclude Include="TestBallDrawingWindow.h">
       <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
     </ClInclude>
-    <ClInclude Include="GraphDataProcessing.h">
-      <Filter>Header Files\Graph data processing</Filter>
-    </ClInclude>
     <ClInclude Include="SiteswapGraph.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
@@ -151,9 +148,6 @@
     </ClCompile>
     <ClCompile Include="TestBallDrawingWindow.cpp">
       <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphDataProcessing.cpp">
-      <Filter>Source Files\Graph data processing</Filter>
     </ClCompile>
     <ClCompile Include="SiteswapGraph.cpp">
       <Filter>Source Files\Graph data processing</Filter>

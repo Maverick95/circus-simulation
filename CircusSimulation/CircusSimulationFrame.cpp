@@ -1,11 +1,11 @@
 #include <wx\spinctrl.h>
 
-#include "GraphDataProcessing.h"
 #include "Settings.h"
 #include "BallStatusWindow.h"
 #include "TestBallDrawingWindow.h"
 
 #include "CircusSimulationFrame.h"
+#include "SiteswapGraph.h"
 
 
 
@@ -45,7 +45,7 @@ void CircusSimulationFrame::OnAbout(wxCommandEvent & event)
 
 SiteswapPattern * CircusSimulationFrame::GetRandomPattern()
 {
-	return GraphDataProcessing::GetSiteswapGraph()->GetRandomPattern(num_balls, num_throws);
+	return SiteswapGraph::GetRandomPattern(num_balls, num_throws, Settings::ThrowHeight_Maximum());
 }
 
 void CircusSimulationFrame::UpdateNumberBalls(wxSpinEvent & e)

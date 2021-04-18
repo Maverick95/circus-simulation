@@ -48,16 +48,17 @@ BOOST_AUTO_TEST_CASE(Operator_Assignment)
 {
 	auto* states = new unsigned int[5U];
 
-	states[0U] = 1U;
-	states[1U] = 2U;
-	states[2U] = 3U;
-	states[3U] = 4U;
-	states[4U] = 5U;
+	states[0U] = 1U;	// 1 0 0
+	states[1U] = 2U;	// 0 1 0
+	states[2U] = 3U;	// 1 1 0
+	states[3U] = 4U;	// 0 0 1
+	states[4U] = 5U;	// 1 0 1
 
 	UIntStore u1(5U, states);
 	UIntStore u2 = u1;
 
 	BOOST_TEST(u1 == u2);
+	BOOST_TEST(u2.Bits() == 7U);
 
 	delete[] states;
 }
@@ -205,6 +206,8 @@ BOOST_AUTO_TEST_CASE(Spread_True_All_Positive)
 	BOOST_TEST(store[3U] == 5U);
 	BOOST_TEST(store[4U] == 4U);
 
+	BOOST_TEST(store.Bits() == 7U);
+
 	delete[] states;
 }
 
@@ -227,6 +230,8 @@ BOOST_AUTO_TEST_CASE(Spread_True_Some_Positive)
 	BOOST_TEST(store[3U] == 6U);
 	BOOST_TEST(store[4U] == 0U);
 
+	BOOST_TEST(store.Bits() == 5U);
+
 	delete[] states;
 }
 
@@ -245,10 +250,19 @@ BOOST_AUTO_TEST_CASE(Next)
 	UIntStore store(5U, states);
 
 	BOOST_TEST(store.Next() == 3U);
+	BOOST_TEST(store.Bits() == 8U);
+	
 	BOOST_TEST(store.Next() == 3U);
+	BOOST_TEST(store.Bits() == 5U);
+	
 	BOOST_TEST(store.Next() == 1U);
+	BOOST_TEST(store.Bits() == 4U);
+	
 	BOOST_TEST(store.Next() == 2U);
+	BOOST_TEST(store.Bits() == 2U);
+	
 	BOOST_TEST(store.Next() == 2U);
+	BOOST_TEST(store.Bits() == 0U);
 
 	BOOST_TEST(store.Next() == 0U);
 	BOOST_TEST(store.Next() == 0U);
@@ -356,6 +370,8 @@ BOOST_AUTO_TEST_CASE(Populate)
 	BOOST_TEST(store[3] == 0U);
 	BOOST_TEST(store[4] == 11U);
 
+	BOOST_TEST(store.Bits() == 12U);
+
 	// Alteration.
 
 	store.Populate({ 3U, 2U });
@@ -366,6 +382,8 @@ BOOST_AUTO_TEST_CASE(Populate)
 	BOOST_TEST(store[3] == 4U);
 	BOOST_TEST(store[4] == 11U);
 
+	BOOST_TEST(store.Bits() == 13U);
+
 	// No change.
 
 	store.Populate({ 4U, 1U });
@@ -375,6 +393,8 @@ BOOST_AUTO_TEST_CASE(Populate)
 	BOOST_TEST(store[2] == 19U);
 	BOOST_TEST(store[3] == 4U);
 	BOOST_TEST(store[4] == 11U);
+
+	BOOST_TEST(store.Bits() == 13U);
 
 	delete[] states;
 }
@@ -403,6 +423,8 @@ BOOST_AUTO_TEST_CASE(Empty)
 	BOOST_TEST(store[3] == 0U);
 	BOOST_TEST(store[4] == 11U);
 
+	BOOST_TEST(store.Bits() == 10U);
+
 	// Alteration.
 
 	store.Empty({ 1U, 1U });
@@ -413,6 +435,8 @@ BOOST_AUTO_TEST_CASE(Empty)
 	BOOST_TEST(store[3] == 0U);
 	BOOST_TEST(store[4] == 11U);
 
+	BOOST_TEST(store.Bits() == 9U);
+
 	// No change.
 
 	store.Empty({ 4U, 2U });
@@ -422,6 +446,8 @@ BOOST_AUTO_TEST_CASE(Empty)
 	BOOST_TEST(store[2] == 19U);
 	BOOST_TEST(store[3] == 0U);
 	BOOST_TEST(store[4] == 11U);
+
+	BOOST_TEST(store.Bits() == 9U);
 
 	delete[] states;
 }

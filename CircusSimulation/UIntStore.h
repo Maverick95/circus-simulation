@@ -18,6 +18,7 @@ private:
 
 	unsigned int states_size;
 	unsigned int* states;
+	unsigned int bits;
 
 public:
 
@@ -56,11 +57,6 @@ public:
 	friend bool operator<(const UIntStore&, const UIntStore&);
 	friend bool operator>(const UIntStore&, const UIntStore&);
 	friend std::ostream& operator<<(std::ostream&, const UIntStore&);
-	
-	/*
-	friend UIntStore operator+(const UIntStore&, const UIntStore&);
-	friend UIntStore& operator+=(UIntStore&, const UIntStore&);
-	*/
 
 };
 
@@ -72,10 +68,5 @@ bool operator!=(const UIntStore&, const UIntStore&);
 bool operator<(const UIntStore&, const UIntStore&);
 bool operator>(const UIntStore&, const UIntStore&);
 std::ostream& operator<<(std::ostream&, const UIntStore&);
-
-/*
-UIntStore operator+(const UIntStore&, const UIntStore&);
-UIntStore& operator+=(UIntStore&, const UIntStore&);
-*/
 
 #endif

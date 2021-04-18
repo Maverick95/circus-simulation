@@ -1,12 +1,10 @@
-#include "GraphDataProcessing.h"
 #include "CircusSimulationFrame.h"
-
 #include "CircusSimulationApp.h"
+
+
 
 bool CircusSimulationApp::OnInit()
 {
-	GraphDataProcessing::Initialize();
-
 	CircusSimulationFrame * frame = new CircusSimulationFrame("Hello World", wxPoint(50, 50), wxSize(450, 340));
 	frame->Show(true);
 
@@ -15,8 +13,6 @@ bool CircusSimulationApp::OnInit()
 
 int CircusSimulationApp::OnExit()
 {
-	GraphDataProcessing::Shutdown();
-
 	return wxAppConsole::OnExit();
 }
 
