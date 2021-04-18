@@ -5,6 +5,7 @@
 
 namespace Functions
 {
+	unsigned int Choose(const unsigned int&, unsigned int);
 	unsigned int LowestCommonMultiple(unsigned int *, const unsigned int &);
 	unsigned int Bits(unsigned int);
 }
