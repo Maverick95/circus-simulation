@@ -26,7 +26,7 @@ private:
 
 	// Placeholder function for now - this will be replaced later.
 
-	SiteswapPattern * GetRandomPattern();
+	SiteswapPattern* GetRandomPattern();
 
 	unsigned int num_balls;
 	unsigned int num_throws;

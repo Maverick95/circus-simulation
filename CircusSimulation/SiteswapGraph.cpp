@@ -135,7 +135,7 @@ void AddPaths(
 	}
 }
 
-SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int &b, const unsigned int &t, const unsigned int& max_throw)
+SiteswapPattern* SiteswapGraph::GetRandomPattern(const unsigned int& b, const unsigned int& t, const unsigned int& max_throw)
 {
 	SETTINGS_MAX_THROW = max_throw > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : max_throw;
 
@@ -172,7 +172,7 @@ SiteswapPattern * SiteswapGraph::GetRandomPattern(const unsigned int &b, const u
 	}
 
 	return new SiteswapPattern({
-			b,
+			b, 1U,
 			*(
 			p.begin() +
 			std::uniform_int_distribution<unsigned int>(0, p.size() - 1)(
@@ -221,7 +221,7 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, con
 	
 	for (auto i = p.begin(); i != p.end(); i++)
 	{
-		patterns->insert({ b, *i }); 
+		patterns->insert({ b, 1U, *i }); 
 	}
 
 	return patterns;

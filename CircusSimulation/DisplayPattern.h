@@ -29,7 +29,7 @@ private:
 
 public:
 
-	DisplayPattern(const SiteswapPattern &);
+	DisplayPattern(const SiteswapPattern&);
 	~DisplayPattern();
 
 	bool IsValid() const;

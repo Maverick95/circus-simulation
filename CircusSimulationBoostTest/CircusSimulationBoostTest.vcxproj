@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CircusSimulationBoostTest.cpp" />
+    <ClCompile Include="Helpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CircusSimulation\CircusSimulation.vcxproj">
@@ -28,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChooseGeneratorTest.hpp" />
+    <ClInclude Include="Helpers.h" />
     <ClInclude Include="SiteswapGraphMultiActionBitStatesTest.hpp" />
     <ClInclude Include="SiteswapGraphMultiActionTest.hpp" />
     <ClInclude Include="SiteswapGraphTest.hpp" />

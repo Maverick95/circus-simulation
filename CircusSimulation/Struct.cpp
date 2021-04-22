@@ -5,9 +5,22 @@
 
 bool operator==(const SiteswapGraphConnection& sgc1, const SiteswapGraphConnection& sgc2)
 {
-	return (sgc1.state_begin == sgc2.state_begin &&
+	if (sgc1.state_begin == sgc2.state_begin &&
 		sgc1.state_end == sgc2.state_end &&
-		sgc1.state_transfer_throw == sgc2.state_transfer_throw);
+		sgc1.state_transfer.size() == sgc2.state_transfer.size())
+	{
+		for (unsigned int i = 0U; i < sgc1.state_transfer.size(); i++)
+		{
+			if (sgc1.state_transfer[i] != sgc2.state_transfer[i])
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	return false;
 }
 
 bool operator!=(const SiteswapGraphConnection& sgc1, const SiteswapGraphConnection& sgc2)
@@ -17,7 +30,7 @@ bool operator!=(const SiteswapGraphConnection& sgc1, const SiteswapGraphConnecti
 
 bool operator<(const SiteswapPattern& sp1, const SiteswapPattern& sp2)
 {
-	if (sp1.num_balls < sp2.num_balls || sp1.throws.size() < sp2.throws.size())
+	if (sp1.num_balls < sp2.num_balls || sp1.num_actions < sp2.num_actions || sp1.throws.size() < sp2.throws.size())
 	{
 		return true;
 	}
@@ -26,11 +39,11 @@ bool operator<(const SiteswapPattern& sp1, const SiteswapPattern& sp2)
 	{
 		for (unsigned int i = 0U; i < sp1.throws.size(); i++)
 		{
-			if (sp1.throws[i].state_transfer_throw < sp2.throws[i].state_transfer_throw)
+			if (sp1.throws[i].state_transfer < sp2.throws[i].state_transfer)
 			{
 				return true;
 			}
-			else if (sp1.throws[i].state_transfer_throw > sp2.throws[i].state_transfer_throw)
+			else if (sp1.throws[i].state_transfer > sp2.throws[i].state_transfer)
 			{
 				return false;
 			}
@@ -42,7 +55,7 @@ bool operator<(const SiteswapPattern& sp1, const SiteswapPattern& sp2)
 
 bool operator==(const SiteswapPattern& sp1, const SiteswapPattern& sp2)
 {
-	if (sp1.num_balls != sp2.num_balls || sp1.throws.size() != sp2.throws.size())
+	if (sp1.num_balls != sp2.num_balls || sp1.num_actions != sp2.num_actions || sp1.throws.size() != sp2.throws.size())
 	{
 		return false;
 	}
@@ -67,16 +80,25 @@ bool operator!=(const SiteswapPattern& sp1, const SiteswapPattern& sp2)
 std::ostream& operator<<(std::ostream& os, const SiteswapPattern& sp)
 {
 	os << "Balls : " << sp.num_balls << std::endl;
+	os << "Actions : " << sp.num_actions << std::endl;
 	for (auto i = sp.throws.begin(); i != sp.throws.end(); i++)
 	{
-		os << "From : " << i->state_begin << " - To : " << i->state_end << " - By : " << i->state_transfer_throw << std::endl;
+		os << "From : " << i->state_begin << " - To : " << i->state_end << " - By : [";
+		for (auto j = i->state_transfer.begin(); j != i->state_transfer.end(); j++)
+		{
+			os << *j << ",";
+		}
+		os << "]" << std::endl;
 	}
 
 	return os;
 }
 
-bool StructFunctions::IsSiteswapPatternValid(const SiteswapPattern & sp)
+bool StructFunctions::IsSiteswapPatternValid(const SiteswapPattern& sp)
 {
+	// To fill out.
+
+	/*
 	// Base properties need to be valid.
 
 	if (sp.num_balls > 0U && !sp.throws.empty())
@@ -110,10 +132,14 @@ bool StructFunctions::IsSiteswapPatternValid(const SiteswapPattern & sp)
 	}
 
 	return false;
+	*/
+
+	return true;
 }
 
 bool StructFunctions::IsThrowValid(const SiteswapState& s1, const SiteswapState& s2, const SiteswapThrow& t)
 {
 	// To fill out.
+
 	return true;
 }

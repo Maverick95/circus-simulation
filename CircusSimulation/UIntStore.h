@@ -11,6 +11,13 @@ struct UIntStoreEmptyBit
 	unsigned int index_bit;
 };
 
+struct UIntStoreTransferBit
+{
+	unsigned int index_state_source;
+	unsigned int index_state_destination;
+	unsigned int state_transfer_throw;
+};
+
 class UIntStore
 {
 
@@ -38,7 +45,7 @@ public:
 
 	unsigned int Size() const;
 
-	unsigned int Next();
+	std::vector<unsigned int> Next();
 
 	void Populate(const UIntStoreEmptyBit&);
 
@@ -68,5 +75,11 @@ bool operator!=(const UIntStore&, const UIntStore&);
 bool operator<(const UIntStore&, const UIntStore&);
 bool operator>(const UIntStore&, const UIntStore&);
 std::ostream& operator<<(std::ostream&, const UIntStore&);
+
+bool operator==(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
+bool operator!=(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
+bool operator<(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
+bool operator>(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
+std::ostream& operator<<(std::ostream&, const UIntStoreTransferBit&);
 
 #endif

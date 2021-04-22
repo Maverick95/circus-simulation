@@ -18,6 +18,9 @@
     <ClCompile Include="CircusSimulationBoostTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SiteswapGraphTest.hpp">
@@ -33,6 +36,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChooseGeneratorTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

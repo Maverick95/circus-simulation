@@ -232,27 +232,35 @@ std::forward_list<SiteswapGraphConnection> SiteswapGraphMultiAction::NextStates(
 	UIntStore next(current);
 	auto next_bits = next.Next();
 
-	if (next_bits > 0U)
+	if (!next_bits.empty())
 	{
 		auto next_spaces = next.EmptyBits(max);
 
-		if (next_spaces.size() >= next_bits)
+		if (next_spaces.size() >= next_bits.size())
 		{
-			ChooseGenerator choose(next_bits, next_spaces.size());
+			ChooseGenerator choose(next_bits.size(), next_spaces.size());
 
 			do
 			{
+				std::vector<UIntStoreTransferBit> transfer;
+
 				for (unsigned int i = 0U; i < choose.Size(); i++)
 				{
 					auto& space = next_spaces[*(choose.Data() + i)];
 					next.Populate(space);
+					transfer.push_back(
+						{
+							next_bits[i],
+							space.index_state,
+							space.index_bit + 1U
+						});
 				}
 
 				result.push_front(
 					{
 						UIntStore(current),
 						UIntStore(next),
-						next_spaces[*(choose.Data())].index_bit + 1U		// Placeholder value to retain current functionality.
+						transfer
 					});
 
 				for (unsigned int i = 0U; i < choose.Size(); i++)
@@ -270,7 +278,7 @@ std::forward_list<SiteswapGraphConnection> SiteswapGraphMultiAction::NextStates(
 			{
 				UIntStore(current),
 				UIntStore(next),
-				0U		// Placeholder value to retain current functionality.
+				std::vector<UIntStoreTransferBit>()
 			});
 	}
 

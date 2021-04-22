@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "Helpers.h"
+
 #include "Struct.h"
 #include "SiteswapGraph.h"
 

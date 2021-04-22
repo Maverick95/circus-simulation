@@ -249,24 +249,24 @@ BOOST_AUTO_TEST_CASE(Next)
 
 	UIntStore store(5U, states);
 
-	BOOST_TEST(store.Next() == 3U);
+	BOOST_TEST(store.Next().size() == 3U);
 	BOOST_TEST(store.Bits() == 8U);
 	
-	BOOST_TEST(store.Next() == 3U);
+	BOOST_TEST(store.Next().size() == 3U);
 	BOOST_TEST(store.Bits() == 5U);
 	
-	BOOST_TEST(store.Next() == 1U);
+	BOOST_TEST(store.Next().size() == 1U);
 	BOOST_TEST(store.Bits() == 4U);
 	
-	BOOST_TEST(store.Next() == 2U);
+	BOOST_TEST(store.Next().size() == 2U);
 	BOOST_TEST(store.Bits() == 2U);
 	
-	BOOST_TEST(store.Next() == 2U);
+	BOOST_TEST(store.Next().size() == 2U);
 	BOOST_TEST(store.Bits() == 0U);
 
-	BOOST_TEST(store.Next() == 0U);
-	BOOST_TEST(store.Next() == 0U);
-	BOOST_TEST(store.Next() == 0U);
+	BOOST_TEST(store.Next().size() == 0U);
+	BOOST_TEST(store.Next().size() == 0U);
+	BOOST_TEST(store.Next().size() == 0U);
 
 	delete[] states;
 }

@@ -392,7 +392,7 @@ void DisplayPatternHandler::Reset()
 	state = PH_STATE_EMPTY;
 }
 
-void DisplayPatternHandler::Populate(const SiteswapPattern & pattern)
+void DisplayPatternHandler::Populate(const SiteswapPattern& pattern)
 {
 	Reset();
 

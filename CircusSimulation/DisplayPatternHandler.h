@@ -62,7 +62,7 @@ public:
 	void RemoveWindow(DisplayPatternWindow *);
 
 	void Reset();
-	void Populate(const SiteswapPattern &);
+	void Populate(const SiteswapPattern&);
 
 	// Control functions.
 

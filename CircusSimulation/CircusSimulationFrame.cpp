@@ -43,7 +43,7 @@ void CircusSimulationFrame::OnAbout(wxCommandEvent & event)
 		"About Hello World", wxOK | wxICON_INFORMATION);
 }
 
-SiteswapPattern * CircusSimulationFrame::GetRandomPattern()
+SiteswapPattern* CircusSimulationFrame::GetRandomPattern()
 {
 	return SiteswapGraph::GetRandomPattern(num_balls, num_throws, Settings::ThrowHeight_Maximum());
 }
@@ -65,7 +65,7 @@ void CircusSimulationFrame::Reset(wxCommandEvent & e)
 
 void CircusSimulationFrame::Populate(wxCommandEvent & e)
 {
-	SiteswapPattern * s = GetRandomPattern();
+	SiteswapPattern* s = GetRandomPattern();
 
 	if (s != NULL)
 	{

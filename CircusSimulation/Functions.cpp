@@ -70,6 +70,27 @@ unsigned int Functions::Choose(const unsigned int& n, unsigned int k)
 
 
 
+unsigned int Functions::LowestCommonMultiple(const std::vector<unsigned int>& s)
+{
+	if (!s.empty())
+	{
+		auto* data = new unsigned int[s.size()];
+		
+		for (auto i = 0U; i < s.size(); i++)
+		{
+			data[i] = s[i];
+		}
+
+		auto result = LowestCommonMultiple(data, s.size());
+		delete[] data;
+		return result;
+	}
+
+	return 0U;
+}
+
+
+
 unsigned int Functions::LowestCommonMultiple(unsigned int * a, const unsigned int & l)
 {
 	unsigned int return_value = 0;

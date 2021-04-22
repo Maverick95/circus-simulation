@@ -1,8 +1,9 @@
 #include "DisplayPattern.h"
+#include "Functions.h"
 
 
 
-DisplayPattern::DisplayPattern(const SiteswapPattern & sp)
+DisplayPattern::DisplayPattern(const SiteswapPattern& sp)
 	:
 	is_valid(StructFunctions::IsSiteswapPatternValid(sp)),
 	indices_balls(NULL),
@@ -18,81 +19,116 @@ DisplayPattern::DisplayPattern(const SiteswapPattern & sp)
 {
 	if (is_valid)
 	{
-		// Copy num_balls.
+		// Copy key variables.
 
 		num_balls = sp.num_balls;
-
-		// Copy mapping_length_initial.
-
+		num_actions = sp.num_actions;
 		mapping_length_initial = sp.throws.size();
 
-		// Initialize indices_balls.
+		// Initialize indices_ vectors.
 
 		indices_balls = new unsigned int[num_balls];
+		indices_actions = new unsigned int[num_actions];
 
-		for (unsigned int i = 0; i < num_balls; i++)
+		for (unsigned int i = 0U; i < num_balls; i++)
 		{
 			indices_balls[i] = i;
 		}
 
-		// Initialize num_actions and indices_actions (vanilla siteswap - simple case).
-		
-		num_actions = 1;
-		indices_actions = new unsigned int[1];
-		indices_actions[0] = 0;
+		for (unsigned int i = 0U; i < num_actions; i++)
+		{
+			indices_actions[i] = i;
+		}
 
 		// Get the max pattern throw value.
 
 		for (auto i = sp.throws.begin(); i != sp.throws.end(); i++)
 		{
-			if (i->state_transfer_throw > pattern_max_throw_value)
+			for (auto j = i->state_transfer.begin(); j != i->state_transfer.end(); j++)
 			{
-				pattern_max_throw_value = i->state_transfer_throw();
+				if (j->state_transfer_throw > pattern_max_throw_value)
+				{
+					pattern_max_throw_value = j->state_transfer_throw;
+				}
 			}
 		}
 
 		// Code below has been copied from the window function.
 
+		// Isolate the groups of throws in the pattern that are "linked" by
+		// the same ball being used, and for each, calculate the number of
+		// cycles of the pattern it takes to iterate through the group.
+	
 		const std::deque<SiteswapGraphConnection> & pf = sp.throws;
-		std::deque<unsigned int> cycle_lengths;
+		std::vector<unsigned int> cycle_lengths;
 		unsigned int cycle_lengths_lcm_counter = 0;
 
-		bool * throw_accessed = new bool[pf.size()];
-		for (unsigned int i = 0; i < pf.size(); i++)
+		bool ** throw_accessed = new bool*[mapping_length_initial];
+
+		for (unsigned int i = 0U; i < mapping_length_initial; i++)
 		{
-			throw_accessed[i] = false;
+			throw_accessed[i] = new bool[num_actions];
+			for (unsigned int j = 0U; j < num_actions; j++)
+			{
+				throw_accessed[i][j] = false;
+			}
 		}
 
-		// Obtain cycle lengths.
-
-		for (unsigned int i = 0; i < pf.size(); i++)
+		for (unsigned int i = 0U; i < mapping_length_initial; i++)
 		{
-			if (!throw_accessed[i])
+			for (unsigned int j = 0U; j < num_actions; j++)
 			{
-				// New set of throws to loop through.
-				unsigned int cycle_length = 0;
-				unsigned int j = i;
-
-				while (!throw_accessed[j])
+				if (!throw_accessed[i][j])
 				{
-					throw_accessed[j] = true;
-					j += pf[j].state_transfer_throw();
-					cycle_length += j / pf.size();
-					j %= pf.size();
-				}
+					// New set of throws to loop through.
+					unsigned int cycle_length = 0;
+					unsigned int i2 = i, j2 = j;
 
-				cycle_lengths.push_back(cycle_length);
-				if (cycle_length > 1)
-				{
-					cycle_lengths_lcm_counter++;
+					while (!throw_accessed[i2][j2])
+					{
+						throw_accessed[i2][j2] = true;
+
+						// This is really bad optimization-wise - sort out later.
+
+						for (auto k = pf[i2].state_transfer.begin(); k != pf[i2].state_transfer.end(); k++)
+						{
+							if (k->index_state_source == j2)
+							{
+								i2 += k->state_transfer_throw;
+								j2 = k->index_state_destination;
+								break;
+							}
+						}
+
+						cycle_length += i2 / pf.size();
+						i2 %= pf.size();
+					}
+
+					if (cycle_length > 0U)
+					{
+						cycle_lengths.push_back(cycle_length);
+						if (cycle_length > 1)
+						{
+							cycle_lengths_lcm_counter++;
+						}
+					}
 				}
 			}
 		}
 
+		for (unsigned int i = 0U; i < mapping_length_initial; i++)
+		{
+			delete[] throw_accessed[i];
+		}
+
 		delete[] throw_accessed;
 
-		// Obtain lowest common multiple.
+		// Obtain the lowest common multiple, this is the number of cycles before the 
+		// whole pattern functionally repeats itself.
 
+		auto return_lcm = Functions::LowestCommonMultiple(cycle_lengths);
+
+		/*
 		unsigned int return_lcm = 1;
 
 		while (cycle_lengths_lcm_counter > 0)
@@ -123,8 +159,9 @@ DisplayPattern::DisplayPattern(const SiteswapPattern & sp)
 				}
 			}
 		}
+		*/
 
-		// We've return the lowest common multiple, now we can compute the mappings.
+		// Use the LCM to compute all the mappings required.
 
 		mapping_length = pf.size() * return_lcm;
 
@@ -132,27 +169,35 @@ DisplayPattern::DisplayPattern(const SiteswapPattern & sp)
 		mapping_balls = new unsigned int**[mapping_length];
 		mapping_actions = new unsigned int**[mapping_length];
 
-		for (unsigned int i = 0; i < mapping_length; i++)
+		for (unsigned int i = 0U; i < mapping_length; i++)
 		{
-			mapping_throws[i] = new unsigned int[1];
+			mapping_throws[i] = new unsigned int[num_actions];
+			mapping_balls[i] = new unsigned int*[num_actions];
+			mapping_actions[i] = new unsigned int*[num_actions];
 
-			mapping_balls[i] = new unsigned int*[1];
-			mapping_balls[i][0] = NULL;
-
-			mapping_actions[i] = new unsigned int*[1];
-			mapping_actions[i][0] = NULL;
+			for (unsigned int j = 0U; j < num_actions; j++)
+			{
+				mapping_throws[i][j] = 0U;
+				mapping_actions[i][j] = NULL;
+				mapping_balls[i][j] = NULL;
+			}
 		}
 
-		// Set up mapping_throws.
+		// Set up mapping_throws and mapping actions.
 
-		unsigned int mapping_throws_counter = 0;
+		unsigned int mapping_counter = 0;
 
 		for (unsigned int i = 0; i < return_lcm; i++)
 		{
 			for (auto j = pf.begin(); j != pf.end(); j++)
 			{
-				mapping_throws[mapping_throws_counter][0] = j->state_transfer_throw();
-				mapping_throws_counter++;
+				for (auto k = j->state_transfer.begin(); k != j->state_transfer.end(); k++)
+				{
+					mapping_throws[mapping_counter][k->index_state_source] = k->state_transfer_throw;
+					mapping_actions[mapping_counter][k->index_state_source] = indices_actions + k->index_state_destination;
+				}
+
+				mapping_counter++;
 			}
 		}
 
@@ -160,26 +205,21 @@ DisplayPattern::DisplayPattern(const SiteswapPattern & sp)
 
 		unsigned int mapping_ball_index = 0;
 
-		for (unsigned int i = 0; i < mapping_length; i++)
+		for (unsigned int i = 0U; i < mapping_length; i++)
 		{
-			if (mapping_balls[i][0] == NULL && mapping_throws[i][0] > 0)
+			for (unsigned int k = 0U; k < num_actions; k++)
 			{
-				for (unsigned int j = i; j < mapping_length; j += mapping_throws[j][0])
+				if (mapping_balls[i][k] == NULL && mapping_throws[i][k] > 0U)
 				{
-					mapping_balls[j][0] = indices_balls + mapping_ball_index;
+					unsigned int k_copy = k;
+					for (unsigned int j = i; j < mapping_length; j += mapping_throws[j][k_copy])
+					{
+						mapping_balls[j][k_copy] = indices_balls + mapping_ball_index;
+						k_copy = *(mapping_actions[j][k_copy]);
+					}
+
+					mapping_ball_index++;
 				}
-
-				mapping_ball_index++;
-			}
-		}
-
-		// Set up mapping_actions (vanilla siteswap - simple case).
-
-		for (unsigned int i = 0; i < mapping_length; i++)
-		{
-			if (mapping_throws[i][0] > 0)
-			{
-				mapping_actions[i][0] = indices_actions;
 			}
 		}
 	}

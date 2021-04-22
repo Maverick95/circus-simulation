@@ -134,15 +134,15 @@ unsigned int UIntStore::Size() const
 	return states_size;
 }
 
-unsigned int UIntStore::Next()
+std::vector<unsigned int> UIntStore::Next()
 {
-	unsigned int result = 0U;
+	std::vector<unsigned int> result;
 
 	for (unsigned int i = 0U; i < states_size; i++)
 	{
 		if ((states[i] & 1U) > 0)
 		{
-			result++;
+			result.push_back(i);
 			bits--;
 		}
 
@@ -281,3 +281,37 @@ std::ostream& operator<<(std::ostream& os, const UIntStore& us)
 	return os;
 }
 
+bool operator==(const UIntStoreTransferBit& tb1, const UIntStoreTransferBit& tb2)
+{
+	return
+		tb1.index_state_source == tb2.index_state_source &&
+		tb1.index_state_destination == tb2.index_state_destination &&
+		tb1.state_transfer_throw == tb2.state_transfer_throw;
+}
+
+bool operator!=(const UIntStoreTransferBit& tb1, const UIntStoreTransferBit& tb2)
+{
+	return !(tb1 == tb2);
+}
+
+bool operator<(const UIntStoreTransferBit& tb1, const UIntStoreTransferBit& tb2)
+{
+	return
+		tb1.index_state_source < tb2.index_state_source ||
+		tb1.index_state_destination < tb2.index_state_destination ||
+		tb1.state_transfer_throw < tb2.state_transfer_throw;
+}
+
+bool operator>(const UIntStoreTransferBit& tb1, const UIntStoreTransferBit& tb2)
+{
+	return
+		tb1.index_state_source > tb2.index_state_source ||
+		tb1.index_state_destination > tb2.index_state_destination ||
+		tb1.state_transfer_throw > tb2.state_transfer_throw;
+}
+
+std::ostream& operator<<(std::ostream& os, const UIntStoreTransferBit& tb)
+{
+	os << "[" << tb.index_state_source << "," << tb.index_state_destination << "," << tb.state_transfer_throw << "]";
+	return os;
+}

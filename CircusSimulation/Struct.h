@@ -4,6 +4,7 @@
 #include "stdafx.h"
 
 #include <deque>
+#include <vector>
 
 #include "UIntStore.h"
 
@@ -11,18 +12,19 @@ struct SiteswapGraphConnection
 {
 	SiteswapState state_begin;
 	SiteswapState state_end;
-	SiteswapThrow state_transfer_throw;
+	std::vector<UIntStoreTransferBit> state_transfer;
 };
 
 struct SiteswapPattern
 {
 	unsigned int num_balls;
+	unsigned int num_actions;
 	std::deque<SiteswapGraphConnection> throws;
 };
 
 namespace StructFunctions
 {
-	bool IsSiteswapPatternValid(const SiteswapPattern &);
+	bool IsSiteswapPatternValid(const SiteswapPattern&);
 	bool IsThrowValid(const SiteswapState&, const SiteswapState&, const SiteswapThrow&);
 }
 
