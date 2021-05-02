@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include <ostream>
+#include <string>
 #include <vector>
 
 struct UIntStoreEmptyBit
@@ -26,6 +27,9 @@ private:
 	unsigned int states_size;
 	unsigned int* states;
 	unsigned int bits;
+	unsigned int hash;
+
+	void Rehash();
 
 public:
 
@@ -40,6 +44,7 @@ public:
 	unsigned int operator()() const;
 
 	unsigned int Bits() const;
+	unsigned int Hash() const;
 
 	bool IsValidBitSpread(const unsigned int&) const;
 
@@ -47,15 +52,16 @@ public:
 
 	std::vector<unsigned int> Next();
 
+	bool BitNext(const unsigned int& index, unsigned int max);
+
 	void Populate(const UIntStoreEmptyBit&);
+	void Update(const unsigned int& index, const unsigned int& value);
 
 	void Empty(const UIntStoreEmptyBit&);
 
-	std::vector<UIntStoreEmptyBit> EmptyBits(const unsigned int&) const;
+	void EmptyBits(std::vector<UIntStoreEmptyBit>& result, const unsigned int& max) const;
 
 	UIntStore& operator=(const UIntStore&);
-
-	unsigned int& operator[](const unsigned int&);
 
 	const unsigned int& operator[](const unsigned int&) const;
 
@@ -81,5 +87,11 @@ bool operator!=(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
 bool operator<(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
 bool operator>(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
 std::ostream& operator<<(std::ostream&, const UIntStoreTransferBit&);
+
+class UIntStoreHash
+{
+public:
+	unsigned int operator()(const UIntStore& input) const;
+};
 
 #endif

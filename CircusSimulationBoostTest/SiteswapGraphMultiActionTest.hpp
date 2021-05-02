@@ -13,7 +13,8 @@ BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionTest)
 
 BOOST_AUTO_TEST_CASE(BitSpread_Case_1)
 {
-	auto results = SiteswapGraphMultiAction::BitSpread(4U, 4U, 10U);
+	std::vector<UIntStore> results;
+	SiteswapGraphMultiAction::BitSpread(results, 4U, 4U, 10U);
 
 	BOOST_TEST(results.size() == 7U);
 
@@ -57,7 +58,8 @@ BOOST_AUTO_TEST_CASE(BitSpread_Case_1)
 
 BOOST_AUTO_TEST_CASE(BitSpread_Case_2)
 {
-	auto results = SiteswapGraphMultiAction::BitSpread(5U, 4U, 15U);
+	std::vector<UIntStore> results;
+	SiteswapGraphMultiAction::BitSpread(results, 5U, 4U, 15U);
 
 	BOOST_TEST(results.size() == 6U);
 
@@ -102,7 +104,8 @@ BOOST_AUTO_TEST_CASE(BitSpread_Case_2)
 
 BOOST_AUTO_TEST_CASE(BitSpread_Case_3)
 {
-	auto results = SiteswapGraphMultiAction::BitSpread(3U, 7U, 7U);
+	std::vector<UIntStore> results;
+	SiteswapGraphMultiAction::BitSpread(results, 3U, 7U, 7U);
 
 	BOOST_TEST(results.size() == 8U);
 
@@ -159,6 +162,7 @@ BOOST_AUTO_TEST_CASE(BitLowest)
 	BOOST_TEST(result_6 == 31U);
 }
 
+/*
 
 BOOST_AUTO_TEST_CASE(BitNext_Invalid)
 {
@@ -210,7 +214,7 @@ BOOST_AUTO_TEST_CASE(BitNext_Valid)
 	BOOST_TEST(input_3 == output_3);
 }
 
-
+*/
 
 BOOST_AUTO_TEST_SUITE_END()
 

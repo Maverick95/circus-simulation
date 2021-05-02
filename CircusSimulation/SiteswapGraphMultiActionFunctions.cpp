@@ -4,10 +4,14 @@
 #include "ChooseGenerator.h"
 
 
-std::vector<UIntStore> SiteswapGraphMultiAction::BitSpread(const unsigned int& length, const unsigned int& max, const unsigned int& total)
+void SiteswapGraphMultiAction::BitSpread(
+	std::vector<UIntStore>& result,
+	const unsigned int& length,
+	const unsigned int& max,
+	const unsigned int& total)
 {
-	std::vector<UIntStore> result;
-
+	result.clear();
+	
 	if (length > 0U)
 	{
 		unsigned int* store_states = new unsigned int[length];
@@ -50,8 +54,6 @@ std::vector<UIntStore> SiteswapGraphMultiAction::BitSpread(const unsigned int& l
 
 		delete[] store_states;
 	}
-
-	return result;
 }
 
 
@@ -63,54 +65,13 @@ unsigned int SiteswapGraphMultiAction::BitLowest(const unsigned int& bits)
 
 
 
-bool SiteswapGraphMultiAction::BitNext(unsigned int& current, unsigned int max)
+void SiteswapGraphMultiAction::BitStates(
+	std::vector<UIntStore>& result,
+	const UIntStore& bitSpread,
+	unsigned int max)
 {
-	if (current > 0U && max > 1U)
-	{
-		if (max > Settings::ThrowHeight_Maximum())
-		{
-			max = Settings::ThrowHeight_Maximum();
-		}
-
-		unsigned int bits_found = 0U;
-
-		for (unsigned int i = 0U; i < max - 1U; i++)
-		{
-			// Current digit needs to be 1, next up is 0.
-
-			if ((current & (1U << i)))
-			{
-				if (!(current & (1U << (i + 1U))))
-				{
-					// Shift bit up by 1.
-
-					current &= ~(1U << i);
-					current |= (1U << (i + 1U));
-
-					// Copy found bits down to end.
-
-					current &= ~((1U << i) - 1U);
-					current |= ((1U << bits_found) - 1U);
-
-					return true;
-				}
-				else
-				{
-					bits_found++;
-				}
-			}
-		}
-	}
-
-	return false;
-}
-
-
-
-std::vector<UIntStore> SiteswapGraphMultiAction::BitStates(const UIntStore& bitSpread, unsigned int max)
-{
-	auto result = std::vector<UIntStore>();
-
+	//result.clear();
+	
 	unsigned int size = bitSpread.Size();
 
 	if (max > Settings::ThrowHeight_Maximum())
@@ -139,13 +100,13 @@ std::vector<UIntStore> SiteswapGraphMultiAction::BitStates(const UIntStore& bitS
 		{
 			if (index == 0U)
 			{
-				if (BitNext(store[index], max))
+				if (store.BitNext(index, max))
 				{
 					// Reset all and store.
 
 					for (unsigned int i = index + 1U; i < size; i++)
 					{
-						store[i] = BitLowest(bitSpread[i]);
+						store.Update(i, BitLowest(bitSpread[i]));
 					}
 
 					result.push_back(store);
@@ -159,13 +120,13 @@ std::vector<UIntStore> SiteswapGraphMultiAction::BitStates(const UIntStore& bitS
 			}
 			else if (bitSpread[index - 1U] > bitSpread[index])
 			{
-				if (BitNext(store[index], max))
+				if (store.BitNext(index, max))
 				{
 					// Reset all and store.
 
 					for (unsigned int i = index + 1U; i < size; i++)
 					{
-						store[i] = BitLowest(bitSpread[i]);
+						store.Update(i, BitLowest(bitSpread[i]));
 					}
 
 					result.push_back(store);
@@ -178,13 +139,13 @@ std::vector<UIntStore> SiteswapGraphMultiAction::BitStates(const UIntStore& bitS
 			}
 			else
 			{
-				if (store[index - 1U] > store[index] && BitNext(store[index], max))
+				if (store[index - 1U] > store[index] && store.BitNext(index, max))
 				{
 					// Reset all and store.
 
 					for (unsigned int i = index + 1U; i < size; i++)
 					{
-						store[i] = BitLowest(bitSpread[i]);
+						store.Update(i, BitLowest(bitSpread[i]));
 					}
 
 					result.push_back(store);
@@ -199,42 +160,48 @@ std::vector<UIntStore> SiteswapGraphMultiAction::BitStates(const UIntStore& bitS
 
 		delete[] data;
 	}
-
-	return result;
 }
 
-
-std::vector<UIntStore> SiteswapGraphMultiAction::AllStates(const unsigned int& length, const unsigned int& max, const unsigned int& total)
+void SiteswapGraphMultiAction::AllStates(
+	std::vector<UIntStore>& result,
+	const unsigned int& length,
+	const unsigned int& max,
+	const unsigned int& total)
 {
-	std::vector<UIntStore> result;
+	result.clear();
 
-	auto bitSpreads = BitSpread(length, max, total);
+	std::vector<UIntStore> bitSpreads;
+	BitSpread(bitSpreads, length, max, total);
 
 	for (auto i = bitSpreads.begin(); i != bitSpreads.end(); i++)
 	{
-		auto bitStates = BitStates(*i, max);
+		BitStates(result, *i, max);
 
+		/*
 		for (auto j = bitStates.begin(); j != bitStates.end(); j++)
 		{
 			result.push_back(*j);
 		}
+		*/
 	}
-
-	return result;
 }
 
 
 
-std::forward_list<SiteswapGraphConnection> SiteswapGraphMultiAction::NextStates(const UIntStore& current, const unsigned int& max)
+void SiteswapGraphMultiAction::NextStates(
+	std::forward_list<SiteswapGraphConnection>& result,
+	const UIntStore& current,
+	const unsigned int& max)
 {
-	std::forward_list<SiteswapGraphConnection> result;
+	result.clear();
 
 	UIntStore next(current);
 	auto next_bits = next.Next();
+	std::vector<UIntStoreEmptyBit> next_spaces;
 
 	if (!next_bits.empty())
 	{
-		auto next_spaces = next.EmptyBits(max);
+		next.EmptyBits(next_spaces, max);
 
 		if (next_spaces.size() >= next_bits.size())
 		{
@@ -281,7 +248,5 @@ std::forward_list<SiteswapGraphConnection> SiteswapGraphMultiAction::NextStates(
 				std::vector<UIntStoreTransferBit>()
 			});
 	}
-
-	return result;
 }
 

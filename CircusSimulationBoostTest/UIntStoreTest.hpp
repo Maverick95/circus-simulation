@@ -285,63 +285,48 @@ BOOST_AUTO_TEST_CASE(EmptyBits)
 
 	UIntStore store(5U, states);
 
-	auto result0 = store.EmptyBits(0U);
+	std::vector<UIntStoreEmptyBit> result;
 
-	BOOST_TEST(result0.size() == 0U);
+	store.EmptyBits(result, 0U);
+	BOOST_TEST(result.size() == 0U);
 
-	auto result1 = store.EmptyBits(1U);
+	store.EmptyBits(result, 1U);
+	BOOST_TEST(result.size() == 2U);
+	BOOST_TEST(result[0].index_state == 1U);
+	BOOST_TEST(result[0].index_bit == 0U);
+	BOOST_TEST(result[1].index_state == 3U);
+	BOOST_TEST(result[1].index_bit == 0U);
 
-	BOOST_TEST(result1.size() == 2U);
+	store.EmptyBits(result, 2U);
+	BOOST_TEST(result.size() == 4U);
+	BOOST_TEST(result[0].index_state == 0U);
+	BOOST_TEST(result[0].index_bit == 1U);
+	BOOST_TEST(result[1].index_state == 1U);
+	BOOST_TEST(result[1].index_bit == 0U);
+	BOOST_TEST(result[2].index_state == 3U);
+	BOOST_TEST(result[2].index_bit == 0U);
+	BOOST_TEST(result[3].index_state == 3U);
+	BOOST_TEST(result[3].index_bit == 1U);
 
-	BOOST_TEST(result1[0].index_state == 1U);
-	BOOST_TEST(result1[0].index_bit == 0U);
+	store.EmptyBits(result, 3U);
 
-	BOOST_TEST(result1[1].index_state == 3U);
-	BOOST_TEST(result1[1].index_bit == 0U);
-
-	auto result2 = store.EmptyBits(2U);
-
-	BOOST_TEST(result2.size() == 4U);
-
-	BOOST_TEST(result2[0].index_state == 0U);
-	BOOST_TEST(result2[0].index_bit == 1U);
-
-	BOOST_TEST(result2[1].index_state == 1U);
-	BOOST_TEST(result2[1].index_bit == 0U);
-
-	BOOST_TEST(result2[2].index_state == 3U);
-	BOOST_TEST(result2[2].index_bit == 0U);
-
-	BOOST_TEST(result2[3].index_state == 3U);
-	BOOST_TEST(result2[3].index_bit == 1U);
-
-	auto result3 = store.EmptyBits(3U);
-
-	BOOST_TEST(result3.size() == 8U);
-
-	BOOST_TEST(result3[0].index_state == 0U);
-	BOOST_TEST(result3[0].index_bit == 1U);
-
-	BOOST_TEST(result3[1].index_state == 1U);
-	BOOST_TEST(result3[1].index_bit == 0U);
-
-	BOOST_TEST(result3[2].index_state == 1U);
-	BOOST_TEST(result3[2].index_bit == 2U);
-
-	BOOST_TEST(result3[3].index_state == 2U);
-	BOOST_TEST(result3[3].index_bit == 2U);
-
-	BOOST_TEST(result3[4].index_state == 3U);
-	BOOST_TEST(result3[4].index_bit == 0U);
-
-	BOOST_TEST(result3[5].index_state == 3U);
-	BOOST_TEST(result3[5].index_bit == 1U);
-
-	BOOST_TEST(result3[6].index_state == 3U);
-	BOOST_TEST(result3[6].index_bit == 2U);
-
-	BOOST_TEST(result3[7].index_state == 4U);
-	BOOST_TEST(result3[7].index_bit == 2U);
+	BOOST_TEST(result.size() == 8U);
+	BOOST_TEST(result[0].index_state == 0U);
+	BOOST_TEST(result[0].index_bit == 1U);
+	BOOST_TEST(result[1].index_state == 1U);
+	BOOST_TEST(result[1].index_bit == 0U);
+	BOOST_TEST(result[2].index_state == 1U);
+	BOOST_TEST(result[2].index_bit == 2U);
+	BOOST_TEST(result[3].index_state == 2U);
+	BOOST_TEST(result[3].index_bit == 2U);
+	BOOST_TEST(result[4].index_state == 3U);
+	BOOST_TEST(result[4].index_bit == 0U);
+	BOOST_TEST(result[5].index_state == 3U);
+	BOOST_TEST(result[5].index_bit == 1U);
+	BOOST_TEST(result[6].index_state == 3U);
+	BOOST_TEST(result[6].index_bit == 2U);
+	BOOST_TEST(result[7].index_state == 4U);
+	BOOST_TEST(result[7].index_bit == 2U);
 
 	delete[] states;
 }

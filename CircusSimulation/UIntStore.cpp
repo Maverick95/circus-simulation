@@ -1,34 +1,55 @@
 #include <cassert>
 
+#include <functional>
+#include <string>
+
 #include "UIntStore.h"
 #include "Functions.h"
+#include "Settings.h"
 
+
+
+static const std::hash<std::string> uintstore_hash;
+
+
+
+void UIntStore::Rehash()
+{
+	std::string hash_str((const char*)states, sizeof(unsigned int) * states_size);
+	hash = uintstore_hash(hash_str);
+}
 
 
 UIntStore::UIntStore(const unsigned int& s, const unsigned int* st) :
 	states_size(s == 0U ? 1U : s),
 	states(new unsigned int[states_size]),
-	bits(0U)
+	bits(0U),
+	hash(0U)
 {
 	for (unsigned int i = 0U; i < states_size; i++)
 	{
 		states[i] = (st == NULL ? 0U : st[i]);
 		bits += Functions::Bits(states[i]);
 	}
+
+	//Rehash();
 }
 
 UIntStore::UIntStore(const unsigned int& st) :
 	states_size(1U),
 	states(new unsigned int[1U]),
-	bits(Functions::Bits(st))
+	bits(Functions::Bits(st)),
+	hash(0U)
 {
 	states[0U] = st;
+	//Rehash();
 }
 
 UIntStore::UIntStore(const UIntStore& us) :
 	states_size(us.states_size),
 	states(new unsigned int[states_size]),
-	bits(us.bits)
+	bits(us.bits),
+	hash(us.hash)
 {
 	for (unsigned int i = 0U; i < states_size; i++)
 	{
@@ -53,6 +74,8 @@ bool UIntStore::Spread(const unsigned int& s, const unsigned int& m, unsigned in
 			bits += Functions::Bits(v);
 			t -= v;
 		}
+
+		//Rehash();
 		return true;
 	}
 
@@ -66,18 +89,13 @@ unsigned int UIntStore::operator()() const
 
 unsigned int UIntStore::Bits() const
 {
-	/*
-	unsigned int result = 0U;
-
-	for (unsigned int i = 0U; i < states_size; i++)
-	{
-		result += Functions::Bits(states[i]);
-	}
-
-	return result;
-	*/
-
 	return bits;
+}
+
+unsigned int UIntStore::Hash() const
+{
+	std::string hash_str((const char*)states, sizeof(unsigned int) * states_size);
+	return uintstore_hash(hash_str);
 }
 
 UIntStore& UIntStore::operator=(const UIntStore& us)
@@ -95,14 +113,56 @@ UIntStore& UIntStore::operator=(const UIntStore& us)
 	}
 
 	bits = us.bits;
+	hash = us.hash;
 
 	return *this;
 }
 
-unsigned int& UIntStore::operator[](const unsigned int& i)
+bool UIntStore::BitNext(const unsigned int& index, unsigned int max)
 {
-	assert(i < states_size);
-	return states[i];
+	if (index < states_size)
+	{
+		unsigned int& current = states[index];
+		if (current > 0U && max > 1U)
+		{
+			if (max > Settings::ThrowHeight_Maximum())
+			{
+				max = Settings::ThrowHeight_Maximum();
+			}
+
+			unsigned int bits_found = 0U;
+
+			for (unsigned int i = 0U; i < max - 1U; i++)
+			{
+				// Current digit needs to be 1, next up is 0.
+
+				if ((current & (1U << i)))
+				{
+					if (!(current & (1U << (i + 1U))))
+					{
+						// Shift bit up by 1.
+
+						current &= ~(1U << i);
+						current |= (1U << (i + 1U));
+
+						// Copy found bits down to end.
+
+						current &= ~((1U << i) - 1U);
+						current |= ((1U << bits_found) - 1U);
+
+						//Rehash();
+						return true;
+					}
+					else
+					{
+						bits_found++;
+					}
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
 const unsigned int& UIntStore::operator[](const unsigned int& i) const
@@ -149,6 +209,7 @@ std::vector<unsigned int> UIntStore::Next()
 		states[i] = states[i] >> 1U;
 	}
 
+	//Rehash();
 	return result;
 }
 
@@ -162,7 +223,19 @@ void UIntStore::Populate(const UIntStoreEmptyBit& bit)
 		{
 			states[bit.index_state] |= mask;
 			bits++;
+			//Rehash();
 		}
+	}
+}
+
+void UIntStore::Update(const unsigned int& index, const unsigned int& value)
+{
+	if (index < states_size)
+	{
+		bits -= Functions::Bits(states[index]);
+		states[index] = value;
+		bits += Functions::Bits(value);
+		//Rehash();
 	}
 }
 
@@ -176,13 +249,14 @@ void UIntStore::Empty(const UIntStoreEmptyBit& bit)
 		{
 			states[bit.index_state] &= ~(mask);
 			bits--;
+			//Rehash();
 		}
 	}
 }
 
-std::vector<UIntStoreEmptyBit> UIntStore::EmptyBits(const unsigned int& max) const
+void UIntStore::EmptyBits(std::vector<UIntStoreEmptyBit>& result, const unsigned int& max) const
 {
-	std::vector<UIntStoreEmptyBit> result;
+	result.clear();
 
 	for (auto i = 0U; i < states_size; i++)
 	{
@@ -194,8 +268,6 @@ std::vector<UIntStoreEmptyBit> UIntStore::EmptyBits(const unsigned int& max) con
 			}
 		}
 	}
-
-	return result;
 }
 
 bool operator==(const UIntStore& us1, const UIntStore& us2)
@@ -315,3 +387,10 @@ std::ostream& operator<<(std::ostream& os, const UIntStoreTransferBit& tb)
 	os << "[" << tb.index_state_source << "," << tb.index_state_destination << "," << tb.state_transfer_throw << "]";
 	return os;
 }
+
+
+
+unsigned int UIntStoreHash::operator()(const UIntStore& input) const
+{
+	return input.Hash();
+};

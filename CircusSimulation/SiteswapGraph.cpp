@@ -1,6 +1,7 @@
 #include <chrono>
 #include <queue>
 #include <random>
+#include <unordered_set>
 
 #include "Enum.h"
 #include "Functions.h"
@@ -19,14 +20,14 @@ static unsigned int SETTINGS_MAX_THROW = Settings::ThrowHeight_Maximum();
 void AddPaths_Recursive(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
 	std::deque<SiteswapGraphConnection>& p_current,
-	std::set<SiteswapState>& a,
+	std::unordered_set<unsigned int>& a,
 	const SiteswapState& s_current,
 	const SiteswapState& s_end,
 	const unsigned int n);
 
 void AddPaths(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
-	std::set<SiteswapState>& a,
+	std::unordered_set<unsigned int>& a,
 	const SiteswapState& s_begin,
 	const SiteswapState& s_end,
 	const unsigned int& n);
@@ -83,12 +84,13 @@ bool SiteswapGraph::DoesPathExist(const UIntStore& state_start, const UIntStore&
 void AddPaths_Recursive(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
 	std::deque<SiteswapGraphConnection>& p_current,
-	std::set<SiteswapState>& a,
+	std::unordered_set<unsigned int>& a,
 	const SiteswapState& s_current,
 	const SiteswapState& s_end,
 	const unsigned int n)
 {
-	auto connections = SiteswapGraphMultiAction::NextStates(s_current, SETTINGS_MAX_THROW);
+	std::forward_list<SiteswapGraphConnection> connections;
+	SiteswapGraphMultiAction::NextStates(connections, s_current, SETTINGS_MAX_THROW);
 
 	if (n == 1)
 	{
@@ -106,13 +108,14 @@ void AddPaths_Recursive(
 	{
 		for (auto i = connections.begin(); i != connections.end(); i++)
 		{
-			if (SiteswapGraph::DoesPathExist(i->state_end, s_end, n - 1) && a.find(i->state_end) == a.end())
+			unsigned int hash = i->state_end.Hash();
+			if (SiteswapGraph::DoesPathExist(i->state_end, s_end, n - 1) && a.find(hash) == a.end())
 			{
 				p_current.push_back(*i);
-				a.insert(i->state_end);
+				a.insert(hash);
 				AddPaths_Recursive(p, p_current, a, i->state_end, s_end, n - 1);
 				p_current.pop_back();
-				a.erase(i->state_end);
+				a.erase(hash);
 			}
 		}
 	}
@@ -120,18 +123,22 @@ void AddPaths_Recursive(
 
 void AddPaths(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
-	std::set<SiteswapState>& a,
+	std::unordered_set<unsigned int>& a,
 	const SiteswapState& s_begin,
 	const SiteswapState& s_end,
 	const unsigned int& n)
 {
-	if (a.find(s_begin) == a.end() &&
-		a.find(s_end) == a.end() &&
+	unsigned int
+		hash_begin = s_begin.Hash(),
+		hash_end = s_end.Hash();
+
+	if (a.find(hash_begin) == a.end() &&
+		a.find(hash_end) == a.end() &&
 		SiteswapGraph::DoesPathExist(s_begin, s_end, n))
 	{
-		a.insert(s_begin);
+		a.insert(hash_begin);
 		AddPaths_Recursive(p, std::deque<SiteswapGraphConnection>(), a, s_begin, s_end, n);
-		a.erase(s_begin);
+		a.erase(hash_begin);
 	}
 }
 
@@ -141,20 +148,22 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(const unsigned int& b, const un
 
 	if (b > SETTINGS_MAX_THROW) { return NULL; }
 
-	std::set<SiteswapState> a;
+	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
-
-	auto states = SiteswapGraphMultiAction::AllStates(1U, SETTINGS_MAX_THROW, b);
+	std::vector<UIntStore> states;
+	SiteswapGraphMultiAction::AllStates(states, 1U, SETTINGS_MAX_THROW, b);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		if (a.find(*i) == a.end())
+		unsigned int hash = i->Hash();
+
+		if (a.find(hash) == a.end())
 		{
 			// New condition - use state if at least 1 bit in the Next().
 
 			AddPaths(p, a, *i, *i, t);
 			
-			a.insert(*i);
+			a.insert(hash);
 			
 			/*
 
@@ -187,20 +196,22 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, con
 
 	if (b > SETTINGS_MAX_THROW) { return NULL; }
 
-	std::set<SiteswapState> a;
+	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
-
-	auto states = SiteswapGraphMultiAction::AllStates(1U, SETTINGS_MAX_THROW, b);
+	std::vector<UIntStore> states;
+	SiteswapGraphMultiAction::AllStates(states, 1U, SETTINGS_MAX_THROW, b);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		if (a.find(*i) == a.end())
+		unsigned int hash = i->Hash();
+
+		if (a.find(hash) == a.end())
 		{
 			// New condition - use state if at least 1 bit in the Next().
 
 			AddPaths(p, a, *i, *i, t);
 
-			a.insert(*i);
+			a.insert(hash);
 
 			/*
 
