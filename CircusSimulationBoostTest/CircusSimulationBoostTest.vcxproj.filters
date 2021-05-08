@@ -23,9 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SiteswapGraphTest.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UIntStoreTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -39,6 +36,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SiteswapGraphTest_SingleAction.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SiteswapGraphTest_MultiAction.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -155,23 +155,11 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(const unsigned int& b, const un
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		unsigned int hash = i->Hash();
-
-		if (a.find(hash) == a.end())
+		if (a.find(i->Hash()) == a.end())
 		{
-			// New condition - use state if at least 1 bit in the Next().
-
 			AddPaths(p, a, *i, *i, t);
-			
-			a.insert(hash);
-			
-			/*
-
-			for (unsigned int j = 1U; (st << j) <= max_state; j++)
-			{
-				a[st << j] = false;
-			}
-			*/
+			do { a.insert(i->Hash()); }
+			while (i->Previous(SETTINGS_MAX_THROW));
 		}
 	}
 
@@ -203,23 +191,10 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, con
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		unsigned int hash = i->Hash();
-
-		if (a.find(hash) == a.end())
+		if (a.find(i->Hash()) == a.end())
 		{
-			// New condition - use state if at least 1 bit in the Next().
-
 			AddPaths(p, a, *i, *i, t);
-
-			a.insert(hash);
-
-			/*
-
-			for (unsigned int j = 1U; (st << j) <= max_state; j++)
-			{
-				a[st << j] = false;
-			}
-			*/
+			do { a.insert(i->Hash()); } while (i->Previous(SETTINGS_MAX_THROW));
 		}
 	}
 

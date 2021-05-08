@@ -213,6 +213,29 @@ std::vector<unsigned int> UIntStore::Next()
 	return result;
 }
 
+bool UIntStore::Previous(const unsigned int& max)
+{
+	if (max > 0U)
+	{
+		unsigned int states_upperBound = 1U << max;
+		for (unsigned int i = 0U; i < states_size; i++)
+		{
+			if (states[i] >= states_upperBound)
+			{
+				return false;
+			}
+		}
+		for (unsigned int i = 0U; i < states_size; i++)
+		{
+			states[i] <<= 1U;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
 void UIntStore::Populate(const UIntStoreEmptyBit& bit)
 {
 	if (bit.index_state < states_size)

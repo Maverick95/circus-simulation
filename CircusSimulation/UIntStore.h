@@ -51,6 +51,7 @@ public:
 	unsigned int Size() const;
 
 	std::vector<unsigned int> Next();
+	bool Previous(const unsigned int& max);
 
 	bool BitNext(const unsigned int& index, unsigned int max);
 

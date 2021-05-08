@@ -8,7 +8,8 @@
 #include "Struct.h"
 #include "SiteswapGraph.h"
 
-#include "SiteswapGraphTest.hpp"
+#include "SiteswapGraphTest_SingleAction.hpp"
+#include "SiteswapGraphTest_MultiAction.hpp"
 #include "UIntStoreTest.hpp"
 #include "ChooseGeneratorTest.hpp"
 #include "SiteswapGraphMultiActionTest.hpp"

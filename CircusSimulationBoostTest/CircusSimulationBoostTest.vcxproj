@@ -32,7 +32,8 @@
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="SiteswapGraphMultiActionBitStatesTest.hpp" />
     <ClInclude Include="SiteswapGraphMultiActionTest.hpp" />
-    <ClInclude Include="SiteswapGraphTest.hpp" />
+    <ClInclude Include="SiteswapGraphTest_MultiAction.hpp" />
+    <ClInclude Include="SiteswapGraphTest_SingleAction.hpp" />
     <ClInclude Include="UIntStoreTest.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
