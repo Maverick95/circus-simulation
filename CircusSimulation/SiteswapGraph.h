@@ -13,8 +13,18 @@
 namespace SiteswapGraph
 {
 	bool DoesPathExist(const UIntStore&, const UIntStore&, const unsigned int&);
-	SiteswapPattern* GetRandomPattern(const unsigned int&, const unsigned int&, const unsigned int&);
-	std::set<SiteswapPattern>* GetPatterns(const unsigned int&, const unsigned int&, const unsigned int&);
+
+	SiteswapPattern* GetRandomPattern(
+		const unsigned int& numberBalls,
+		const unsigned int& numberActions,
+		const unsigned int& numberThrows,
+		const unsigned int& maxThrow);
+
+	std::set<SiteswapPattern>* GetPatterns(
+		const unsigned int& numberBalls,
+		const unsigned int& numberActions,
+		const unsigned int& numberThrows,
+		const unsigned int& maxThrow);
 };
 
 #endif

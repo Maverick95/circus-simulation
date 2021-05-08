@@ -45,7 +45,7 @@ void CircusSimulationFrame::OnAbout(wxCommandEvent & event)
 
 SiteswapPattern* CircusSimulationFrame::GetRandomPattern()
 {
-	return SiteswapGraph::GetRandomPattern(num_balls, num_throws, Settings::ThrowHeight_Maximum());
+	return SiteswapGraph::GetRandomPattern(num_balls, 1U, num_throws, Settings::ThrowHeight_Maximum());
 }
 
 void CircusSimulationFrame::UpdateNumberBalls(wxSpinEvent & e)

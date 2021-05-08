@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(DoesPathExist_8bit)
 
 BOOST_AUTO_TEST_CASE(GetPatterns_Balls3_Throws3_Max6)
 {
-	auto* patterns = SiteswapGraph::GetPatterns(3U, 3U, 6U);
+	auto* patterns = SiteswapGraph::GetPatterns(3U, 1U, 3U, 6U);
 	BOOST_CHECK(patterns != NULL);
 	BOOST_TEST(patterns->size() == 7U);
 
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(GetPatterns_Balls3_Throws3_Max6)
 
 BOOST_AUTO_TEST_CASE(GetPatterns_Balls4_Throws3_Max7)
 {
-	auto* patterns = SiteswapGraph::GetPatterns(4U, 3U, 7U);
+	auto* patterns = SiteswapGraph::GetPatterns(4U, 1U, 3U, 7U);
 	BOOST_CHECK(patterns != NULL);
 	BOOST_TEST(patterns->size() == 9U);
 
@@ -199,7 +199,7 @@ BOOST_AUTO_TEST_CASE(GetPatterns_Balls4_Throws3_Max7)
 
 BOOST_AUTO_TEST_CASE(GetPatterns_Balls5_Throws3_Max8)
 {
-	auto* patterns = SiteswapGraph::GetPatterns(5U, 3U, 8U);
+	auto* patterns = SiteswapGraph::GetPatterns(5U, 1U, 3U, 8U);
 	BOOST_CHECK(patterns != NULL);
 	BOOST_TEST(patterns->size() == 10U);
 

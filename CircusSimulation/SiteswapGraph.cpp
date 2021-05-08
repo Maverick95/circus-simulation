@@ -142,22 +142,32 @@ void AddPaths(
 	}
 }
 
-SiteswapPattern* SiteswapGraph::GetRandomPattern(const unsigned int& b, const unsigned int& t, const unsigned int& max_throw)
+SiteswapPattern* SiteswapGraph::GetRandomPattern(
+	const unsigned int& numberBalls,
+	const unsigned int& numberActions,
+	const unsigned int& numberThrows,
+	const unsigned int& maxThrow)
 {
-	SETTINGS_MAX_THROW = max_throw > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : max_throw;
+	SETTINGS_MAX_THROW = maxThrow > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : maxThrow;
 
-	if (b > SETTINGS_MAX_THROW) { return NULL; }
+	if (numberBalls == 0U ||
+		numberBalls > SETTINGS_MAX_THROW ||
+		numberActions == 0U ||
+		numberThrows == 0U)
+	{
+		return NULL;
+	}
 
 	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
-	SiteswapGraphMultiAction::AllStates(states, 1U, SETTINGS_MAX_THROW, b);
+	SiteswapGraphMultiAction::AllStates(states, numberActions, SETTINGS_MAX_THROW, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
 		if (a.find(i->Hash()) == a.end())
 		{
-			AddPaths(p, a, *i, *i, t);
+			AddPaths(p, a, *i, *i, numberThrows);
 			do { a.insert(i->Hash()); }
 			while (i->Previous(SETTINGS_MAX_THROW));
 		}
@@ -169,7 +179,7 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(const unsigned int& b, const un
 	}
 
 	return new SiteswapPattern({
-			b, 1U,
+			numberBalls, 1U,
 			*(
 			p.begin() +
 			std::uniform_int_distribution<unsigned int>(0, p.size() - 1)(
@@ -178,22 +188,32 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(const unsigned int& b, const un
 			) });
 }
 
-std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, const unsigned int& t, const unsigned int& max_throw)
+std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
+	const unsigned int& numberBalls,
+	const unsigned int& numberActions,
+	const unsigned int& numberThrows,
+	const unsigned int& maxThrow)
 {
-	SETTINGS_MAX_THROW = max_throw > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : max_throw;
+	SETTINGS_MAX_THROW = maxThrow > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : maxThrow;
 
-	if (b > SETTINGS_MAX_THROW) { return NULL; }
+	if (numberBalls == 0U ||
+		numberBalls > SETTINGS_MAX_THROW ||
+		numberActions == 0U ||
+		numberThrows == 0U)
+	{
+		return NULL;
+	}
 
 	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
-	SiteswapGraphMultiAction::AllStates(states, 1U, SETTINGS_MAX_THROW, b);
+	SiteswapGraphMultiAction::AllStates(states, numberActions, SETTINGS_MAX_THROW, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
 		if (a.find(i->Hash()) == a.end())
 		{
-			AddPaths(p, a, *i, *i, t);
+			AddPaths(p, a, *i, *i, numberThrows);
 			do { a.insert(i->Hash()); } while (i->Previous(SETTINGS_MAX_THROW));
 		}
 	}
@@ -207,7 +227,7 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(const unsigned int& b, con
 	
 	for (auto i = p.begin(); i != p.end(); i++)
 	{
-		patterns->insert({ b, 1U, *i }); 
+		patterns->insert({ numberBalls, 1U, *i });
 	}
 
 	return patterns;
