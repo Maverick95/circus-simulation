@@ -13,13 +13,13 @@
 
 namespace SiteswapGraphMultiAction
 {
-	void BitSpread(
+	void StoreUniqueBitDistributions(
 		std::vector<UIntStore>& result,
-		const unsigned int& length,
-		const unsigned int& max,
-		const unsigned int& total);
+		const unsigned int& numberIntegers,
+		const unsigned int& maxInteger,
+		const unsigned int& sumIntegers);
 
-	unsigned int BitLowest(const unsigned int& bits);
+	unsigned int GetLowestIntegerWithNBits(const unsigned int& n);
 
 	void BitStates(
 		std::vector<UIntStore>& result,
@@ -32,7 +32,7 @@ namespace SiteswapGraphMultiAction
 		const unsigned int& max,
 		const unsigned int& total);
 
-	void NextStates(
+	void PopulateNextStates(
 		std::forward_list<SiteswapGraphConnection>& result,
 		const UIntStore& current,
 		const unsigned int& max);

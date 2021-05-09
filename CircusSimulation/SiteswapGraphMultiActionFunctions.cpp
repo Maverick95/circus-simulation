@@ -4,32 +4,32 @@
 #include "ChooseGenerator.h"
 
 
-void SiteswapGraphMultiAction::BitSpread(
+void SiteswapGraphMultiAction::StoreUniqueBitDistributions(
 	std::vector<UIntStore>& result,
-	const unsigned int& length,
-	const unsigned int& max,
-	const unsigned int& total)
+	const unsigned int& numberIntegers,
+	const unsigned int& maxInteger,
+	const unsigned int& sumIntegers)
 {
 	result.clear();
 	
-	if (length > 0U)
+	if (numberIntegers > 0U)
 	{
-		unsigned int* store_states = new unsigned int[length];
-		for (unsigned int i = 0U; i < length; i++)
+		unsigned int* store_states = new unsigned int[numberIntegers];
+		for (unsigned int i = 0U; i < numberIntegers; i++)
 		{
 			store_states[i] = 0U;
 		}
 
-		UIntStore store(length, store_states);
+		UIntStore store(numberIntegers, store_states);
 
-		if (store.Spread(0U, max, total))
+		if (store.Spread(0U, maxInteger, sumIntegers))
 		{
 			result.push_back(store);
 
-			if (length > 1U)
+			if (numberIntegers > 1U)
 			{
-				unsigned int index = length - 2U;
-				unsigned int remaining = store[length - 1U] + store[length - 2U];
+				unsigned int index = numberIntegers - 2U;
+				unsigned int remaining = store[numberIntegers - 1U] + store[numberIntegers - 2U];
 				bool next = true;
 
 				while (next)
@@ -37,8 +37,8 @@ void SiteswapGraphMultiAction::BitSpread(
 					if (store[index] >= 2U && store.Spread(index, store[index] - 1U, remaining))
 					{
 						result.push_back(store);
-						index = length - 2U;
-						remaining = store[length - 1U] + store[length - 2U];
+						index = numberIntegers - 2U;
+						remaining = store[numberIntegers - 1U] + store[numberIntegers - 2U];
 					}
 					else if (index > 0U)
 					{
@@ -58,9 +58,9 @@ void SiteswapGraphMultiAction::BitSpread(
 
 
 
-unsigned int SiteswapGraphMultiAction::BitLowest(const unsigned int& bits)
+unsigned int SiteswapGraphMultiAction::GetLowestIntegerWithNBits(const unsigned int& n)
 {
-	return (1U << bits) - 1U;
+	return (1U << n) - 1U;
 }
 
 
@@ -85,7 +85,7 @@ void SiteswapGraphMultiAction::BitStates(
 
 		for (unsigned int i = 0U; i < size; i++)
 		{
-			data[i] = BitLowest(bitSpread[i]);
+			data[i] = GetLowestIntegerWithNBits(bitSpread[i]);
 		}
 
 		UIntStore store(size, data);
@@ -106,7 +106,7 @@ void SiteswapGraphMultiAction::BitStates(
 
 					for (unsigned int i = index + 1U; i < size; i++)
 					{
-						store.Update(i, BitLowest(bitSpread[i]));
+						store.Update(i, GetLowestIntegerWithNBits(bitSpread[i]));
 					}
 
 					result.push_back(store);
@@ -126,7 +126,7 @@ void SiteswapGraphMultiAction::BitStates(
 
 					for (unsigned int i = index + 1U; i < size; i++)
 					{
-						store.Update(i, BitLowest(bitSpread[i]));
+						store.Update(i, GetLowestIntegerWithNBits(bitSpread[i]));
 					}
 
 					result.push_back(store);
@@ -145,7 +145,7 @@ void SiteswapGraphMultiAction::BitStates(
 
 					for (unsigned int i = index + 1U; i < size; i++)
 					{
-						store.Update(i, BitLowest(bitSpread[i]));
+						store.Update(i, GetLowestIntegerWithNBits(bitSpread[i]));
 					}
 
 					result.push_back(store);
@@ -171,7 +171,7 @@ void SiteswapGraphMultiAction::PopulateValidBeginStates(
 	result.clear();
 
 	std::vector<UIntStore> bitSpreads;
-	BitSpread(bitSpreads, length, max, total);
+	StoreUniqueBitDistributions(bitSpreads, length, max, total);
 
 	for (auto i = bitSpreads.begin(); i != bitSpreads.end(); i++)
 	{
@@ -188,7 +188,7 @@ void SiteswapGraphMultiAction::PopulateValidBeginStates(
 
 
 
-void SiteswapGraphMultiAction::NextStates(
+void SiteswapGraphMultiAction::PopulateNextStates(
 	std::forward_list<SiteswapGraphConnection>& result,
 	const UIntStore& current,
 	const unsigned int& max)

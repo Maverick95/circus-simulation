@@ -7,10 +7,10 @@ BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionTest)
 
 
 
-BOOST_AUTO_TEST_CASE(BitSpread_Case_1)
+BOOST_AUTO_TEST_CASE(StoreUniqueBitDistributions_Case_1)
 {
 	std::vector<UIntStore> results;
-	SiteswapGraphMultiAction::BitSpread(results, 4U, 4U, 10U);
+	SiteswapGraphMultiAction::StoreUniqueBitDistributions(results, 4U, 4U, 10U);
 
 	BOOST_TEST(results.size() == 7U);
 
@@ -52,10 +52,10 @@ BOOST_AUTO_TEST_CASE(BitSpread_Case_1)
 
 
 
-BOOST_AUTO_TEST_CASE(BitSpread_Case_2)
+BOOST_AUTO_TEST_CASE(StoreUniqueBitDistributions_Case_2)
 {
 	std::vector<UIntStore> results;
-	SiteswapGraphMultiAction::BitSpread(results, 5U, 4U, 15U);
+	SiteswapGraphMultiAction::StoreUniqueBitDistributions(results, 5U, 4U, 15U);
 
 	BOOST_TEST(results.size() == 6U);
 
@@ -98,10 +98,10 @@ BOOST_AUTO_TEST_CASE(BitSpread_Case_2)
 
 
 
-BOOST_AUTO_TEST_CASE(BitSpread_Case_3)
+BOOST_AUTO_TEST_CASE(StoreUniqueBitDistributions_Case_3)
 {
 	std::vector<UIntStore> results;
-	SiteswapGraphMultiAction::BitSpread(results, 3U, 7U, 7U);
+	SiteswapGraphMultiAction::StoreUniqueBitDistributions(results, 3U, 7U, 7U);
 
 	BOOST_TEST(results.size() == 8U);
 
@@ -140,15 +140,15 @@ BOOST_AUTO_TEST_CASE(BitSpread_Case_3)
 
 
 
-BOOST_AUTO_TEST_CASE(BitLowest)
+BOOST_AUTO_TEST_CASE(GetLowestIntegerWithNBits)
 {
 	unsigned int
-		result_1 = SiteswapGraphMultiAction::BitLowest(0U),
-		result_2 = SiteswapGraphMultiAction::BitLowest(1U),
-		result_3 = SiteswapGraphMultiAction::BitLowest(2U),
-		result_4 = SiteswapGraphMultiAction::BitLowest(3U),
-		result_5 = SiteswapGraphMultiAction::BitLowest(4U),
-		result_6 = SiteswapGraphMultiAction::BitLowest(5U);
+		result_1 = SiteswapGraphMultiAction::GetLowestIntegerWithNBits(0U),
+		result_2 = SiteswapGraphMultiAction::GetLowestIntegerWithNBits(1U),
+		result_3 = SiteswapGraphMultiAction::GetLowestIntegerWithNBits(2U),
+		result_4 = SiteswapGraphMultiAction::GetLowestIntegerWithNBits(3U),
+		result_5 = SiteswapGraphMultiAction::GetLowestIntegerWithNBits(4U),
+		result_6 = SiteswapGraphMultiAction::GetLowestIntegerWithNBits(5U);
 
 	BOOST_TEST(result_1 == 0U);
 	BOOST_TEST(result_2 == 1U);

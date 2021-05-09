@@ -90,7 +90,7 @@ void AddPaths_Recursive(
 	const unsigned int n)
 {
 	std::forward_list<SiteswapGraphConnection> connections;
-	SiteswapGraphMultiAction::NextStates(connections, s_current, SETTINGS_MAX_THROW);
+	SiteswapGraphMultiAction::PopulateNextStates(connections, s_current, SETTINGS_MAX_THROW);
 
 	if (n == 1)
 	{
