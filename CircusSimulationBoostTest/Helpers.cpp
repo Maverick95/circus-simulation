@@ -2,7 +2,7 @@
 
 
 
-std::vector<UIntStoreTransferBit> GenerateTransfer(
+std::vector<UIntStoreTransferBit> GenerateSingleTransfer(
 	const unsigned int& index_state_source,
 	const unsigned int& index_state_destination,
 	const unsigned int& state_transfer_throw);
@@ -20,14 +20,14 @@ SiteswapGraphConnection GenerateSingleActionConnection(
 	{
 		SiteswapState(state_source),
 		SiteswapState(state_destination),
-		state_transfer_throw > 0U ? GenerateTransfer(0U, 0U, state_transfer_throw) : GenerateEmptyTransfer()
+		state_transfer_throw > 0U ? GenerateSingleTransfer(0U, 0U, state_transfer_throw) : GenerateEmptyTransfer()
 	};
 }
 
 
 
 
-std::vector<UIntStoreTransferBit> GenerateTransfer(
+std::vector<UIntStoreTransferBit> GenerateSingleTransfer(
 	const unsigned int& index_state_source,
 	const unsigned int& index_state_destination,
 	const unsigned int& state_transfer_throw)

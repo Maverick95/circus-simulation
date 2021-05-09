@@ -162,7 +162,7 @@ void SiteswapGraphMultiAction::BitStates(
 	}
 }
 
-void SiteswapGraphMultiAction::AllStates(
+void SiteswapGraphMultiAction::PopulateValidBeginStates(
 	std::vector<UIntStore>& result,
 	const unsigned int& length,
 	const unsigned int& max,

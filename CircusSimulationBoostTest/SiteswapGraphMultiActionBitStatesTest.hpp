@@ -3,10 +3,6 @@
 
 
 
-#include "SiteswapGraphMultiActionFunctions.h"
-
-
-
 BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionBitStatesTest)
 
 

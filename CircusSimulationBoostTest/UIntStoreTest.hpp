@@ -3,11 +3,6 @@
 
 
 
-#include "UIntStore.h"
-
-#include <sstream>
-
-
 BOOST_AUTO_TEST_SUITE(UIntStoreTest)
 
 

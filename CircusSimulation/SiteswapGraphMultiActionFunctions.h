@@ -26,7 +26,7 @@ namespace SiteswapGraphMultiAction
 		const UIntStore& bitSpread,
 		unsigned int max);
 
-	void AllStates(
+	void PopulateValidBeginStates(
 		std::vector<UIntStore>& result,
 		const unsigned int& length,
 		const unsigned int& max,

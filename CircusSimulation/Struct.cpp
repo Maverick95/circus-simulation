@@ -30,23 +30,31 @@ bool operator!=(const SiteswapGraphConnection& sgc1, const SiteswapGraphConnecti
 
 bool operator<(const SiteswapPattern& sp1, const SiteswapPattern& sp2)
 {
-	if (sp1.num_balls < sp2.num_balls || sp1.num_actions < sp2.num_actions || sp1.throws.size() < sp2.throws.size())
+	if (sp1.num_balls != sp2.num_balls)
 	{
-		return true;
+		return sp1.num_balls < sp2.num_balls;
 	}
 
-	if (sp1.throws.size() == sp2.throws.size())
+	if (sp1.num_actions != sp2.num_actions)
 	{
-		for (unsigned int i = 0U; i < sp1.throws.size(); i++)
+		return sp1.num_actions < sp2.num_actions;
+	}
+
+	if (sp1.throws.size() != sp2.throws.size())
+	{
+		return sp1.throws.size() < sp2.throws.size();
+	}
+
+	for (unsigned int i = 0U; i < sp1.throws.size(); i++)
+	{
+		if (sp1.throws[i].state_begin != sp2.throws[i].state_begin)
 		{
-			if (sp1.throws[i].state_transfer < sp2.throws[i].state_transfer)
-			{
-				return true;
-			}
-			else if (sp1.throws[i].state_transfer > sp2.throws[i].state_transfer)
-			{
-				return false;
-			}
+			return sp1.throws[i].state_begin < sp2.throws[i].state_begin;
+		}
+
+		if (sp1.throws[i].state_end != sp2.throws[i].state_end)
+		{
+			return sp1.throws[i].state_end < sp2.throws[i].state_end;
 		}
 	}
 

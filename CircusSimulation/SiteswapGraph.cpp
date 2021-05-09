@@ -161,7 +161,7 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(
 	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
-	SiteswapGraphMultiAction::AllStates(states, numberActions, SETTINGS_MAX_THROW, numberBalls);
+	SiteswapGraphMultiAction::PopulateValidBeginStates(states, numberActions, SETTINGS_MAX_THROW, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
@@ -179,7 +179,7 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(
 	}
 
 	return new SiteswapPattern({
-			numberBalls, 1U,
+			numberBalls, numberActions,
 			*(
 			p.begin() +
 			std::uniform_int_distribution<unsigned int>(0, p.size() - 1)(
@@ -207,7 +207,7 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
 	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
-	SiteswapGraphMultiAction::AllStates(states, numberActions, SETTINGS_MAX_THROW, numberBalls);
+	SiteswapGraphMultiAction::PopulateValidBeginStates(states, numberActions, SETTINGS_MAX_THROW, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
@@ -227,7 +227,7 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
 	
 	for (auto i = p.begin(); i != p.end(); i++)
 	{
-		patterns->insert({ numberBalls, 1U, *i });
+		patterns->insert({ numberBalls, numberActions, *i });
 	}
 
 	return patterns;

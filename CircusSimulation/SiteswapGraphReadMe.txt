@@ -56,3 +56,113 @@ These are all permutations of the same pattern.
 153		begins at state		X-XX-	= 13
 
 Therefore 531 is the permutation returned.
+
+
+Update 09/05/2021
+
+Multi-action functionality is now available for both functions GetPatterns() and GetRandomPattern()
+
+Arguments are -
+
+numberBalls - number of balls used
+numberActions - number of actions used
+numberThrows - length of the pattern
+maxThrow - maximum number of steps ahead allowed
+
+A few key points need clarifying here
+
+a) Valid states to begin from,
+b) Valid states to include in a pattern,
+c) Order of patterns returned.
+
+a) Valid states to begin from,
+
+This is the result of function SiteswapGraphMultiAction::PopulateValidBeginStates
+
+This is quite complex, so hopefully I can explain this in an easy way.
+
+A state is a valid beginning state if two conditions are satisfied -
+
+1.
+for all 0 <= i < j < numberActions,
+number of balls in action[i] >= number of balls in action[j]
+
+2.
+if number of balls in action[i] == number of balls in action[j],
+then state[i] >= state[j], where the state is the integer representation
+
+Example
+
+numberBalls = 2, numberActions = 2, numberThrows = 2, maxThrow = 3
+
+There are 15 total states to consider
+
+X X -	2 balls		state 3		2 > 0		INCLUDED
+- - -	0 balls		state 0
+
+X - X	2 balls		state 5		2 > 0		INCLUDED
+- - -	0 balls		state 0	
+
+X - -	1 ball		state 1		1 == 1		INCLUDED
+X - -	1 ball		state 1		1 == 1
+
+X - -	1 ball		state 1		1 == 1		EXCLUDED	---
+- X -	1 ball		state 2		1 < 2
+
+X - -	1 ball		state 1		1 == 1		EXCLUDED	---
+- - X	1 ball		state 4		1 < 4
+
+- X X	2 balls		state 6		2 > 0		INCLUDED
+- - -	0 balls		state 0
+
+- X -	1 ball		state 2		1 == 1		INCLUDED
+X - -	1 ball		state 1		2 > 1
+
+- X -	1 ball		state 2		1 == 1		INCLUDED
+- X -	1 ball		state 2		2 == 2
+
+- X -	1 ball		state 2		1 == 1		EXCLUDED	---
+- - X	1 ball		state 4		2 < 4
+
+- - X	1 ball		state 4		1 == 1		INCLUDED
+X - -	1 ball		state 1		4 > 1
+
+- - X	1 ball		state 4		1 == 1		INCLUDED
+- X -	1 ball		state 2		4 > 2
+
+- - X	1 ball		state 4		1 == 1		INCLUDED
+- - X	1 ball		state 4		4 == 4
+
+- - -	0 balls		state 0		0 < 2		EXCLUDED	---
+X X -	2 balls		state 3
+
+- - -	0 balls		state 0		0 < 2		EXCLUDED	---
+X - X	2 balls		state 5
+
+- - -	0 balls		state 0		0 < 2		EXCLUDED	---
+- X X	2 balls		state 6
+
+
+There are 9 states here that are considered starting states.
+
+b) Valid states to include in a pattern,
+
+Every state is considered a valid state to include, WITH THE EXCEPTION of
+any state that has already been considered as a starting state.
+
+This is to avoid unnecessary repetition while ensuring all unique patterns
+are discovered.
+
+c) Order of patterns returned.
+
+Patterns are stored as std::set<SiteswapPattern>, which means the order is based on
+the < operator.
+
+Compare numberBalls
+Compare numberActions
+Compare numberThrows
+For each throw in order, compare the start state and the end state
+
+
+
+

@@ -3,10 +3,6 @@
 
 
 
-#include "ChooseGenerator.h"
-
-
-
 BOOST_AUTO_TEST_SUITE(ChooseGeneratorTest)
 
 
