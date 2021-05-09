@@ -151,7 +151,7 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(
 	SETTINGS_MAX_THROW = maxThrow > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : maxThrow;
 
 	if (numberBalls == 0U ||
-		numberBalls > SETTINGS_MAX_THROW ||
+		numberBalls > (SETTINGS_MAX_THROW * numberActions) ||
 		numberActions == 0U ||
 		numberThrows == 0U)
 	{
@@ -197,7 +197,7 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
 	SETTINGS_MAX_THROW = maxThrow > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : maxThrow;
 
 	if (numberBalls == 0U ||
-		numberBalls > SETTINGS_MAX_THROW ||
+		numberBalls > (SETTINGS_MAX_THROW * numberActions) ||
 		numberActions == 0U ||
 		numberThrows == 0U)
 	{
