@@ -68,28 +68,25 @@ unsigned int GetLowestIntegerWithNBits(const unsigned int& n)
 
 
 
-
-void SiteswapGraphMultiActionHelpers::BitStates(
+void SiteswapGraphMultiActionHelpers::StoreValidBeginStates(
 	std::vector<UIntStore>& result,
-	const UIntStore& bitSpread,
-	unsigned int max)
+	const UIntStore& numberBits,
+	unsigned int maxThrow)
 {
-	//result.clear();
+	unsigned int size = numberBits.Size();
 
-	unsigned int size = bitSpread.Size();
-
-	if (max > Settings::ThrowHeight_Maximum())
+	if (maxThrow > Settings::ThrowHeight_Maximum())
 	{
-		max = Settings::ThrowHeight_Maximum();
+		maxThrow = Settings::ThrowHeight_Maximum();
 	}
 
-	if (size && bitSpread.IsValidBitSpread(max))
+	if (size && numberBits.IsValidBitSpread(maxThrow))
 	{
 		unsigned int* data = new unsigned int[size];
 
 		for (unsigned int i = 0U; i < size; i++)
 		{
-			data[i] = GetLowestIntegerWithNBits(bitSpread[i]);
+			data[i] = GetLowestIntegerWithNBits(numberBits[i]);
 		}
 
 		UIntStore store(size, data);
@@ -104,13 +101,13 @@ void SiteswapGraphMultiActionHelpers::BitStates(
 		{
 			if (index == 0U)
 			{
-				if (store.BitNext(index, max))
+				if (store.BitNext(index, maxThrow))
 				{
 					// Reset all and store.
 
 					for (unsigned int i = index + 1U; i < size; i++)
 					{
-						store.Update(i, GetLowestIntegerWithNBits(bitSpread[i]));
+						store.Update(i, GetLowestIntegerWithNBits(numberBits[i]));
 					}
 
 					result.push_back(store);
@@ -122,15 +119,15 @@ void SiteswapGraphMultiActionHelpers::BitStates(
 				}
 
 			}
-			else if (bitSpread[index - 1U] > bitSpread[index])
+			else if (numberBits[index - 1U] > numberBits[index])
 			{
-				if (store.BitNext(index, max))
+				if (store.BitNext(index, maxThrow))
 				{
 					// Reset all and store.
 
 					for (unsigned int i = index + 1U; i < size; i++)
 					{
-						store.Update(i, GetLowestIntegerWithNBits(bitSpread[i]));
+						store.Update(i, GetLowestIntegerWithNBits(numberBits[i]));
 					}
 
 					result.push_back(store);
@@ -143,13 +140,13 @@ void SiteswapGraphMultiActionHelpers::BitStates(
 			}
 			else
 			{
-				if (store[index - 1U] > store[index] && store.BitNext(index, max))
+				if (store[index - 1U] > store[index] && store.BitNext(index, maxThrow))
 				{
 					// Reset all and store.
 
 					for (unsigned int i = index + 1U; i < size; i++)
 					{
-						store.Update(i, GetLowestIntegerWithNBits(bitSpread[i]));
+						store.Update(i, GetLowestIntegerWithNBits(numberBits[i]));
 					}
 
 					result.push_back(store);

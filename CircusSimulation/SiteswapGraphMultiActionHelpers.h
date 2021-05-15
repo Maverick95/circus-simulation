@@ -13,10 +13,10 @@ namespace SiteswapGraphMultiActionHelpers
 		const unsigned int& maxThrow,
 		const unsigned int& numberBits);
 
-	void BitStates(
+	void StoreValidBeginStates(
 		std::vector<UIntStore>& result,
-		const UIntStore& bitSpread,
-		unsigned int max);
+		const UIntStore& numberBits,
+		unsigned int maxThrow);
 }
 
 #endif

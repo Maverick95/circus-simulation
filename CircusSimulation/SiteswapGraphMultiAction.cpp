@@ -19,7 +19,7 @@ void SiteswapGraphMultiAction::StoreValidBeginStates(
 
 	for (auto i = bitSpreads.begin(); i != bitSpreads.end(); i++)
 	{
-		SiteswapGraphMultiActionHelpers::BitStates(result, *i, maxThrow);
+		SiteswapGraphMultiActionHelpers::StoreValidBeginStates(result, *i, maxThrow);
 	}
 }
 

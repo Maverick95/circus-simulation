@@ -7,14 +7,14 @@ BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionHelpersTest)
 
 
 
-BOOST_AUTO_TEST_CASE(BitStates_Example_1)
+BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Example_1)
 {
 	unsigned int bits = 3U;
 	unsigned int max = 5U;
 
 	UIntStore store(1U, &bits);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiActionHelpers::BitStates(result, store, max);
+	SiteswapGraphMultiActionHelpers::StoreValidBeginStates(result, store, max);
 
 	BOOST_TEST(result.size() == 10U);
 
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_1)
 
 
 
-BOOST_AUTO_TEST_CASE(BitStates_Example_2)
+BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Example_2)
 {
 	unsigned int* data = new unsigned int[2];
 	data[0] = 4U;
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_2)
 
 	UIntStore store(2U, data);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiActionHelpers::BitStates(result, store, 4U);
+	SiteswapGraphMultiActionHelpers::StoreValidBeginStates(result, store, 4U);
 
 	BOOST_TEST(result.size() == 1U);
 	
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_2)
 
 
 
-BOOST_AUTO_TEST_CASE(BitStates_Example_3)
+BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Example_3)
 {
 	unsigned int* data = new unsigned int[2];
 	data[0] = 3U;
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_3)
 
 	UIntStore store(2U, data);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiActionHelpers::BitStates(result, store, 4U);
+	SiteswapGraphMultiActionHelpers::StoreValidBeginStates(result, store, 4U);
 
 	BOOST_TEST(result.size() == 16U);
 
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_3)
 
 
 
-BOOST_AUTO_TEST_CASE(BitStates_Example_4)
+BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Example_4)
 {
 	unsigned int* data = new unsigned int[2];
 	data[0] = 2U;
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_4)
 
 	UIntStore store(2U, data);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiActionHelpers::BitStates(result, store, 4U);
+	SiteswapGraphMultiActionHelpers::StoreValidBeginStates(result, store, 4U);
 
 	BOOST_TEST(result.size() == 21U);
 
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_4)
 
 
 
-BOOST_AUTO_TEST_CASE(BitStates_Example_5)
+BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Example_5)
 {
 	unsigned int* data = new unsigned int[3];
 	data[0] = 2U;
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_5)
 
 	UIntStore store(3U, data);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiActionHelpers::BitStates(result, store, 3U);
+	SiteswapGraphMultiActionHelpers::StoreValidBeginStates(result, store, 3U);
 
 	BOOST_TEST(result.size() == 18U);
 
