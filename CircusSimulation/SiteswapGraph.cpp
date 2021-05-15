@@ -13,24 +13,22 @@
 
 
 
-static unsigned int SETTINGS_MAX_THROW = Settings::ThrowHeight_Maximum();
-
-
-
 void AddPaths_Recursive(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
 	std::deque<SiteswapGraphConnection>& p_current,
 	std::unordered_set<unsigned int>& a,
 	const SiteswapState& s_current,
 	const SiteswapState& s_end,
-	const unsigned int n);
+	const unsigned int n,
+	const unsigned int& maxThrow);
 
 void AddPaths(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
 	std::unordered_set<unsigned int>& a,
 	const SiteswapState& s_begin,
 	const SiteswapState& s_end,
-	const unsigned int& n);
+	const unsigned int& n,
+	const unsigned int& maxThrow);
 
 bool IsDestinationExtensionOfSource(const UIntStore& source, const UIntStore& destination);
 
@@ -87,10 +85,11 @@ void AddPaths_Recursive(
 	std::unordered_set<unsigned int>& a,
 	const SiteswapState& s_current,
 	const SiteswapState& s_end,
-	const unsigned int n)
+	const unsigned int n,
+	const unsigned int& maxThrow)
 {
 	std::forward_list<SiteswapGraphConnection> connections;
-	SiteswapGraphMultiAction::PopulateNextStates(connections, s_current, SETTINGS_MAX_THROW);
+	SiteswapGraphMultiAction::PopulateNextStates(connections, s_current, maxThrow);
 
 	if (n == 1)
 	{
@@ -113,7 +112,7 @@ void AddPaths_Recursive(
 			{
 				p_current.push_back(*i);
 				a.insert(hash);
-				AddPaths_Recursive(p, p_current, a, i->state_end, s_end, n - 1);
+				AddPaths_Recursive(p, p_current, a, i->state_end, s_end, n - 1, maxThrow);
 				p_current.pop_back();
 				a.erase(hash);
 			}
@@ -126,7 +125,8 @@ void AddPaths(
 	std::unordered_set<unsigned int>& a,
 	const SiteswapState& s_begin,
 	const SiteswapState& s_end,
-	const unsigned int& n)
+	const unsigned int& n,
+	const unsigned int& maxThrow)
 {
 	unsigned int
 		hash_begin = s_begin.Hash(),
@@ -137,7 +137,7 @@ void AddPaths(
 		SiteswapGraph::DoesPathExist(s_begin, s_end, n))
 	{
 		a.insert(hash_begin);
-		AddPaths_Recursive(p, std::deque<SiteswapGraphConnection>(), a, s_begin, s_end, n);
+		AddPaths_Recursive(p, std::deque<SiteswapGraphConnection>(), a, s_begin, s_end, n, maxThrow);
 		a.erase(hash_begin);
 	}
 }
@@ -146,12 +146,17 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(
 	const unsigned int& numberBalls,
 	const unsigned int& numberActions,
 	const unsigned int& numberThrows,
-	const unsigned int& maxThrow)
+	unsigned int maxThrow)
 {
-	SETTINGS_MAX_THROW = maxThrow > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : maxThrow;
+	const unsigned int maxThrowSettings = Settings::ThrowHeight_Maximum();
+
+	if (maxThrow > maxThrowSettings)
+	{
+		maxThrow = maxThrowSettings;
+	}
 
 	if (numberBalls == 0U ||
-		numberBalls > (SETTINGS_MAX_THROW * numberActions) ||
+		numberBalls > (maxThrow * numberActions) ||
 		numberActions == 0U ||
 		numberThrows == 0U)
 	{
@@ -161,15 +166,15 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(
 	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
-	SiteswapGraphMultiAction::PopulateValidBeginStates(states, numberActions, SETTINGS_MAX_THROW, numberBalls);
+	SiteswapGraphMultiAction::PopulateValidBeginStates(states, numberActions, maxThrow, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
 		if (a.find(i->Hash()) == a.end())
 		{
-			AddPaths(p, a, *i, *i, numberThrows);
+			AddPaths(p, a, *i, *i, numberThrows, maxThrow);
 			do { a.insert(i->Hash()); }
-			while (i->Previous(SETTINGS_MAX_THROW));
+			while (i->Previous(maxThrow));
 		}
 	}
 
@@ -192,12 +197,17 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
 	const unsigned int& numberBalls,
 	const unsigned int& numberActions,
 	const unsigned int& numberThrows,
-	const unsigned int& maxThrow)
+	unsigned int maxThrow)
 {
-	SETTINGS_MAX_THROW = maxThrow > Settings::ThrowHeight_Maximum() ? Settings::ThrowHeight_Maximum() : maxThrow;
+	const unsigned int maxThrowSettings = Settings::ThrowHeight_Maximum();
+
+	if (maxThrow > maxThrowSettings)
+	{
+		maxThrow = maxThrowSettings;
+	}
 
 	if (numberBalls == 0U ||
-		numberBalls > (SETTINGS_MAX_THROW * numberActions) ||
+		numberBalls > (maxThrow * numberActions) ||
 		numberActions == 0U ||
 		numberThrows == 0U)
 	{
@@ -207,14 +217,14 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
 	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
-	SiteswapGraphMultiAction::PopulateValidBeginStates(states, numberActions, SETTINGS_MAX_THROW, numberBalls);
+	SiteswapGraphMultiAction::PopulateValidBeginStates(states, numberActions, maxThrow, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
 		if (a.find(i->Hash()) == a.end())
 		{
-			AddPaths(p, a, *i, *i, numberThrows);
-			do { a.insert(i->Hash()); } while (i->Previous(SETTINGS_MAX_THROW));
+			AddPaths(p, a, *i, *i, numberThrows, maxThrow);
+			do { a.insert(i->Hash()); } while (i->Previous(maxThrow));
 		}
 	}
 

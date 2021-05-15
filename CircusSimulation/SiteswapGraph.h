@@ -18,13 +18,13 @@ namespace SiteswapGraph
 		const unsigned int& numberBalls,
 		const unsigned int& numberActions,
 		const unsigned int& numberThrows,
-		const unsigned int& maxThrow);
+		unsigned int maxThrow);
 
 	std::set<SiteswapPattern>* GetPatterns(
 		const unsigned int& numberBalls,
 		const unsigned int& numberActions,
 		const unsigned int& numberThrows,
-		const unsigned int& maxThrow);
+		unsigned int maxThrow);
 };
 
 #endif
