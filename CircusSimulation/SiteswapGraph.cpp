@@ -89,7 +89,7 @@ void AddPaths_Recursive(
 	const unsigned int& maxThrow)
 {
 	std::forward_list<SiteswapGraphConnection> connections;
-	SiteswapGraphMultiAction::PopulateNextStates(connections, s_current, maxThrow);
+	SiteswapGraphMultiAction::StoreNextStates(connections, s_current, maxThrow);
 
 	if (n == 1)
 	{
@@ -166,7 +166,7 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(
 	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
-	SiteswapGraphMultiAction::PopulateValidBeginStates(states, numberActions, maxThrow, numberBalls);
+	SiteswapGraphMultiAction::StoreValidBeginStates(states, numberActions, maxThrow, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
@@ -217,7 +217,7 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
 	std::unordered_set<unsigned int> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
-	SiteswapGraphMultiAction::PopulateValidBeginStates(states, numberActions, maxThrow, numberBalls);
+	SiteswapGraphMultiAction::StoreValidBeginStates(states, numberActions, maxThrow, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{

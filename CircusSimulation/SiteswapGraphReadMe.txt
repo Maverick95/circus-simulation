@@ -77,7 +77,7 @@ c) Order of patterns returned.
 
 a) Valid states to begin from,
 
-This is the result of function SiteswapGraphMultiAction::PopulateValidBeginStates
+This is the result of function SiteswapGraphMultiAction::StoreValidBeginStates
 
 This is quite complex, so hopefully I can explain this in an easy way.
 

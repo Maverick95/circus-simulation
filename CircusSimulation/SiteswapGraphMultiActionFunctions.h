@@ -26,13 +26,13 @@ namespace SiteswapGraphMultiAction
 		const UIntStore& bitSpread,
 		unsigned int max);
 
-	void PopulateValidBeginStates(
+	void StoreValidBeginStates(
 		std::vector<UIntStore>& result,
-		const unsigned int& length,
-		const unsigned int& max,
-		const unsigned int& total);
+		const unsigned int& numberActions,
+		const unsigned int& maxThrow,
+		const unsigned int& numberBits);
 
-	void PopulateNextStates(
+	void StoreNextStates(
 		std::forward_list<SiteswapGraphConnection>& result,
 		const UIntStore& current,
 		const unsigned int& max);

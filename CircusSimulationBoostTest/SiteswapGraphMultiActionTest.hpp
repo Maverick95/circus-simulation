@@ -7,19 +7,19 @@ BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionTest)
 
 
 
-BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_Edge)
+BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Case_Edge)
 {
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiAction::PopulateValidBeginStates(result, 2U, 2U, 5U);
+	SiteswapGraphMultiAction::StoreValidBeginStates(result, 2U, 2U, 5U);
 	BOOST_TEST(result.size() == 0U);
 }
 
 
 
-BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_1)
+BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Case_1)
 {
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiAction::PopulateValidBeginStates(result, 1U, 5U, 3U);
+	SiteswapGraphMultiAction::StoreValidBeginStates(result, 1U, 5U, 3U);
 	BOOST_TEST(result.size() == 10U);
 
 	BOOST_TEST(result[0U]() == 7U);
@@ -36,10 +36,10 @@ BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_1)
 
 
 
-BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_2)
+BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Case_2)
 {
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiAction::PopulateValidBeginStates(result, 2U, 3U, 3U);
+	SiteswapGraphMultiAction::StoreValidBeginStates(result, 2U, 3U, 3U);
 	BOOST_TEST(result.size() == 10U);
 
 	BOOST_TEST(result[0U][0U] == 7U);
@@ -75,10 +75,10 @@ BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_2)
 
 
 
-BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_3)
+BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Case_3)
 {
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiAction::PopulateValidBeginStates(result, 3U, 3U, 4U);
+	SiteswapGraphMultiAction::StoreValidBeginStates(result, 3U, 3U, 4U);
 	BOOST_TEST(result.size() == 27U);
 
 	// Combo 1.
