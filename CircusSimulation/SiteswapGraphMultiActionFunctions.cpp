@@ -4,7 +4,7 @@
 #include "ChooseGenerator.h"
 
 
-void SiteswapGraphMultiAction::StoreUniqueBitDistributions(
+void SiteswapGraphMultiAction::StoreValidSpreadsOfBitsAcrossActions(
 	std::vector<UIntStore>& result,
 	const unsigned int& numberIntegers,
 	const unsigned int& maxInteger,
@@ -171,18 +171,11 @@ void SiteswapGraphMultiAction::PopulateValidBeginStates(
 	result.clear();
 
 	std::vector<UIntStore> bitSpreads;
-	StoreUniqueBitDistributions(bitSpreads, length, max, total);
+	StoreValidSpreadsOfBitsAcrossActions(bitSpreads, length, max, total);
 
 	for (auto i = bitSpreads.begin(); i != bitSpreads.end(); i++)
 	{
 		BitStates(result, *i, max);
-
-		/*
-		for (auto j = bitStates.begin(); j != bitStates.end(); j++)
-		{
-			result.push_back(*j);
-		}
-		*/
 	}
 }
 

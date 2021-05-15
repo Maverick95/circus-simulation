@@ -13,7 +13,7 @@
 
 namespace SiteswapGraphMultiAction
 {
-	void StoreUniqueBitDistributions(
+	void StoreValidSpreadsOfBitsAcrossActions(
 		std::vector<UIntStore>& result,
 		const unsigned int& numberIntegers,
 		const unsigned int& maxInteger,

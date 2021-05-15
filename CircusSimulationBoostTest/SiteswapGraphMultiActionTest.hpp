@@ -7,10 +7,10 @@ BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionTest)
 
 
 
-BOOST_AUTO_TEST_CASE(StoreUniqueBitDistributions_Case_1)
+BOOST_AUTO_TEST_CASE(StoreValidSpreadsOfBitsAcrossActions_Case_1)
 {
 	std::vector<UIntStore> results;
-	SiteswapGraphMultiAction::StoreUniqueBitDistributions(results, 4U, 4U, 10U);
+	SiteswapGraphMultiAction::StoreValidSpreadsOfBitsAcrossActions(results, 4U, 4U, 10U);
 
 	BOOST_TEST(results.size() == 7U);
 
@@ -52,10 +52,10 @@ BOOST_AUTO_TEST_CASE(StoreUniqueBitDistributions_Case_1)
 
 
 
-BOOST_AUTO_TEST_CASE(StoreUniqueBitDistributions_Case_2)
+BOOST_AUTO_TEST_CASE(StoreValidSpreadsOfBitsAcrossActions_Case_2)
 {
 	std::vector<UIntStore> results;
-	SiteswapGraphMultiAction::StoreUniqueBitDistributions(results, 5U, 4U, 15U);
+	SiteswapGraphMultiAction::StoreValidSpreadsOfBitsAcrossActions(results, 5U, 4U, 15U);
 
 	BOOST_TEST(results.size() == 6U);
 
@@ -98,10 +98,10 @@ BOOST_AUTO_TEST_CASE(StoreUniqueBitDistributions_Case_2)
 
 
 
-BOOST_AUTO_TEST_CASE(StoreUniqueBitDistributions_Case_3)
+BOOST_AUTO_TEST_CASE(StoreValidSpreadsOfBitsAcrossActions_Case_3)
 {
 	std::vector<UIntStore> results;
-	SiteswapGraphMultiAction::StoreUniqueBitDistributions(results, 3U, 7U, 7U);
+	SiteswapGraphMultiAction::StoreValidSpreadsOfBitsAcrossActions(results, 3U, 7U, 7U);
 
 	BOOST_TEST(results.size() == 8U);
 
