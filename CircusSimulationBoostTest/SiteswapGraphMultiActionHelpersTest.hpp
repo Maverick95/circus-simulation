@@ -1,9 +1,9 @@
-#ifndef SITESWAP_GRAPH_MULTI_ACTION_BITSTATES_TEST_H
-#define SITESWAP_GRAPH_MULTI_ACTION_BITSTATES_TEST_H
+#ifndef SITESWAP_GRAPH_MULTI_ACTION_HELPERS_TEST_H
+#define SITESWAP_GRAPH_MULTI_ACTION_HELPERS_TEST_H
 
 
 
-BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionBitStatesTest)
+BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionHelpersTest)
 
 
 
@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_1)
 
 	UIntStore store(1U, &bits);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiAction::BitStates(result, store, max);
+	SiteswapGraphMultiActionHelpers::BitStates(result, store, max);
 
 	BOOST_TEST(result.size() == 10U);
 
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_2)
 
 	UIntStore store(2U, data);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiAction::BitStates(result, store, 4U);
+	SiteswapGraphMultiActionHelpers::BitStates(result, store, 4U);
 
 	BOOST_TEST(result.size() == 1U);
 	
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_3)
 
 	UIntStore store(2U, data);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiAction::BitStates(result, store, 4U);
+	SiteswapGraphMultiActionHelpers::BitStates(result, store, 4U);
 
 	BOOST_TEST(result.size() == 16U);
 
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_4)
 
 	UIntStore store(2U, data);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiAction::BitStates(result, store, 4U);
+	SiteswapGraphMultiActionHelpers::BitStates(result, store, 4U);
 
 	BOOST_TEST(result.size() == 21U);
 
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_5)
 
 	UIntStore store(3U, data);
 	std::vector<UIntStore> result;
-	SiteswapGraphMultiAction::BitStates(result, store, 3U);
+	SiteswapGraphMultiActionHelpers::BitStates(result, store, 3U);
 
 	BOOST_TEST(result.size() == 18U);
 
@@ -323,6 +323,139 @@ BOOST_AUTO_TEST_CASE(BitStates_Example_5)
 	// ---
 
 	delete[] data;
+}
+
+
+
+BOOST_AUTO_TEST_CASE(StoreValidSpreadsOfBitsAcrossActions_Case_1)
+{
+	std::vector<UIntStore> results;
+	SiteswapGraphMultiActionHelpers::StoreValidSpreadsOfBitsAcrossActions(results, 4U, 4U, 10U);
+
+	BOOST_TEST(results.size() == 7U);
+
+	BOOST_TEST(results[0U][0U] == 4U);
+	BOOST_TEST(results[0U][1U] == 4U);
+	BOOST_TEST(results[0U][2U] == 2U);
+	BOOST_TEST(results[0U][3U] == 0U);
+
+	BOOST_TEST(results[1U][0U] == 4U);
+	BOOST_TEST(results[1U][1U] == 4U);
+	BOOST_TEST(results[1U][2U] == 1U);
+	BOOST_TEST(results[1U][3U] == 1U);
+
+	BOOST_TEST(results[2U][0U] == 4U);
+	BOOST_TEST(results[2U][1U] == 3U);
+	BOOST_TEST(results[2U][2U] == 3U);
+	BOOST_TEST(results[2U][3U] == 0U);
+
+	BOOST_TEST(results[3U][0U] == 4U);
+	BOOST_TEST(results[3U][1U] == 3U);
+	BOOST_TEST(results[3U][2U] == 2U);
+	BOOST_TEST(results[3U][3U] == 1U);
+
+	BOOST_TEST(results[4U][0U] == 4U);
+	BOOST_TEST(results[4U][1U] == 2U);
+	BOOST_TEST(results[4U][2U] == 2U);
+	BOOST_TEST(results[4U][3U] == 2U);
+
+	BOOST_TEST(results[5U][0U] == 3U);
+	BOOST_TEST(results[5U][1U] == 3U);
+	BOOST_TEST(results[5U][2U] == 3U);
+	BOOST_TEST(results[5U][3U] == 1U);
+
+	BOOST_TEST(results[6U][0U] == 3U);
+	BOOST_TEST(results[6U][1U] == 3U);
+	BOOST_TEST(results[6U][2U] == 2U);
+	BOOST_TEST(results[6U][3U] == 2U);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(StoreValidSpreadsOfBitsAcrossActions_Case_2)
+{
+	std::vector<UIntStore> results;
+	SiteswapGraphMultiActionHelpers::StoreValidSpreadsOfBitsAcrossActions(results, 5U, 4U, 15U);
+
+	BOOST_TEST(results.size() == 6U);
+
+	BOOST_TEST(results[0U][0U] == 4U);
+	BOOST_TEST(results[0U][1U] == 4U);
+	BOOST_TEST(results[0U][2U] == 4U);
+	BOOST_TEST(results[0U][3U] == 3U);
+	BOOST_TEST(results[0U][4U] == 0U);
+
+	BOOST_TEST(results[1U][0U] == 4U);
+	BOOST_TEST(results[1U][1U] == 4U);
+	BOOST_TEST(results[1U][2U] == 4U);
+	BOOST_TEST(results[1U][3U] == 2U);
+	BOOST_TEST(results[1U][4U] == 1U);
+
+	BOOST_TEST(results[2U][0U] == 4U);
+	BOOST_TEST(results[2U][1U] == 4U);
+	BOOST_TEST(results[2U][2U] == 3U);
+	BOOST_TEST(results[2U][3U] == 3U);
+	BOOST_TEST(results[2U][4U] == 1U);
+
+	BOOST_TEST(results[3U][0U] == 4U);
+	BOOST_TEST(results[3U][1U] == 4U);
+	BOOST_TEST(results[3U][2U] == 3U);
+	BOOST_TEST(results[3U][3U] == 2U);
+	BOOST_TEST(results[3U][4U] == 2U);
+
+	BOOST_TEST(results[4U][0U] == 4U);
+	BOOST_TEST(results[4U][1U] == 3U);
+	BOOST_TEST(results[4U][2U] == 3U);
+	BOOST_TEST(results[4U][3U] == 3U);
+	BOOST_TEST(results[4U][4U] == 2U);
+
+	BOOST_TEST(results[5U][0U] == 3U);
+	BOOST_TEST(results[5U][1U] == 3U);
+	BOOST_TEST(results[5U][2U] == 3U);
+	BOOST_TEST(results[5U][3U] == 3U);
+	BOOST_TEST(results[5U][4U] == 3U);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(StoreValidSpreadsOfBitsAcrossActions_Case_3)
+{
+	std::vector<UIntStore> results;
+	SiteswapGraphMultiActionHelpers::StoreValidSpreadsOfBitsAcrossActions(results, 3U, 7U, 7U);
+
+	BOOST_TEST(results.size() == 8U);
+
+	BOOST_TEST(results[0U][0U] == 7U);
+	BOOST_TEST(results[0U][1U] == 0U);
+	BOOST_TEST(results[0U][2U] == 0U);
+
+	BOOST_TEST(results[1U][0U] == 6U);
+	BOOST_TEST(results[1U][1U] == 1U);
+	BOOST_TEST(results[1U][2U] == 0U);
+
+	BOOST_TEST(results[2U][0U] == 5U);
+	BOOST_TEST(results[2U][1U] == 2U);
+	BOOST_TEST(results[2U][2U] == 0U);
+
+	BOOST_TEST(results[3U][0U] == 5U);
+	BOOST_TEST(results[3U][1U] == 1U);
+	BOOST_TEST(results[3U][2U] == 1U);
+
+	BOOST_TEST(results[4U][0U] == 4U);
+	BOOST_TEST(results[4U][1U] == 3U);
+	BOOST_TEST(results[4U][2U] == 0U);
+
+	BOOST_TEST(results[5U][0U] == 4U);
+	BOOST_TEST(results[5U][1U] == 2U);
+	BOOST_TEST(results[5U][2U] == 1U);
+
+	BOOST_TEST(results[6U][0U] == 3U);
+	BOOST_TEST(results[6U][1U] == 3U);
+	BOOST_TEST(results[6U][2U] == 1U);
+
+	BOOST_TEST(results[7U][0U] == 3U);
+	BOOST_TEST(results[7U][1U] == 2U);
+	BOOST_TEST(results[7U][2U] == 2U);
 }
 
 

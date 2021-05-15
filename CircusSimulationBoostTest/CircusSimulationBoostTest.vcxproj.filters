@@ -29,9 +29,6 @@
     <ClInclude Include="SiteswapGraphMultiActionTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SiteswapGraphMultiActionBitStatesTest.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChooseGeneratorTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SiteswapGraphTest_MultiAction.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SiteswapGraphMultiActionHelpersTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

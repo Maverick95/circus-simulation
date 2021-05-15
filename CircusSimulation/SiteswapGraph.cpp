@@ -6,10 +6,9 @@
 #include "Enum.h"
 #include "Functions.h"
 #include "Settings.h"
-#include "SiteswapGraphShortestPathChain.h"
 
 #include "SiteswapGraph.h"
-#include "SiteswapGraphMultiActionFunctions.h"
+#include "SiteswapGraphMultiAction.h"
 
 
 

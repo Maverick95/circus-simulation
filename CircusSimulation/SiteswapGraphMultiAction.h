@@ -13,19 +13,6 @@
 
 namespace SiteswapGraphMultiAction
 {
-	void StoreValidSpreadsOfBitsAcrossActions(
-		std::vector<UIntStore>& result,
-		const unsigned int& numberIntegers,
-		const unsigned int& maxInteger,
-		const unsigned int& sumIntegers);
-
-	unsigned int GetLowestIntegerWithNBits(const unsigned int& n);
-
-	void BitStates(
-		std::vector<UIntStore>& result,
-		const UIntStore& bitSpread,
-		unsigned int max);
-
 	void StoreValidBeginStates(
 		std::vector<UIntStore>& result,
 		const unsigned int& numberActions,

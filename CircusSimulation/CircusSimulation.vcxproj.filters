@@ -87,12 +87,6 @@
     <ClInclude Include="SiteswapGraph.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
-    <ClInclude Include="SiteswapGraphShortestPathChain.h">
-      <Filter>Header Files\Graph data processing</Filter>
-    </ClInclude>
-    <ClInclude Include="SiteswapGraphShortestPathNode.h">
-      <Filter>Header Files\Graph data processing</Filter>
-    </ClInclude>
     <ClInclude Include="DisplayPatternHandler.h">
       <Filter>Header Files\Pattern processing</Filter>
     </ClInclude>
@@ -120,10 +114,13 @@
     <ClInclude Include="UIntStore.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
-    <ClInclude Include="SiteswapGraphMultiActionFunctions.h">
+    <ClInclude Include="ChooseGenerator.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
-    <ClInclude Include="ChooseGenerator.h">
+    <ClInclude Include="SiteswapGraphMultiActionHelpers.h">
+      <Filter>Header Files\Graph data processing</Filter>
+    </ClInclude>
+    <ClInclude Include="SiteswapGraphMultiAction.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,12 +149,6 @@
     <ClCompile Include="SiteswapGraph.cpp">
       <Filter>Source Files\Graph data processing</Filter>
     </ClCompile>
-    <ClCompile Include="SiteswapGraphShortestPathChain.cpp">
-      <Filter>Source Files\Graph data processing</Filter>
-    </ClCompile>
-    <ClCompile Include="SiteswapGraphShortestPathNode.cpp">
-      <Filter>Source Files\Graph data processing</Filter>
-    </ClCompile>
     <ClCompile Include="DisplayPatternHandler.cpp">
       <Filter>Source Files\Pattern processing</Filter>
     </ClCompile>
@@ -179,10 +170,13 @@
     <ClCompile Include="UIntStore.cpp">
       <Filter>Source Files\Graph data processing</Filter>
     </ClCompile>
-    <ClCompile Include="SiteswapGraphMultiActionFunctions.cpp">
+    <ClCompile Include="ChooseGenerator.cpp">
       <Filter>Source Files\Graph data processing</Filter>
     </ClCompile>
-    <ClCompile Include="ChooseGenerator.cpp">
+    <ClCompile Include="SiteswapGraphMultiActionHelpers.cpp">
+      <Filter>Source Files\Graph data processing</Filter>
+    </ClCompile>
+    <ClCompile Include="SiteswapGraphMultiAction.cpp">
       <Filter>Source Files\Graph data processing</Filter>
     </ClCompile>
   </ItemGroup>
