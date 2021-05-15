@@ -7,6 +7,209 @@ BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionTest)
 
 
 
+BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_Edge)
+{
+	std::vector<UIntStore> result;
+	SiteswapGraphMultiAction::PopulateValidBeginStates(result, 2U, 2U, 5U);
+	BOOST_TEST(result.size() == 0U);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_1)
+{
+	std::vector<UIntStore> result;
+	SiteswapGraphMultiAction::PopulateValidBeginStates(result, 1U, 5U, 3U);
+	BOOST_TEST(result.size() == 10U);
+
+	BOOST_TEST(result[0U]() == 7U);
+	BOOST_TEST(result[1U]() == 11U);
+	BOOST_TEST(result[2U]() == 13U);
+	BOOST_TEST(result[3U]() == 14U);
+	BOOST_TEST(result[4U]() == 19U);
+	BOOST_TEST(result[5U]() == 21U);
+	BOOST_TEST(result[6U]() == 22U);
+	BOOST_TEST(result[7U]() == 25U);
+	BOOST_TEST(result[8U]() == 26U);
+	BOOST_TEST(result[9U]() == 28U);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_2)
+{
+	std::vector<UIntStore> result;
+	SiteswapGraphMultiAction::PopulateValidBeginStates(result, 2U, 3U, 3U);
+	BOOST_TEST(result.size() == 10U);
+
+	BOOST_TEST(result[0U][0U] == 7U);
+	BOOST_TEST(result[0U][1U] == 0U);
+
+	BOOST_TEST(result[1U][0U] == 3U);
+	BOOST_TEST(result[1U][1U] == 1U);
+
+	BOOST_TEST(result[2U][0U] == 3U);
+	BOOST_TEST(result[2U][1U] == 2U);
+
+	BOOST_TEST(result[3U][0U] == 3U);
+	BOOST_TEST(result[3U][1U] == 4U);
+
+	BOOST_TEST(result[4U][0U] == 5U);
+	BOOST_TEST(result[4U][1U] == 1U);
+
+	BOOST_TEST(result[5U][0U] == 5U);
+	BOOST_TEST(result[5U][1U] == 2U);
+
+	BOOST_TEST(result[6U][0U] == 5U);
+	BOOST_TEST(result[6U][1U] == 4U);
+
+	BOOST_TEST(result[7U][0U] == 6U);
+	BOOST_TEST(result[7U][1U] == 1U);
+
+	BOOST_TEST(result[8U][0U] == 6U);
+	BOOST_TEST(result[8U][1U] == 2U);
+
+	BOOST_TEST(result[9U][0U] == 6U);
+	BOOST_TEST(result[9U][1U] == 4U);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(PopulateValidBeginStates_Case_3)
+{
+	std::vector<UIntStore> result;
+	SiteswapGraphMultiAction::PopulateValidBeginStates(result, 3U, 3U, 4U);
+	BOOST_TEST(result.size() == 27U);
+
+	// Combo 1.
+
+	BOOST_TEST(result[0U][0U] == 7U);
+	BOOST_TEST(result[0U][1U] == 1U);
+	BOOST_TEST(result[0U][2U] == 0U);
+	
+	BOOST_TEST(result[1U][0U] == 7U);
+	BOOST_TEST(result[1U][1U] == 2U);
+	BOOST_TEST(result[1U][2U] == 0U);
+
+	BOOST_TEST(result[2U][0U] == 7U);
+	BOOST_TEST(result[2U][1U] == 4U);
+	BOOST_TEST(result[2U][2U] == 0U);
+
+	// Combo 4.
+
+	BOOST_TEST(result[3U][0U] == 3U);
+	BOOST_TEST(result[3U][1U] == 3U);
+	BOOST_TEST(result[3U][2U] == 0U);
+
+	BOOST_TEST(result[4U][0U] == 5U);
+	BOOST_TEST(result[4U][1U] == 3U);
+	BOOST_TEST(result[4U][2U] == 0U);
+
+	BOOST_TEST(result[5U][0U] == 5U);
+	BOOST_TEST(result[5U][1U] == 5U);
+	BOOST_TEST(result[5U][2U] == 0U);
+
+	// Combo 7.
+
+	BOOST_TEST(result[6U][0U] == 6U);
+	BOOST_TEST(result[6U][1U] == 3U);
+	BOOST_TEST(result[6U][2U] == 0U);
+
+	BOOST_TEST(result[7U][0U] == 6U);
+	BOOST_TEST(result[7U][1U] == 5U);
+	BOOST_TEST(result[7U][2U] == 0U);
+
+	BOOST_TEST(result[8U][0U] == 6U);
+	BOOST_TEST(result[8U][1U] == 6U);
+	BOOST_TEST(result[8U][2U] == 0U);
+
+	// Combo 10.
+
+	BOOST_TEST(result[9U][0U] == 3U);
+	BOOST_TEST(result[9U][1U] == 1U);
+	BOOST_TEST(result[9U][2U] == 1U);
+
+	BOOST_TEST(result[10U][0U] == 3U);
+	BOOST_TEST(result[10U][1U] == 2U);
+	BOOST_TEST(result[10U][2U] == 1U);
+
+	BOOST_TEST(result[11U][0U] == 3U);
+	BOOST_TEST(result[11U][1U] == 2U);
+	BOOST_TEST(result[11U][2U] == 2U);
+
+	// Combo 13.
+
+	BOOST_TEST(result[12U][0U] == 3U);
+	BOOST_TEST(result[12U][1U] == 4U);
+	BOOST_TEST(result[12U][2U] == 1U);
+
+	BOOST_TEST(result[13U][0U] == 3U);
+	BOOST_TEST(result[13U][1U] == 4U);
+	BOOST_TEST(result[13U][2U] == 2U);
+
+	BOOST_TEST(result[14U][0U] == 3U);
+	BOOST_TEST(result[14U][1U] == 4U);
+	BOOST_TEST(result[14U][2U] == 4U);
+
+	// Combo 16.
+
+	BOOST_TEST(result[15U][0U] == 5U);
+	BOOST_TEST(result[15U][1U] == 1U);
+	BOOST_TEST(result[15U][2U] == 1U);
+
+	BOOST_TEST(result[16U][0U] == 5U);
+	BOOST_TEST(result[16U][1U] == 2U);
+	BOOST_TEST(result[16U][2U] == 1U);
+
+	BOOST_TEST(result[17U][0U] == 5U);
+	BOOST_TEST(result[17U][1U] == 2U);
+	BOOST_TEST(result[17U][2U] == 2U);
+
+	// Combo 19.
+
+	BOOST_TEST(result[18U][0U] == 5U);
+	BOOST_TEST(result[18U][1U] == 4U);
+	BOOST_TEST(result[18U][2U] == 1U);
+
+	BOOST_TEST(result[19U][0U] == 5U);
+	BOOST_TEST(result[19U][1U] == 4U);
+	BOOST_TEST(result[19U][2U] == 2U);
+
+	BOOST_TEST(result[20U][0U] == 5U);
+	BOOST_TEST(result[20U][1U] == 4U);
+	BOOST_TEST(result[20U][2U] == 4U);
+
+	// Combo 22.
+
+	BOOST_TEST(result[21U][0U] == 6U);
+	BOOST_TEST(result[21U][1U] == 1U);
+	BOOST_TEST(result[21U][2U] == 1U);
+
+	BOOST_TEST(result[22U][0U] == 6U);
+	BOOST_TEST(result[22U][1U] == 2U);
+	BOOST_TEST(result[22U][2U] == 1U);
+
+	BOOST_TEST(result[23U][0U] == 6U);
+	BOOST_TEST(result[23U][1U] == 2U);
+	BOOST_TEST(result[23U][2U] == 2U);
+
+	// Combo 25.
+
+	BOOST_TEST(result[24U][0U] == 6U);
+	BOOST_TEST(result[24U][1U] == 4U);
+	BOOST_TEST(result[24U][2U] == 1U);
+
+	BOOST_TEST(result[25U][0U] == 6U);
+	BOOST_TEST(result[25U][1U] == 4U);
+	BOOST_TEST(result[25U][2U] == 2U);
+
+	BOOST_TEST(result[26U][0U] == 6U);
+	BOOST_TEST(result[26U][1U] == 4U);
+	BOOST_TEST(result[26U][2U] == 4U);
+}
+
+
+
 BOOST_AUTO_TEST_CASE(StoreValidSpreadsOfBitsAcrossActions_Case_1)
 {
 	std::vector<UIntStore> results;
@@ -157,60 +360,6 @@ BOOST_AUTO_TEST_CASE(GetLowestIntegerWithNBits)
 	BOOST_TEST(result_5 == 15U);
 	BOOST_TEST(result_6 == 31U);
 }
-
-/*
-
-BOOST_AUTO_TEST_CASE(BitNext_Invalid)
-{
-	// All cases should return false, integer unaltered.
-
-	unsigned int
-		input_1 = 0U,		// 0 0 0 0 0 0 
-		input_2 = 56U;		// 0 0 0 1 1 1
-
-	unsigned int
-		max_1 = 0U,
-		max_2 = 6U;
-
-	BOOST_TEST(SiteswapGraphMultiAction::BitNext(input_1, max_1) == false);
-	BOOST_TEST(input_1 == 0U);
-
-	BOOST_TEST(SiteswapGraphMultiAction::BitNext(input_2, max_2) == false);
-	BOOST_TEST(input_2 == 56U);
-}
-
-
-
-BOOST_AUTO_TEST_CASE(BitNext_Valid)
-{
-	// All cases should update integers to intended results.
-
-	unsigned int
-		input_1 = 56U,		// 0 0 0 1 1 1 0
-		input_2 = 13U,		// 1 0 1 1 0 0 0
-		input_3 = 47U;		// 1 1 1 1 0 1 0
-
-	unsigned int
-		max_1 = 7U,
-		max_2 = 5U,
-		max_3 = 7U;
-
-	unsigned int
-		output_1 = 67U,
-		output_2 = 14U,
-		output_3 = 55U;
-
-	BOOST_TEST(SiteswapGraphMultiAction::BitNext(input_1, max_1) == true);
-	BOOST_TEST(input_1 == output_1);
-
-	BOOST_TEST(SiteswapGraphMultiAction::BitNext(input_2, max_2) == true);
-	BOOST_TEST(input_2 == output_2);
-
-	BOOST_TEST(SiteswapGraphMultiAction::BitNext(input_3, max_3) == true);
-	BOOST_TEST(input_3 == output_3);
-}
-
-*/
 
 BOOST_AUTO_TEST_SUITE_END()
 
