@@ -162,3 +162,5 @@ void SiteswapGraphMultiActionHelpers::StoreValidBeginStates(
 		delete[] data;
 	}
 }
+
+

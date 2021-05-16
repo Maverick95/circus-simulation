@@ -23,6 +23,11 @@ namespace SiteswapGraphMultiAction
 		std::forward_list<SiteswapGraphConnection>& result,
 		const UIntStore& current,
 		const unsigned int& max);
+
+	bool DoesPathExist(
+		const UIntStore& stateBegin,
+		const UIntStore& stateEnd,
+		const unsigned int& maxSteps);
 }
 
 

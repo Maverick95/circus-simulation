@@ -7,6 +7,40 @@ BOOST_AUTO_TEST_SUITE(SiteswapGraphMultiActionTest)
 
 
 
+/*
+* Test cases - 8 bits
+*
+* XXX-----		to		X-XX----		7		to		13		= 2
+* X-XXX--X		to		-X-XX-XX		157		to		218		= 6
+* X------X		to		--X---X-		129		to		68		= 1
+* -X-XX-X-		to		XXXX----		90		to		15		= 3
+*/
+
+
+
+BOOST_AUTO_TEST_CASE(DoesPathExist_8bit)
+{
+	struct DeriveShortestPathTest
+	{
+		UIntStore state_begin, state_end;
+		unsigned int path_length;
+	};
+
+	std::vector<DeriveShortestPathTest> tests;
+	tests.push_back({ UIntStore(7U), UIntStore(13U), 2U });
+	tests.push_back({ UIntStore(157U), UIntStore(218U), 6U });
+	tests.push_back({ UIntStore(129U), UIntStore(68U), 1U });
+	tests.push_back({ UIntStore(90U), UIntStore(15U), 3U });
+
+	for (auto i = tests.begin(); i != tests.end(); i++)
+	{
+		BOOST_TEST(SiteswapGraphMultiAction::DoesPathExist(i->state_begin, i->state_end, i->path_length) == true);
+		BOOST_TEST(SiteswapGraphMultiAction::DoesPathExist(i->state_begin, i->state_end, i->path_length - 1U) == false);
+	}
+}
+
+
+
 BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Case_Edge)
 {
 	std::vector<UIntStore> result;

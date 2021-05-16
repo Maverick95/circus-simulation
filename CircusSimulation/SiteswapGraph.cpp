@@ -29,54 +29,7 @@ void AddPaths(
 	const unsigned int& n,
 	const unsigned int& maxThrow);
 
-bool IsDestinationExtensionOfSource(const UIntStore& source, const UIntStore& destination);
 
-
-
-bool IsDestinationExtensionOfSource(const UIntStore& source, const UIntStore& destination)
-{
-	if (source.Size() != destination.Size())
-	{
-		return false;
-	}
-
-	for (unsigned int i = 0U; i < source.Size(); i++)
-	{
-		if (source[i] & ~destination[i])
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
-bool SiteswapGraph::DoesPathExist(const UIntStore& state_start, const UIntStore& state_end, const unsigned int& max_steps)
-{
-	if (state_start == state_end)
-	{
-		return true;
-	}
-
-	if (state_start.Bits() == state_end.Bits())
-	{
-		UIntStore state_start_copy = state_start;
-
-		for (unsigned int i = 0U; i < max_steps; i++)
-		{
-			state_start_copy.Next();
-
-			if (IsDestinationExtensionOfSource(state_start_copy, state_end))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	return false;
-}
 
 void AddPaths_Recursive(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
@@ -107,7 +60,7 @@ void AddPaths_Recursive(
 		for (auto i = connections.begin(); i != connections.end(); i++)
 		{
 			unsigned int hash = i->state_end.Hash();
-			if (SiteswapGraph::DoesPathExist(i->state_end, s_end, n - 1) && a.find(hash) == a.end())
+			if (SiteswapGraphMultiAction::DoesPathExist(i->state_end, s_end, n - 1) && a.find(hash) == a.end())
 			{
 				p_current.push_back(*i);
 				a.insert(hash);
@@ -133,7 +86,7 @@ void AddPaths(
 
 	if (a.find(hash_begin) == a.end() &&
 		a.find(hash_end) == a.end() &&
-		SiteswapGraph::DoesPathExist(s_begin, s_end, n))
+		SiteswapGraphMultiAction::DoesPathExist(s_begin, s_end, n))
 	{
 		a.insert(hash_begin);
 		AddPaths_Recursive(p, std::deque<SiteswapGraphConnection>(), a, s_begin, s_end, n, maxThrow);

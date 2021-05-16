@@ -6,6 +6,10 @@
 
 
 
+bool IsDestinationExtensionOfSource(const UIntStore& source, const UIntStore& destination);
+
+
+
 void SiteswapGraphMultiAction::StoreValidBeginStates(
 	std::vector<UIntStore>& result,
 	const unsigned int& numberActions,
@@ -85,5 +89,57 @@ void SiteswapGraphMultiAction::StoreNextStates(
 				std::vector<UIntStoreTransferBit>()
 			});
 	}
+}
+
+
+
+bool SiteswapGraphMultiAction::DoesPathExist(
+	const UIntStore& stateBegin,
+	const UIntStore& stateEnd,
+	const unsigned int& maxSteps)
+{
+	if (stateBegin == stateEnd)
+	{
+		return true;
+	}
+
+	if (stateBegin.Bits() == stateEnd.Bits())
+	{
+		UIntStore state_start_copy = stateBegin;
+
+		for (unsigned int i = 0U; i < maxSteps; i++)
+		{
+			state_start_copy.Next();
+
+			if (IsDestinationExtensionOfSource(state_start_copy, stateEnd))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	return false;
+}
+
+
+
+bool IsDestinationExtensionOfSource(const UIntStore& source, const UIntStore& destination)
+{
+	if (source.Size() != destination.Size())
+	{
+		return false;
+	}
+
+	for (unsigned int i = 0U; i < source.Size(); i++)
+	{
+		if (source[i] & ~destination[i])
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 

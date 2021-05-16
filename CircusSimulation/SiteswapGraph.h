@@ -12,8 +12,6 @@
 
 namespace SiteswapGraph
 {
-	bool DoesPathExist(const UIntStore&, const UIntStore&, const unsigned int&);
-
 	SiteswapPattern* GetRandomPattern(
 		const unsigned int& numberBalls,
 		const unsigned int& numberActions,
