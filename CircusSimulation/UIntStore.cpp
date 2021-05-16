@@ -293,22 +293,16 @@ bool operator!=(const UIntStore& us1, const UIntStore& us2)
 
 bool operator<(const UIntStore& us1, const UIntStore& us2)
 {
-	if (us1.states_size < us2.states_size)
+	if (us1.states_size != us2.states_size)
 	{
-		return true;
+		return us1.states_size < us2.states_size;
 	}
-	else if (us1.states_size == us2.states_size)
+
+	for (unsigned int i = 0U; i < us1.states_size; i++)
 	{
-		for (unsigned int i = 0U; i < us1.states_size; i++)
+		if (us1.states[i] != us2.states[i])
 		{
-			if (us1.states[i] < us2.states[i])
-			{
-				return true;
-			}
-			else if (us1.states[i] > us2.states[i])
-			{
-				return false;
-			}
+			return us1.states[i] < us2.states[i];
 		}
 	}
 
@@ -317,22 +311,16 @@ bool operator<(const UIntStore& us1, const UIntStore& us2)
 
 bool operator>(const UIntStore& us1, const UIntStore& us2)
 {
-	if (us1.states_size > us2.states_size)
+	if (us1.states_size != us2.states_size)
 	{
-		return true;
+		return us1.states_size > us2.states_size;
 	}
-	else if (us1.states_size == us2.states_size)
+
+	for (unsigned int i = 0U; i < us1.states_size; i++)
 	{
-		for (unsigned int i = 0U; i < us1.states_size; i++)
+		if (us1.states[i] != us2.states[i])
 		{
-			if (us1.states[i] > us2.states[i])
-			{
-				return true;
-			}
-			else if (us1.states[i] < us2.states[i])
-			{
-				return false;
-			}
+			return us1.states[i] > us2.states[i];
 		}
 	}
 
@@ -366,18 +354,42 @@ bool operator!=(const UIntStoreTransferBit& tb1, const UIntStoreTransferBit& tb2
 
 bool operator<(const UIntStoreTransferBit& tb1, const UIntStoreTransferBit& tb2)
 {
-	return
-		tb1.index_state_source < tb2.index_state_source ||
-		tb1.index_state_destination < tb2.index_state_destination ||
-		tb1.state_transfer_throw < tb2.state_transfer_throw;
+	if (tb1.index_state_source != tb2.index_state_source)
+	{
+		return tb1.index_state_source < tb2.index_state_source;
+	}
+
+	if (tb1.index_state_destination != tb2.index_state_destination)
+	{
+		return tb1.index_state_destination < tb2.index_state_destination;
+	}
+
+	if (tb1.state_transfer_throw != tb2.state_transfer_throw)
+	{
+		return tb1.state_transfer_throw < tb2.state_transfer_throw;
+	}
+
+	return false;
 }
 
 bool operator>(const UIntStoreTransferBit& tb1, const UIntStoreTransferBit& tb2)
 {
-	return
-		tb1.index_state_source > tb2.index_state_source ||
-		tb1.index_state_destination > tb2.index_state_destination ||
-		tb1.state_transfer_throw > tb2.state_transfer_throw;
+	if (tb1.index_state_source != tb2.index_state_source)
+	{
+		return tb1.index_state_source > tb2.index_state_source;
+	}
+
+	if (tb1.index_state_destination != tb2.index_state_destination)
+	{
+		return tb1.index_state_destination > tb2.index_state_destination;
+	}
+
+	if (tb1.state_transfer_throw != tb2.state_transfer_throw)
+	{
+		return tb1.state_transfer_throw > tb2.state_transfer_throw;
+	}
+
+	return false;
 }
 
 std::ostream& operator<<(std::ostream& os, const UIntStoreTransferBit& tb)

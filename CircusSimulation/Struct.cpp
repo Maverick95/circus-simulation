@@ -56,6 +56,9 @@ bool operator<(const SiteswapPattern& sp1, const SiteswapPattern& sp2)
 		{
 			return sp1.throws[i].state_end < sp2.throws[i].state_end;
 		}
+
+		// Currently no distinction made for different state_transfer,
+		// these are assumed to be the default given a state_begin / state_end.
 	}
 
 	return false;
