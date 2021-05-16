@@ -15,7 +15,7 @@
 void AddPaths_Recursive(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
 	std::deque<SiteswapGraphConnection>& p_current,
-	std::unordered_set<unsigned int>& a,
+	std::unordered_set<std::string>& a,
 	const SiteswapState& s_current,
 	const SiteswapState& s_end,
 	const unsigned int n,
@@ -23,7 +23,7 @@ void AddPaths_Recursive(
 
 void AddPaths(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
-	std::unordered_set<unsigned int>& a,
+	std::unordered_set<std::string>& a,
 	const SiteswapState& s_begin,
 	const SiteswapState& s_end,
 	const unsigned int& n,
@@ -34,7 +34,7 @@ void AddPaths(
 void AddPaths_Recursive(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
 	std::deque<SiteswapGraphConnection>& p_current,
-	std::unordered_set<unsigned int>& a,
+	std::unordered_set<std::string>& a,
 	const SiteswapState& s_current,
 	const SiteswapState& s_end,
 	const unsigned int n,
@@ -59,7 +59,7 @@ void AddPaths_Recursive(
 	{
 		for (auto i = connections.begin(); i != connections.end(); i++)
 		{
-			unsigned int hash = i->state_end.Hash();
+			std::string hash = i->state_end;
 			if (SiteswapGraphMultiAction::DoesPathExist(i->state_end, s_end, n - 1) && a.find(hash) == a.end())
 			{
 				p_current.push_back(*i);
@@ -74,15 +74,15 @@ void AddPaths_Recursive(
 
 void AddPaths(
 	std::deque<std::deque<SiteswapGraphConnection>>& p,
-	std::unordered_set<unsigned int>& a,
+	std::unordered_set<std::string>& a,
 	const SiteswapState& s_begin,
 	const SiteswapState& s_end,
 	const unsigned int& n,
 	const unsigned int& maxThrow)
 {
-	unsigned int
-		hash_begin = s_begin.Hash(),
-		hash_end = s_end.Hash();
+	std::string
+		hash_begin = s_begin,
+		hash_end = s_end;
 
 	if (a.find(hash_begin) == a.end() &&
 		a.find(hash_end) == a.end() &&
@@ -115,17 +115,17 @@ SiteswapPattern* SiteswapGraph::GetRandomPattern(
 		return NULL;
 	}
 
-	std::unordered_set<unsigned int> a;
+	std::unordered_set<std::string> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
 	SiteswapGraphMultiAction::StoreValidBeginStates(states, numberActions, maxThrow, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		if (a.find(i->Hash()) == a.end())
+		if (a.find(*i) == a.end())
 		{
 			AddPaths(p, a, *i, *i, numberThrows, maxThrow);
-			do { a.insert(i->Hash()); }
+			do { a.insert(*i); }
 			while (i->Previous(maxThrow));
 		}
 	}
@@ -166,17 +166,17 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
 		return NULL;
 	}
 
-	std::unordered_set<unsigned int> a;
+	std::unordered_set<std::string> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
 	SiteswapGraphMultiAction::StoreValidBeginStates(states, numberActions, maxThrow, numberBalls);
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{
-		if (a.find(i->Hash()) == a.end())
+		if (a.find(*i) == a.end())
 		{
 			AddPaths(p, a, *i, *i, numberThrows, maxThrow);
-			do { a.insert(i->Hash()); } while (i->Previous(maxThrow));
+			do { a.insert(*i); } while (i->Previous(maxThrow));
 		}
 	}
 

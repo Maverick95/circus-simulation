@@ -9,47 +9,30 @@
 
 
 
-static const std::hash<std::string> uintstore_hash;
-
-
-
-void UIntStore::Rehash()
-{
-	std::string hash_str((const char*)states, sizeof(unsigned int) * states_size);
-	hash = uintstore_hash(hash_str);
-}
-
-
 UIntStore::UIntStore(const unsigned int& s, const unsigned int* st) :
 	states_size(s == 0U ? 1U : s),
 	states(new unsigned int[states_size]),
-	bits(0U),
-	hash(0U)
+	bits(0U)
 {
 	for (unsigned int i = 0U; i < states_size; i++)
 	{
 		states[i] = (st == NULL ? 0U : st[i]);
 		bits += Functions::Bits(states[i]);
 	}
-
-	//Rehash();
 }
 
 UIntStore::UIntStore(const unsigned int& st) :
 	states_size(1U),
 	states(new unsigned int[1U]),
-	bits(Functions::Bits(st)),
-	hash(0U)
+	bits(Functions::Bits(st))
 {
 	states[0U] = st;
-	//Rehash();
 }
 
 UIntStore::UIntStore(const UIntStore& us) :
 	states_size(us.states_size),
 	states(new unsigned int[states_size]),
-	bits(us.bits),
-	hash(us.hash)
+	bits(us.bits)
 {
 	for (unsigned int i = 0U; i < states_size; i++)
 	{
@@ -75,7 +58,6 @@ bool UIntStore::Spread(const unsigned int& s, const unsigned int& m, unsigned in
 			t -= v;
 		}
 
-		//Rehash();
 		return true;
 	}
 
@@ -92,10 +74,9 @@ unsigned int UIntStore::Bits() const
 	return bits;
 }
 
-unsigned int UIntStore::Hash() const
+ UIntStore::operator std::string() const
 {
-	std::string hash_str((const char*)states, sizeof(unsigned int) * states_size);
-	return uintstore_hash(hash_str);
+	return std::string((const char*)states, sizeof(unsigned int) * states_size);
 }
 
 UIntStore& UIntStore::operator=(const UIntStore& us)
@@ -113,7 +94,6 @@ UIntStore& UIntStore::operator=(const UIntStore& us)
 	}
 
 	bits = us.bits;
-	hash = us.hash;
 
 	return *this;
 }
@@ -150,7 +130,6 @@ bool UIntStore::BitNext(const unsigned int& index, unsigned int max)
 						current &= ~((1U << i) - 1U);
 						current |= ((1U << bits_found) - 1U);
 
-						//Rehash();
 						return true;
 					}
 					else
@@ -209,7 +188,6 @@ std::vector<unsigned int> UIntStore::Next()
 		states[i] = states[i] >> 1U;
 	}
 
-	//Rehash();
 	return result;
 }
 
@@ -246,7 +224,6 @@ void UIntStore::Populate(const UIntStoreEmptyBit& bit)
 		{
 			states[bit.index_state] |= mask;
 			bits++;
-			//Rehash();
 		}
 	}
 }
@@ -258,7 +235,6 @@ void UIntStore::Update(const unsigned int& index, const unsigned int& value)
 		bits -= Functions::Bits(states[index]);
 		states[index] = value;
 		bits += Functions::Bits(value);
-		//Rehash();
 	}
 }
 
@@ -272,7 +248,6 @@ void UIntStore::Empty(const UIntStoreEmptyBit& bit)
 		{
 			states[bit.index_state] &= ~(mask);
 			bits--;
-			//Rehash();
 		}
 	}
 }
@@ -410,10 +385,3 @@ std::ostream& operator<<(std::ostream& os, const UIntStoreTransferBit& tb)
 	os << "[" << tb.index_state_source << "," << tb.index_state_destination << "," << tb.state_transfer_throw << "]";
 	return os;
 }
-
-
-
-unsigned int UIntStoreHash::operator()(const UIntStore& input) const
-{
-	return input.Hash();
-};

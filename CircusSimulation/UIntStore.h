@@ -27,9 +27,6 @@ private:
 	unsigned int states_size;
 	unsigned int* states;
 	unsigned int bits;
-	unsigned int hash;
-
-	void Rehash();
 
 public:
 
@@ -44,8 +41,7 @@ public:
 	unsigned int operator()() const;
 
 	unsigned int Bits() const;
-	unsigned int Hash() const;
-
+	
 	bool IsValidBitSpread(const unsigned int&) const;
 
 	unsigned int Size() const;
@@ -65,6 +61,8 @@ public:
 	UIntStore& operator=(const UIntStore&);
 
 	const unsigned int& operator[](const unsigned int&) const;
+
+	operator std::string() const;
 
 	friend bool operator==(const UIntStore&, const UIntStore&);
 	friend bool operator!=(const UIntStore&, const UIntStore&);
@@ -88,11 +86,5 @@ bool operator!=(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
 bool operator<(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
 bool operator>(const UIntStoreTransferBit&, const UIntStoreTransferBit&);
 std::ostream& operator<<(std::ostream&, const UIntStoreTransferBit&);
-
-class UIntStoreHash
-{
-public:
-	unsigned int operator()(const UIntStore& input) const;
-};
 
 #endif
