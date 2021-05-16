@@ -88,7 +88,9 @@ DisplayPattern::DisplayPattern(const SiteswapPattern& sp)
 					{
 						throw_accessed[i2][j2] = true;
 
-						// This is really bad optimization-wise - sort out later.
+						// This should be better optimised, however it proves difficult at the moment.
+						// Reason is that actions are only stored if they occur.
+						// So actions < possible number of actions, therefore they can't be indexed.
 
 						for (auto k = pf[i2].state_transfer.begin(); k != pf[i2].state_transfer.end(); k++)
 						{
@@ -127,39 +129,6 @@ DisplayPattern::DisplayPattern(const SiteswapPattern& sp)
 		// whole pattern functionally repeats itself.
 
 		auto return_lcm = Functions::LowestCommonMultiple(cycle_lengths);
-
-		/*
-		unsigned int return_lcm = 1;
-
-		while (cycle_lengths_lcm_counter > 0)
-		{
-			for (unsigned int i = 0; i < cycle_lengths.size(); i++)
-			{
-				if (cycle_lengths[i] > 1)
-				{
-					unsigned int divisor = 2;
-					while (cycle_lengths[i] % divisor > 0) { divisor++; }
-
-					// Apply divisor to integer plus all following integers where possible.
-
-					return_lcm *= divisor;
-					cycle_lengths[i] /= divisor;
-					if (cycle_lengths[i] == 1) { cycle_lengths_lcm_counter--; }
-
-					for (unsigned int j = i + 1; j < cycle_lengths.size(); j++)
-					{
-						if (cycle_lengths[j] % divisor == 0)
-						{
-							cycle_lengths[j] /= divisor;
-							if (cycle_lengths[j] == 1) { cycle_lengths_lcm_counter--; }
-						}
-					}
-
-					break;
-				}
-			}
-		}
-		*/
 
 		// Use the LCM to compute all the mappings required.
 
@@ -260,37 +229,37 @@ unsigned int DisplayPattern::GetTotalLength() const
 	return mapping_length;
 }
 
-const unsigned int * DisplayPattern::GetThrow(const unsigned int & i, const unsigned int & j) const
+const unsigned int* DisplayPattern::GetThrow(const unsigned int& indexThrow, const unsigned int& indexAction) const
 {
 	const unsigned int * return_value = NULL;
 
-	if (i < mapping_length && j < num_actions)
+	if (indexThrow < mapping_length && indexAction < num_actions)
 	{
-		return_value = &(mapping_throws[i][j]);
+		return_value = &(mapping_throws[indexThrow][indexAction]);
 	}
 
 	return return_value;
 }
 
-const unsigned int * DisplayPattern::GetBall(const unsigned int & i, const unsigned int & j) const
+const unsigned int* DisplayPattern::GetBall(const unsigned int& indexThrow, const unsigned int& indexAction) const
 {
 	const unsigned int * return_value = NULL;
 
-	if (i < mapping_length && j < num_actions)
+	if (indexThrow < mapping_length && indexAction < num_actions)
 	{
-		return_value = mapping_balls[i][j];
+		return_value = mapping_balls[indexThrow][indexAction];
 	}
 
 	return return_value;
 }
 
-const unsigned int * DisplayPattern::GetAction(const unsigned int & i, const unsigned int & j) const
+const unsigned int* DisplayPattern::GetAction(const unsigned int& indexThrow, const unsigned int& indexAction) const
 {
 	const unsigned int * return_value = NULL;
 
-	if (i < mapping_length && j < num_actions)
+	if (indexThrow < mapping_length && indexAction < num_actions)
 	{
-		return_value = mapping_actions[i][j];
+		return_value = mapping_actions[indexThrow][indexAction];
 	}
 
 	return return_value;

@@ -35,9 +35,9 @@ public:
 	bool IsValid() const;
 	unsigned int GetRepeatingLength() const;
 	unsigned int GetTotalLength() const;
-	const unsigned int * GetThrow(const unsigned int &, const unsigned int &) const;
-	const unsigned int * GetBall(const unsigned int &, const unsigned int &) const;
-	const unsigned int * GetAction(const unsigned int &, const unsigned int &) const;
+	const unsigned int* GetThrow(const unsigned int& indexThrow, const unsigned int& indexAction) const;
+	const unsigned int* GetBall(const unsigned int& indexThrow, const unsigned int& indexAction) const;
+	const unsigned int* GetAction(const unsigned int& indexThrow, const unsigned int& indexAction) const;
 	unsigned int GetNumberBalls() const;
 	unsigned int GetNumberActions() const;
 	unsigned int GetMaxThrow() const;
