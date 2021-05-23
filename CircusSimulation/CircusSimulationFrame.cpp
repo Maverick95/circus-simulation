@@ -7,6 +7,8 @@
 #include "CircusSimulationFrame.h"
 #include "SiteswapGraph.h"
 
+#include "GetSingleJugglerPatternsWindow.h"
+
 
 
 static const int SPIN_BALLS = 1;
@@ -117,6 +119,8 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 	window_1 = new SingleJugglerWindow(this, &(window_ratios_x[0]), &(window_ratios_y[0]), 0.4);
 	window_2 = new BallStatusWindow(this);
 
+	GetSingleJugglerPatternsWindow* window_3 = new GetSingleJugglerPatternsWindow(this);
+
 	pattern_handler.AddWindow(window_1);
 	pattern_handler.AddWindow(window_2);
 
@@ -124,6 +128,7 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 
 	sz_1_1->Add(window_1, 1, wxEXPAND);
 	sz_1_1->Add(window_2, 1, wxEXPAND);
+	sz_1_1->Add(window_3, 1, wxEXPAND);
 
 	sz_0->Add(sz_1_1, 5, wxEXPAND);
 
