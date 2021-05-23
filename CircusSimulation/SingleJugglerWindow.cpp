@@ -266,6 +266,7 @@ void SingleJugglerWindow::OnScreenPaintD1()
 			{
 				D2D1_ELLIPSE point = { { plot_x[i], this->GetClientSize().GetHeight() - plot_y[i] }, 10, 10 };
 				GetRenderTarget()->FillEllipse(point, brushCircles);
+				GetRenderTarget()->DrawEllipse(point, brushCirclesOutlines);
 			}
 		}
 	}
@@ -373,6 +374,10 @@ SingleJugglerWindow::SingleJugglerWindow(wxWindow * parent, const unsigned int *
 	GetRenderTarget()->CreateSolidColorBrush(
 		D2D1::ColorF(D2D1::ColorF::Red),
 		&brushCircles);
+
+	GetRenderTarget()->CreateSolidColorBrush(
+		D2D1::ColorF(D2D1::ColorF::Black),
+		&brushCirclesOutlines);
 }
 
 SingleJugglerWindow::~SingleJugglerWindow()
@@ -392,5 +397,5 @@ SingleJugglerWindow::~SingleJugglerWindow()
 	delete[] window_widths_y;
 
 	brushCircles->Release();
-	brushCircles = NULL;
+	brushCirclesOutlines->Release();
 }

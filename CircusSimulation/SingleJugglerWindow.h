@@ -25,6 +25,7 @@ private:
 	unsigned int * window_widths_y;
 
 	ID2D1SolidColorBrush* brushCircles;
+	ID2D1SolidColorBrush* brushCirclesOutlines;
 
 protected:
 
