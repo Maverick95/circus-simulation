@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Drawing">
       <UniqueIdentifier>{3098d25f-7789-4c8f-a225-2923a7ec4d03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\wxWidgets elements\Unclassified">
+      <UniqueIdentifier>{9fd92251-d20f-4833-beef-3e00c9e6b509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\wxWidgets elements\Unclassified">
+      <UniqueIdentifier>{0646e767-0199-4d51-86f4-9131efb02799}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -141,6 +147,9 @@
     <ClInclude Include="Direct2dFactory.h">
       <Filter>Header Files\Drawing</Filter>
     </ClInclude>
+    <ClInclude Include="GetSingleJugglerPatternsWindow.h">
+      <Filter>Header Files\wxWidgets elements\Unclassified</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -205,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="Direct2dFactory.cpp">
       <Filter>Source Files\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="GetSingleJugglerPatternsWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Unclassified</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
