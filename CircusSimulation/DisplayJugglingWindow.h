@@ -3,9 +3,9 @@
 
 #include "stdafx.h"
 
-#include "DisplayPatternWindow.h"
+#include "DisplayPatternDirect2dWindow.h"
 
-class DisplayJugglingWindow : public DisplayPatternWindow
+class DisplayJugglingWindow : public DisplayPatternDirect2dWindow
 {
 
 private:
@@ -28,15 +28,17 @@ private:
 
 protected:
 
-	virtual void Reset_Derived();
-	virtual void Populate_Derived();
+	virtual void OnBallsUpdate();
 
-	virtual void Stop_Derived();
+	virtual void ResetD1();
+	virtual void PopulateD1();
+	virtual void StopD1();
 
-	virtual void Reset_Derived_2() = 0;
-	virtual void Populate_Derived_2() = 0;
-	virtual void OnBallsUpdate_Derived_2() = 0;
+	virtual void OnBallsUpdateD1() = 0;
 
+	virtual void ResetD2() = 0;
+	virtual void PopulateD2() = 0;
+	
 	virtual DisplayPatternHandler * GetValidHandler() override;
 
 	// Internal accessor functions.
@@ -49,8 +51,6 @@ public:
 	DisplayJugglingWindow(wxWindow *, const unsigned int &);
 
 	virtual ~DisplayJugglingWindow();
-
-	virtual void OnBallsUpdate_Derived();
 
 };
 

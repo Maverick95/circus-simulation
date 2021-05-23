@@ -5,9 +5,9 @@
 
 #include <wx\wx.h>
 
-#include "DisplayPatternWindow.h"
+#include "DisplayPatternWxWindow.h"
 
-class BallStatusWindow : public DisplayPatternWindow
+class BallStatusWindow : public DisplayPatternWxWindow
 {
 
 private:
@@ -16,21 +16,21 @@ private:
 
 protected:
 
-	virtual void OnScreenUpdate_Derived(const long &);
-	virtual void OnScreenPaint_Derived(wxAutoBufferedPaintDC &);
+	virtual void OnBallsUpdate();
+	virtual void OnScreenUpdateD1(const long &);
+	
+	virtual void ResetD1();
+	virtual void PopulateD1();
+	virtual void StopD1();
+	
+	virtual void OnScreenPaintD1(wxAutoBufferedPaintDC& dc);
 
-	virtual void Reset_Derived();
-	virtual void Populate_Derived();
-
-	virtual void Stop_Derived();
 
 public:
 
 	BallStatusWindow(wxWindow *);
 
 	virtual ~BallStatusWindow();
-
-	virtual void OnBallsUpdate_Derived();
 
 };
 

@@ -55,11 +55,20 @@
     <Filter Include="Source Files\Program maintenance">
       <UniqueIdentifier>{b7d8c066-5df2-4a56-9c3a-0ee73033e084}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Drawing">
+      <UniqueIdentifier>{775435d6-237a-4814-b355-640d24d28318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawing">
+      <UniqueIdentifier>{3098d25f-7789-4c8f-a225-2923a7ec4d03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
     <Text Include="SiteswapGraphReadMe.txt">
       <Filter>Source Files\Graph data processing</Filter>
+    </Text>
+    <Text Include="DisplayPatternWindowReadMe.txt">
+      <Filter>Source Files\wxWidgets elements\Display processing</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -79,9 +88,6 @@
       <Filter>Header Files\wxWidgets elements\Display processing</Filter>
     </ClInclude>
     <ClInclude Include="BallStatusWindow.h">
-      <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
-    </ClInclude>
-    <ClInclude Include="TestBallDrawingWindow.h">
       <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
     </ClInclude>
     <ClInclude Include="SiteswapGraph.h">
@@ -123,6 +129,18 @@
     <ClInclude Include="SiteswapGraphMultiAction.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
+    <ClInclude Include="DisplayPatternDirect2dWindow.h">
+      <Filter>Header Files\wxWidgets elements\Display processing</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayPatternWxWindow.h">
+      <Filter>Header Files\wxWidgets elements\Display processing</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleJugglerWindow.h">
+      <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Direct2dFactory.h">
+      <Filter>Header Files\Drawing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,9 +159,6 @@
       <Filter>Source Files\wxWidgets elements\Display processing</Filter>
     </ClCompile>
     <ClCompile Include="BallStatusWindow.cpp">
-      <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
-    </ClCompile>
-    <ClCompile Include="TestBallDrawingWindow.cpp">
       <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
     </ClCompile>
     <ClCompile Include="SiteswapGraph.cpp">
@@ -178,6 +193,18 @@
     </ClCompile>
     <ClCompile Include="SiteswapGraphMultiAction.cpp">
       <Filter>Source Files\Graph data processing</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayPatternDirect2dWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Display processing</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayPatternWxWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Display processing</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleJugglerWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct2dFactory.cpp">
+      <Filter>Source Files\Drawing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -19,10 +19,7 @@ private:
 
 	bool full_removal;
 
-	void OnScreenUpdate(wxTimerEvent &);
-	void OnScreenPaint(wxPaintEvent &);
-
-	void OnBallsUpdate();
+	void OnScreenUpdate(wxTimerEvent&);
 
 	void Reset();
 	void Populate();
@@ -32,23 +29,17 @@ private:
 	void Play();
 	void Stop();
 
-	wxDECLARE_EVENT_TABLE();
-
 protected:
 
-	virtual DisplayPatternHandler * GetValidHandler();
+	virtual DisplayPatternHandler* GetValidHandler();
 
 	// Abstract functions - defines DisplayPatternWindow as abstract base class.
 
-	virtual void OnScreenUpdate_Derived(const long &) = 0;
-	virtual void OnScreenPaint_Derived(wxAutoBufferedPaintDC &) = 0;
-
-	virtual void OnBallsUpdate_Derived() = 0;
-
-	virtual void Reset_Derived() = 0;
-	virtual void Populate_Derived() = 0;
-
-	virtual void Stop_Derived() = 0;
+	virtual void OnBallsUpdate() = 0;
+	virtual void OnScreenUpdateD1(const long &) = 0;
+	virtual void ResetD1() = 0;
+	virtual void PopulateD1() = 0;
+	virtual void StopD1() = 0;
 
 public:
 
@@ -57,6 +48,8 @@ public:
 	virtual ~DisplayPatternWindow();
 
 	friend class DisplayPatternHandler;
+
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

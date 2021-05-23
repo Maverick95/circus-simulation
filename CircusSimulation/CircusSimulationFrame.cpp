@@ -2,7 +2,7 @@
 
 #include "Settings.h"
 #include "BallStatusWindow.h"
-#include "TestBallDrawingWindow.h"
+#include "SingleJugglerWindow.h"
 
 #include "CircusSimulationFrame.h"
 #include "SiteswapGraph.h"
@@ -114,7 +114,7 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 	window_ratios_x[0] = 3u; window_ratios_x[1] = 5u; window_ratios_x[2] = 1u;
 	window_ratios_y[0] = 2u; window_ratios_y[1] = 2u; window_ratios_y[2] = 7u; window_ratios_y[3] = 1u;
 
-	window_1 = new TestBallDrawingWindow(this, &(window_ratios_x[0]), &(window_ratios_y[0]), 0.4);
+	window_1 = new SingleJugglerWindow(this, &(window_ratios_x[0]), &(window_ratios_y[0]), 0.4);
 	window_2 = new BallStatusWindow(this);
 
 	pattern_handler.AddWindow(window_1);

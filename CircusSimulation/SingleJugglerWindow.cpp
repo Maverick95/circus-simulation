@@ -1,43 +1,32 @@
 #include "DisplayPatternBall.h"
 #include "DisplayPatternHandler.h"
 
-#include "TestBallDrawingWindow.h"
+#include "SingleJugglerWindow.h"
+#include "Direct2dFactory.h"
 
 
 
-wxBEGIN_EVENT_TABLE(TestBallDrawingWindow, DisplayJugglingWindow)
-
-EVT_SIZE(TestBallDrawingWindow::OnScreenResize)
-
-wxEND_EVENT_TABLE()
-
-void TestBallDrawingWindow::OnScreenResize_Internal()
+void SingleJugglerWindow::OnScreenResizeD1()
 {
-	wxSize s = GetClientSize();
+	wxSize size = GetClientSize();
 
 	for (unsigned int i = 0; i < 3; i++)
 	{
-		window_widths_x[i] = (unsigned int)((unsigned int)(s.GetX()) * window_ratios_x[i] / 2);
+		window_widths_x[i] = (unsigned int)((unsigned int)(size.GetWidth()) * window_ratios_x[i] / 2);
 	}
 
 	for (unsigned int i = 0; i < 4; i++)
 	{
-		window_widths_y[i] = (unsigned int)((unsigned int)(s.GetY()) * window_ratios_y[i]);
+		window_widths_y[i] = (unsigned int)((unsigned int)(size.GetHeight()) * window_ratios_y[i]);
 	}
 }
 
-void TestBallDrawingWindow::OnScreenResize(wxSizeEvent & event)
-{
-	OnScreenResize_Internal();
-}
-
-
-void TestBallDrawingWindow::OnBallsUpdate_Derived_2()
+void SingleJugglerWindow::OnBallsUpdateD1()
 {
 
 }
 
-void TestBallDrawingWindow::OnScreenUpdate_Derived(const long & time_elapsed)
+void SingleJugglerWindow::OnScreenUpdateD1(const long & time_elapsed)
 {
 	auto h = GetValidHandler();
 
@@ -265,25 +254,24 @@ void TestBallDrawingWindow::OnScreenUpdate_Derived(const long & time_elapsed)
 	}
 }
 
-void TestBallDrawingWindow::OnScreenPaint_Derived(wxAutoBufferedPaintDC & dc)
+void SingleJugglerWindow::OnScreenPaintD1()
 {
 	auto h = GetValidHandler();
 
 	if (h != NULL)
 	{
-		dc.SetBrush(*wxRED_BRUSH);
-
 		for (unsigned int i = 0; i < h->GetNumberBalls(); i++)
 		{
 			if (h->GetBall(i)->GetState() == STATE_BEING_THROWN)
 			{
-				dc.DrawCircle(wxPoint(plot_x[i], this->GetClientSize().GetHeight() - plot_y[i]), 10);
+				D2D1_ELLIPSE point = { { plot_x[i], this->GetClientSize().GetHeight() - plot_y[i] }, 10, 10 };
+				GetRenderTarget()->FillEllipse(point, brushCircles);
 			}
 		}
 	}
 }
 
-void TestBallDrawingWindow::Reset_Derived_2()
+void SingleJugglerWindow::ResetD2()
 {
 	auto h = GetValidHandler();
 
@@ -298,7 +286,7 @@ void TestBallDrawingWindow::Reset_Derived_2()
 	Refresh(false, NULL);
 }
 
-void TestBallDrawingWindow::Populate_Derived_2()
+void SingleJugglerWindow::PopulateD2()
 {
 	auto h = GetValidHandler();
 
@@ -312,12 +300,13 @@ void TestBallDrawingWindow::Populate_Derived_2()
 	}
 }
 
-TestBallDrawingWindow::TestBallDrawingWindow(wxWindow * parent, const unsigned int * w_r_x, const unsigned int * w_r_y, const double & dr)
+SingleJugglerWindow::SingleJugglerWindow(wxWindow * parent, const unsigned int * w_r_x, const unsigned int * w_r_y, const double & dr)
 	: DisplayJugglingWindow(parent, 2),
 	plot_x(NULL), plot_y(NULL),
 	window_ratios_x(NULL), window_ratios_y(NULL),
 	window_widths_x(NULL), window_widths_y(NULL),
-	dwell_ratio(dr)
+	dwell_ratio(dr),
+	brushCircles(NULL)
 {
 	// Modify the dwell ratio as appropriate.
 
@@ -379,10 +368,14 @@ TestBallDrawingWindow::TestBallDrawingWindow(wxWindow * parent, const unsigned i
 	window_widths_x = new unsigned int[3];
 	window_widths_y = new unsigned int[4];
 
-	OnScreenResize_Internal();
+	OnScreenResizeD1();
+
+	GetRenderTarget()->CreateSolidColorBrush(
+		D2D1::ColorF(D2D1::ColorF::Red),
+		&brushCircles);
 }
 
-TestBallDrawingWindow::~TestBallDrawingWindow()
+SingleJugglerWindow::~SingleJugglerWindow()
 {
 	auto h = GetValidHandler();
 
@@ -397,4 +390,7 @@ TestBallDrawingWindow::~TestBallDrawingWindow()
 
 	delete[] window_widths_x;
 	delete[] window_widths_y;
+
+	brushCircles->Release();
+	brushCircles = NULL;
 }

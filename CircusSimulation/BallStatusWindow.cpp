@@ -2,7 +2,7 @@
 
 
 
-void BallStatusWindow::OnBallsUpdate_Derived()
+void BallStatusWindow::OnBallsUpdate()
 {
 	// Colour the throw boxes.
 
@@ -37,17 +37,17 @@ void BallStatusWindow::OnBallsUpdate_Derived()
 	}
 }
 
-void BallStatusWindow::OnScreenUpdate_Derived(const long & time_elapsed)
+void BallStatusWindow::OnScreenUpdateD1(const long & time_elapsed)
 {
 
 }
 
-void BallStatusWindow::OnScreenPaint_Derived(wxAutoBufferedPaintDC & dc)
+void BallStatusWindow::OnScreenPaintD1(wxAutoBufferedPaintDC& dc)
 {
 
 }
 
-void BallStatusWindow::Reset_Derived()
+void BallStatusWindow::ResetD1()
 {
 	auto h = GetValidHandler();
 
@@ -66,7 +66,7 @@ void BallStatusWindow::Reset_Derived()
 	pattern_balls = NULL;
 }
 
-void BallStatusWindow::Populate_Derived()
+void BallStatusWindow::PopulateD1()
 {
 	auto h = GetValidHandler();
 
@@ -107,7 +107,7 @@ void BallStatusWindow::Populate_Derived()
 	}
 }
 
-void BallStatusWindow::Stop_Derived()
+void BallStatusWindow::StopD1()
 {
 	auto h = GetValidHandler();
 
@@ -126,7 +126,7 @@ void BallStatusWindow::Stop_Derived()
 
 BallStatusWindow::BallStatusWindow(wxWindow * parent)
 	:
-	DisplayPatternWindow(parent),
+	DisplayPatternWxWindow(parent),
 	pattern_balls(NULL)
 {
 

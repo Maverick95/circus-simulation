@@ -2,6 +2,7 @@
 #include "Settings.h"
 
 #include "DisplayPatternWindow.h"
+#include "Direct2dFactory.h"
 
 
 
@@ -12,7 +13,6 @@ static const int TIMER_SCREEN_UPDATE = 1;
 wxBEGIN_EVENT_TABLE(DisplayPatternWindow, wxWindow)
 
 EVT_TIMER(TIMER_SCREEN_UPDATE, DisplayPatternWindow::OnScreenUpdate)
-EVT_PAINT(DisplayPatternWindow::OnScreenPaint)
 
 wxEND_EVENT_TABLE()
 
@@ -30,34 +30,12 @@ void DisplayPatternWindow::OnScreenUpdate(wxTimerEvent& event)
 
 		// Apply any derived additional functionality.
 
-		OnScreenUpdate_Derived(time_elapsed);
+		OnScreenUpdateD1(time_elapsed);
 
 		// Update screen - note that all screen won't automatically need refreshing
 		// derived functionality invalidates the area.
 
 		Update();
-	}
-}
-
-void DisplayPatternWindow::OnBallsUpdate()
-{
-	OnBallsUpdate_Derived();
-}
-
-void DisplayPatternWindow::OnScreenPaint(wxPaintEvent& event)
-{
-	wxAutoBufferedPaintDC dc(this);
-
-	dc.SetBackground(*wxWHITE_BRUSH);
-	dc.Clear();
-
-	auto h = GetValidHandler();
-
-	if (h != NULL)
-	{
-		// Apply any derived additional functionality.
-
-		OnScreenPaint_Derived(dc);
 	}
 }
 
@@ -75,7 +53,6 @@ DisplayPatternHandler * DisplayPatternWindow::GetValidHandler()
 
 	return return_value;
 }
-
 
 DisplayPatternWindow::DisplayPatternWindow(wxWindow * parent)
 	: wxWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0L),
@@ -115,7 +92,7 @@ void DisplayPatternWindow::Reset()
 
 	timer_update_screen = NULL;
 
-	Reset_Derived();
+	ResetD1();
 }
 
 void DisplayPatternWindow::Populate()
@@ -127,7 +104,7 @@ void DisplayPatternWindow::Populate()
 		timer_update_screen = new wxTimer(this, TIMER_SCREEN_UPDATE);
 	}
 
-	Populate_Derived();
+	PopulateD1();
 }
 
 
@@ -155,5 +132,5 @@ void DisplayPatternWindow::Stop()
 		timer_update_screen->Stop();
 	}
 
-	Stop_Derived();
+	StopD1();
 }

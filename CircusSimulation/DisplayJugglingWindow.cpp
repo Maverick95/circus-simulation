@@ -5,7 +5,7 @@
 
 
 
-void DisplayJugglingWindow::Reset_Derived()
+void DisplayJugglingWindow::ResetD1()
 {
 	auto h = GetValidHandler();
 
@@ -35,12 +35,12 @@ void DisplayJugglingWindow::Reset_Derived()
 
 	mapping_current_factor = 0;
 
-	Reset_Derived_2();
+	ResetD2();
 }
 
 
 
-void DisplayJugglingWindow::Populate_Derived()
+void DisplayJugglingWindow::PopulateD1()
 {
 	auto h = GetValidHandler();
 
@@ -133,10 +133,10 @@ void DisplayJugglingWindow::Populate_Derived()
 		}
 	}
 	
-	Populate_Derived_2();
+	PopulateD2();
 }
 
-void DisplayJugglingWindow::Stop_Derived()
+void DisplayJugglingWindow::StopD1()
 {
 	auto h = GetValidHandler();
 
@@ -204,7 +204,7 @@ unsigned int * DisplayJugglingWindow::GetBallSiteDestination(const unsigned int 
 
 
 
-void DisplayJugglingWindow::OnBallsUpdate_Derived()
+void DisplayJugglingWindow::OnBallsUpdate()
 {
 	auto h = GetValidHandler();
 
@@ -233,13 +233,13 @@ void DisplayJugglingWindow::OnBallsUpdate_Derived()
 		
 	}
 
-	OnBallsUpdate_Derived_2();
+	OnBallsUpdateD1();
 }
 
 
 
 DisplayJugglingWindow::DisplayJugglingWindow(wxWindow * parent, const unsigned int & ns)
-	: DisplayPatternWindow(parent),
+	: DisplayPatternDirect2dWindow(parent),
 	num_sites(ns == 0 ? 1 : ns),
 	num_actions(0),
 	num_balls(0),

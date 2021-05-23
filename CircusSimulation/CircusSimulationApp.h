@@ -14,6 +14,7 @@ public:
 	virtual int OnExit();
 
 	CircusSimulationApp();
+	virtual ~CircusSimulationApp();
 
 };
 
