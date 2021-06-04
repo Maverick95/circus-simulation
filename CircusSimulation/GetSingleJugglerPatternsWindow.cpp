@@ -9,6 +9,14 @@
 
 static const unsigned int ID_SPIN_NUMBER_BALLS = 1U;
 
+static const unsigned int ID_RADIO_TYPE_ASYNC = 2U;
+static const unsigned int ID_RADIO_TYPE_SYNC = 3U;
+
+static const unsigned int ID_RADIO_STARTING_STATE_STANDARD = 4U;
+static const unsigned int ID_RADIO_STARTING_STATE_EXCITED = 4U;
+static const unsigned int ID_RADIO_STARTING_STATE_BOTH = 4U;
+
+
 
 /* Event table. */
 
@@ -16,7 +24,42 @@ BEGIN_EVENT_TABLE(GetSingleJugglerPatternsWindow, wxWindow)
 
 EVT_SPINCTRL(ID_SPIN_NUMBER_BALLS, SetThrowHeightMaxBoundaries)
 
+EVT_RADIOBUTTON(ID_RADIO_TYPE_ASYNC, SetTypeAsync)
+EVT_RADIOBUTTON(ID_RADIO_TYPE_SYNC, SetTypeSync)
+
+EVT_RADIOBUTTON(ID_RADIO_STARTING_STATE_STANDARD, SetStartingStateStandard)
+EVT_RADIOBUTTON(ID_RADIO_STARTING_STATE_EXCITED, SetStartingStateExcited)
+EVT_RADIOBUTTON(ID_RADIO_STARTING_STATE_BOTH, SetStartingStateBoth)
+
 END_EVENT_TABLE()
+
+
+
+void GetSingleJugglerPatternsWindow::SetRadioButtonStatuses()
+{
+	switch (type)
+	{
+	case PatternQuerySingleJugglerType::TYPE_ASYNC:
+		rd_patternTypeAsync->SetValue(true);
+		break;
+	case PatternQuerySingleJugglerType::TYPE_SYNC:
+		rd_patternTypeSync->SetValue(true);
+		break;
+	}
+
+	switch (startingState)
+	{
+	case PatternQueryStartingState::STATE_STANDARD_ONLY:
+		rd_startingStateStandard->SetValue(true);
+		break;
+	case PatternQueryStartingState::STATE_EXCITED_ONLY:
+		rd_startingStateExcited->SetValue(true);
+		break;
+	case PatternQueryStartingState::STATE_ALL:
+		rd_startingStateBoth->SetValue(true);
+		break;
+	}
+}
 
 
 
@@ -32,9 +75,45 @@ void GetSingleJugglerPatternsWindow::SetThrowHeightMaxBoundaries(wxSpinEvent& ev
 
 
 
+void GetSingleJugglerPatternsWindow::SetTypeAsync(wxCommandEvent& event)
+{
+	type = PatternQuerySingleJugglerType::TYPE_ASYNC;
+}
+
+void GetSingleJugglerPatternsWindow::SetTypeSync(wxCommandEvent& event)
+{
+	type = PatternQuerySingleJugglerType::TYPE_SYNC;
+}
+
+void GetSingleJugglerPatternsWindow::SetStartingStateStandard(wxCommandEvent& event)
+{
+	startingState = PatternQueryStartingState::STATE_STANDARD_ONLY;
+}
+
+void GetSingleJugglerPatternsWindow::SetStartingStateExcited(wxCommandEvent& event)
+{
+	startingState = PatternQueryStartingState::STATE_EXCITED_ONLY;
+}
+
+void GetSingleJugglerPatternsWindow::SetStartingStateBoth(wxCommandEvent& event)
+{
+	startingState = PatternQueryStartingState::STATE_ALL;
+}
+
+
+
 GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	: wxWindow(parent, wxID_ANY),
-	sp_throwHeightMax(NULL)
+	sp_numberBalls(NULL),
+	sp_numberThrows(NULL),
+	sp_throwHeightMax(NULL),
+	rd_patternTypeAsync(NULL),
+	rd_patternTypeSync(NULL),
+	rd_startingStateStandard(NULL),
+	rd_startingStateExcited(NULL),
+	rd_startingStateBoth(NULL),
+	type(PatternQuerySingleJugglerType::TYPE_SYNC),
+	startingState(PatternQueryStartingState::STATE_EXCITED_ONLY)
 {
 	wxBoxSizer* sz_base = new wxBoxSizer(wxHORIZONTAL);
 
@@ -57,11 +136,11 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 		settings_numberThrowsMax = Settings::NumberThrows_Maximum(),
 		settings_throwHeightMax = Settings::ThrowHeight_Maximum();
 
-	wxSpinCtrl* sp_numberBalls = new wxSpinCtrl(this, ID_SPIN_NUMBER_BALLS, wxEmptyString,
+	sp_numberBalls = new wxSpinCtrl(this, ID_SPIN_NUMBER_BALLS, wxEmptyString,
 		wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
 		settings_numberBallsMin, settings_numberBallsMax);
 
-	wxSpinCtrl* sp_numberThrows = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
+	sp_numberThrows = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
 		1U, settings_numberThrowsMax);
 
@@ -91,11 +170,11 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 
 	wxStaticText* st_patternTypeHeader = new wxStaticText(this, wxID_ANY, "Pattern type");
 
-	wxRadioButton* rd_patternTypeAsync = new wxRadioButton(
+	rd_patternTypeAsync = new wxRadioButton(
 		this, wxID_ANY, "Asynchronous",
 		wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
 
-	wxRadioButton* rd_patternTypeSync = new wxRadioButton(
+	rd_patternTypeSync = new wxRadioButton(
 		this, wxID_ANY, "Synchronous");
 
 	sz_1->AddStretchSpacer();
@@ -119,14 +198,14 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 
 	wxStaticText* st_startingStateHeader = new wxStaticText(this, wxID_ANY, "Starting state");
 
-	wxRadioButton* rd_startingStateStandard = new wxRadioButton(
+	rd_startingStateStandard = new wxRadioButton(
 		this, wxID_ANY, "Standard",
 		wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
 
-	wxRadioButton* rd_startingStateExcited = new wxRadioButton(
+	rd_startingStateExcited = new wxRadioButton(
 		this, wxID_ANY, "Excited");
 
-	wxRadioButton* rd_startingStateBoth = new wxRadioButton(
+	rd_startingStateBoth = new wxRadioButton(
 		this, wxID_ANY, "Both");
 
 	sz_2->AddStretchSpacer();
@@ -155,6 +234,8 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	sz_base->AddStretchSpacer();
 
 	SetSizer(sz_base);
+
+	SetRadioButtonStatuses();
 }
 
 GetSingleJugglerPatternsWindow::~GetSingleJugglerPatternsWindow()
