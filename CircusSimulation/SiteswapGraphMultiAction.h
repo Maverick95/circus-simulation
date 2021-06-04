@@ -19,6 +19,12 @@ namespace SiteswapGraphMultiAction
 		const unsigned int& maxThrow,
 		const unsigned int& numberBits);
 
+	void StoreStandardBeginState(
+		std::vector<UIntStore>& result,
+		const unsigned int& numberActions,
+		const unsigned int& maxThrow,
+		const unsigned int& numberBits);
+
 	void StoreNextStates(
 		std::forward_list<SiteswapGraphConnection>& result,
 		const UIntStore& current,

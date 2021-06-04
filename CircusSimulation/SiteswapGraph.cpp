@@ -149,7 +149,8 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
 	const unsigned int& numberBalls,
 	const unsigned int& numberActions,
 	const unsigned int& numberThrows,
-	unsigned int maxThrow)
+	unsigned int maxThrow,
+	const PatternQueryStartingState& include)
 {
 	const unsigned int maxThrowSettings = Settings::ThrowHeight_Maximum();
 
@@ -169,7 +170,25 @@ std::set<SiteswapPattern>* SiteswapGraph::GetPatterns(
 	std::unordered_set<std::string> a;
 	std::deque<std::deque<SiteswapGraphConnection>> p;
 	std::vector<UIntStore> states;
-	SiteswapGraphMultiAction::StoreValidBeginStates(states, numberActions, maxThrow, numberBalls);
+
+	if (include == PatternQueryStartingState::STATE_STANDARD_ONLY)
+	{
+		SiteswapGraphMultiAction::StoreStandardBeginState(states, numberActions, maxThrow, numberBalls);
+	}
+	else
+	{
+		SiteswapGraphMultiAction::StoreValidBeginStates(states, numberActions, maxThrow, numberBalls);
+		if (include == PatternQueryStartingState::STATE_EXCITED_ONLY)
+		{
+			std::vector<UIntStore> states_begin;
+			SiteswapGraphMultiAction::StoreStandardBeginState(states_begin, numberActions, maxThrow, numberBalls);
+			if (!states_begin.empty())
+			{
+				auto i = states_begin.begin();
+				do { a.insert(*i); } while (i->Previous(maxThrow));
+			}
+		}
+	}
 
 	for (auto i = states.begin(); i != states.end(); i++)
 	{

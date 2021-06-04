@@ -47,4 +47,17 @@ enum SiteswapGraphShortestPathMethod
 	METHOD_DERIVED
 };
 
+enum PatternQuerySingleJugglerType
+{
+	TYPE_ASYNC,
+	TYPE_SYNC
+};
+
+enum PatternQueryStartingState
+{
+	STATE_STANDARD_ONLY,
+	STATE_EXCITED_ONLY,
+	STATE_ALL
+};
+
 #endif

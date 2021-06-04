@@ -80,6 +80,117 @@ BOOST_AUTO_TEST_CASE(GetPatterns_Balls3_Throws3_Max6)
 
 
 
+BOOST_AUTO_TEST_CASE(GetPatterns_Balls3_Throws3_Max6_Standard_State_Only)
+{
+	auto* patterns = SiteswapGraph::GetPatterns(3U, 1U, 3U, 6U, PatternQueryStartingState::STATE_STANDARD_ONLY);
+	BOOST_CHECK(patterns != NULL);
+	BOOST_TEST(patterns->size() == 3U);
+
+	std::vector<SiteswapGraphConnection> results;
+
+	// 4 4 1
+	results.push_back(GenerateSingleActionConnection(7U, 11U, 4U));
+	results.push_back(GenerateSingleActionConnection(11U, 13U, 4U));
+	results.push_back(GenerateSingleActionConnection(13U, 7U, 1U));
+
+	// 5 2 2
+	results.push_back(GenerateSingleActionConnection(7U, 19U, 5U));
+	results.push_back(GenerateSingleActionConnection(19U, 11U, 2U));
+	results.push_back(GenerateSingleActionConnection(11U, 7U, 2U));
+
+	// 5 3 1
+	results.push_back(GenerateSingleActionConnection(7U, 19U, 5U));
+	results.push_back(GenerateSingleActionConnection(19U, 13U, 3U));
+	results.push_back(GenerateSingleActionConnection(13U, 7U, 1U));
+
+	std::set<SiteswapPattern> patterns_test;
+
+	auto results_begin = results.begin();
+
+	for (unsigned int i = 0U; i < 3U; i++)
+	{
+		std::deque<SiteswapGraphConnection> i_deque;
+		for (unsigned int j = 0U; j < 3U; j++)
+		{
+			i_deque.push_back(*results_begin);
+			results_begin++;
+		}
+
+		patterns_test.insert({ 3U, 1U, i_deque });
+	}
+
+	auto i_patterns = patterns->begin();
+	auto i_patterns_test = patterns_test.begin();
+
+	while (i_patterns != patterns->end())
+	{
+		BOOST_TEST((*i_patterns) == (*i_patterns_test));
+		i_patterns++; i_patterns_test++;
+	}
+
+	delete patterns;
+}
+
+
+
+ BOOST_AUTO_TEST_CASE(GetPatterns_Balls3_Throws3_Max6_Excited_State_Only)
+{
+	auto* patterns = SiteswapGraph::GetPatterns(3U, 1U, 3U, 6U, PatternQueryStartingState::STATE_EXCITED_ONLY);
+	BOOST_CHECK(patterns != NULL);
+	BOOST_TEST(patterns->size() == 4U);
+
+	std::vector<SiteswapGraphConnection> results;
+
+	// 4 5 0
+	results.push_back(GenerateSingleActionConnection(11U, 13U, 4U));
+	results.push_back(GenerateSingleActionConnection(13U, 22U, 5U));
+	results.push_back(GenerateSingleActionConnection(22U, 11U, 0U));
+
+	// 6 0 3
+	results.push_back(GenerateSingleActionConnection(13U, 38U, 6U));
+	results.push_back(GenerateSingleActionConnection(38U, 19U, 0U));
+	results.push_back(GenerateSingleActionConnection(19U, 13U, 3U));
+
+	// 6 1 2
+	results.push_back(GenerateSingleActionConnection(11U, 37U, 6U));
+	results.push_back(GenerateSingleActionConnection(37U, 19U, 1U));
+	results.push_back(GenerateSingleActionConnection(19U, 11U, 2U));
+
+	// 6 3 0
+	results.push_back(GenerateSingleActionConnection(11U, 37U, 6U));
+	results.push_back(GenerateSingleActionConnection(37U, 22U, 3U));
+	results.push_back(GenerateSingleActionConnection(22U, 11U, 0U));
+
+	std::set<SiteswapPattern> patterns_test;
+
+	auto results_begin = results.begin();
+
+	for (unsigned int i = 0U; i < 4U; i++)
+	{
+		std::deque<SiteswapGraphConnection> i_deque;
+		for (unsigned int j = 0U; j < 3U; j++)
+		{
+			i_deque.push_back(*results_begin);
+			results_begin++;
+		}
+
+		patterns_test.insert({ 3U, 1U, i_deque });
+	}
+
+	auto i_patterns = patterns->begin();
+	auto i_patterns_test = patterns_test.begin();
+
+	while (i_patterns != patterns->end())
+	{
+		BOOST_TEST((*i_patterns) == (*i_patterns_test));
+		i_patterns++; i_patterns_test++;
+	}
+
+	delete patterns;
+}
+
+
+
 BOOST_AUTO_TEST_CASE(GetPatterns_Balls4_Throws3_Max7)
 {
 	auto* patterns = SiteswapGraph::GetPatterns(4U, 1U, 3U, 7U);

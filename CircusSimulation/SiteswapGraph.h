@@ -8,6 +8,7 @@
 #include <map>
 #include <set>
 
+#include "Enum.h"
 #include "Struct.h"
 
 namespace SiteswapGraph
@@ -22,7 +23,9 @@ namespace SiteswapGraph
 		const unsigned int& numberBalls,
 		const unsigned int& numberActions,
 		const unsigned int& numberThrows,
-		unsigned int maxThrow);
+		unsigned int maxThrow,
+		const PatternQueryStartingState& include = PatternQueryStartingState::STATE_ALL
+		);
 };
 
 #endif

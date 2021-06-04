@@ -29,6 +29,48 @@ void SiteswapGraphMultiAction::StoreValidBeginStates(
 
 
 
+void SiteswapGraphMultiAction::StoreStandardBeginState(
+	std::vector<UIntStore>& result,
+	const unsigned int& numberActions,
+	const unsigned int& maxThrow,
+	const unsigned int& numberBits)
+{
+	result.clear();
+
+	if (numberActions > 0U && numberActions * maxThrow >= numberBits)
+	{
+		unsigned int* data = new unsigned int[numberActions];
+
+		const unsigned int
+			quotient = numberBits / numberActions,
+			remainder = numberBits % numberActions;
+
+		if (remainder == 0U)
+		{
+			for (unsigned int i = 0U; i < numberActions; i++)
+			{
+				data[i] = (1U << quotient) - 1U;
+			}
+		}
+		else
+		{
+			for (unsigned int i = 0U; i < remainder; i++)
+			{
+				data[i] = (1U << (quotient + 1U)) - 1U;
+			}
+			for (unsigned int i = remainder; i < numberActions; i++)
+			{
+				data[i] = (1U << quotient) - 1U;
+			}
+		}
+
+		result.push_back(UIntStore(numberActions, data));
+		delete[] data;
+	}
+}
+
+
+
 void SiteswapGraphMultiAction::StoreNextStates(
 	std::forward_list<SiteswapGraphConnection>& result,
 	const UIntStore& current,

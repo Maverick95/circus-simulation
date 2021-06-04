@@ -244,6 +244,48 @@ BOOST_AUTO_TEST_CASE(StoreValidBeginStates_Case_3)
 
 
 
+BOOST_AUTO_TEST_CASE(StoreStandardBeginState_Case_1)
+{
+	std::vector<UIntStore> result;
+	SiteswapGraphMultiAction::StoreStandardBeginState(result, 3U, 2U, 7U);
+	BOOST_TEST(result.size() == 0U);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(StoreStandardBeginState_Case_2)
+{
+	std::vector<UIntStore> result;
+	SiteswapGraphMultiAction::StoreStandardBeginState(result, 5U, 3U, 12U);
+	
+	BOOST_TEST(result.size() == 1U);
+	BOOST_TEST(result[0U].Size() == 5U);
+	BOOST_TEST(result[0U][0U] == 3U);
+	BOOST_TEST(result[0U][1U] == 3U);
+	BOOST_TEST(result[0U][2U] == 2U);
+	BOOST_TEST(result[0U][3U] == 2U);
+	BOOST_TEST(result[0U][4U] == 2U);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(StoreStandardBeginState_Case_3)
+{
+	std::vector<UIntStore> result;
+	SiteswapGraphMultiAction::StoreStandardBeginState(result, 6U, 4U, 18U);
+
+	BOOST_TEST(result.size() == 1U);
+	BOOST_TEST(result[0U].Size() == 6U);
+	BOOST_TEST(result[0U][0U] == 3U);
+	BOOST_TEST(result[0U][1U] == 3U);
+	BOOST_TEST(result[0U][2U] == 3U);
+	BOOST_TEST(result[0U][3U] == 3U);
+	BOOST_TEST(result[0U][4U] == 3U);
+	BOOST_TEST(result[0U][5U] == 3U);
+}
+
+
+
 BOOST_AUTO_TEST_SUITE_END()
 
 
