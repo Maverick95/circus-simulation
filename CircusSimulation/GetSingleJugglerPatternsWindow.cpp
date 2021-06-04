@@ -1,10 +1,40 @@
 #include "GetSingleJugglerPatternsWindow.h"
+#include "Settings.h"
 
 #include <wx/spinctrl.h>
 
 
+
+/* Window IDs. */
+
+static const unsigned int ID_SPIN_NUMBER_BALLS = 1U;
+
+
+/* Event table. */
+
+BEGIN_EVENT_TABLE(GetSingleJugglerPatternsWindow, wxWindow)
+
+EVT_SPINCTRL(ID_SPIN_NUMBER_BALLS, SetThrowHeightMaxBoundaries)
+
+END_EVENT_TABLE()
+
+
+
+void GetSingleJugglerPatternsWindow::SetThrowHeightMaxBoundaries(wxSpinEvent& event)
+{
+	const unsigned int
+		settings_numberBallsMin = event.GetPosition(),
+		settings_throwHeightMax = Settings::ThrowHeight_Maximum();
+
+	sp_throwHeightMax->SetRange(settings_numberBallsMin,
+		settings_throwHeightMax < settings_numberBallsMin ? settings_numberBallsMin : settings_throwHeightMax);
+}
+
+
+
 GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
-	: wxWindow(parent, wxID_ANY)
+	: wxWindow(parent, wxID_ANY),
+	sp_throwHeightMax(NULL)
 {
 	wxBoxSizer* sz_base = new wxBoxSizer(wxHORIZONTAL);
 
@@ -19,19 +49,26 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 
 	wxStaticText* st_numberBalls = new wxStaticText(this, wxID_ANY, "Balls in pattern :");
 	wxStaticText* st_numberThrows = new wxStaticText(this, wxID_ANY, "Throws in pattern :");
-	wxStaticText* st_maxThrowHeight = new wxStaticText(this, wxID_ANY, "Max throw height :");
+	wxStaticText* st_throwHeightMax = new wxStaticText(this, wxID_ANY, "Max throw height :");
 
-	wxSpinCtrl* sp_numberBalls = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, 
+	const unsigned int
+		settings_numberBallsMin = Settings::NumberBalls_Minimum(),
+		settings_numberBallsMax = Settings::NumberBalls_Maximum(),
+		settings_numberThrowsMax = Settings::NumberThrows_Maximum(),
+		settings_throwHeightMax = Settings::ThrowHeight_Maximum();
+
+	wxSpinCtrl* sp_numberBalls = new wxSpinCtrl(this, ID_SPIN_NUMBER_BALLS, wxEmptyString,
 		wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
-		0, 100);
+		settings_numberBallsMin, settings_numberBallsMax);
 
 	wxSpinCtrl* sp_numberThrows = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
-		0, 100);
+		1U, settings_numberThrowsMax);
 
-	wxSpinCtrl* sp_maxThrowHeight = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
+	sp_throwHeightMax = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
-		0, 100);
+		settings_numberBallsMin,
+		settings_throwHeightMax < settings_numberBallsMin ? settings_numberBallsMin : settings_throwHeightMax);
 
 	wxSizerFlags st_flags = wxSizerFlags().Center();
 	wxSizerFlags sp_flags = wxSizerFlags().Expand();
@@ -42,8 +79,8 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	sz_0_g->Add(st_numberThrows, st_flags);
 	sz_0_g->Add(sp_numberThrows, sp_flags);
 	
-	sz_0_g->Add(st_maxThrowHeight, st_flags);
-	sz_0_g->Add(sp_maxThrowHeight, sp_flags);
+	sz_0_g->Add(st_throwHeightMax, st_flags);
+	sz_0_g->Add(sp_throwHeightMax, sp_flags);
 
 	sz->Add(sz_0_g, 1, wxEXPAND);
 

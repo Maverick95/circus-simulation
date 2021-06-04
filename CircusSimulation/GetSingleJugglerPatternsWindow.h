@@ -6,10 +6,18 @@
 class GetSingleJugglerPatternsWindow : public wxWindow
 {
 
+private:
+
+	wxSpinCtrl* sp_throwHeightMax;
+
+	void SetThrowHeightMaxBoundaries(wxSpinEvent& event);
+
 public:
 
 	GetSingleJugglerPatternsWindow(wxWindow* parent);
 	virtual ~GetSingleJugglerPatternsWindow();
+
+	wxDECLARE_EVENT_TABLE();
 
 };
 

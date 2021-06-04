@@ -11,6 +11,7 @@ namespace Settings
 {
 	unsigned int NumberBalls_Minimum();
 	unsigned int NumberBalls_Maximum();
+	unsigned int NumberThrows_Maximum();
 	unsigned int ThrowHeight_Maximum();
 
 	const wxSize& WindowSize_Initial();
