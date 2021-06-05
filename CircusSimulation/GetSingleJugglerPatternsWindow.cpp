@@ -1,5 +1,7 @@
 #include "GetSingleJugglerPatternsWindow.h"
 #include "Settings.h"
+#include "Struct.h"
+#include "SiteswapGraph.h"
 
 #include <wx/spinctrl.h>
 
@@ -13,8 +15,12 @@ static const unsigned int ID_RADIO_TYPE_ASYNC = 2U;
 static const unsigned int ID_RADIO_TYPE_SYNC = 3U;
 
 static const unsigned int ID_RADIO_STARTING_STATE_STANDARD = 4U;
-static const unsigned int ID_RADIO_STARTING_STATE_EXCITED = 4U;
-static const unsigned int ID_RADIO_STARTING_STATE_BOTH = 4U;
+static const unsigned int ID_RADIO_STARTING_STATE_EXCITED = 5U;
+static const unsigned int ID_RADIO_STARTING_STATE_BOTH = 6U;
+
+static const unsigned int ID_BUTTON_FIND = 7U;
+
+static const unsigned int ID_LIST_PATTERNS = 8U;
 
 
 
@@ -30,6 +36,8 @@ EVT_RADIOBUTTON(ID_RADIO_TYPE_SYNC, SetTypeSync)
 EVT_RADIOBUTTON(ID_RADIO_STARTING_STATE_STANDARD, SetStartingStateStandard)
 EVT_RADIOBUTTON(ID_RADIO_STARTING_STATE_EXCITED, SetStartingStateExcited)
 EVT_RADIOBUTTON(ID_RADIO_STARTING_STATE_BOTH, SetStartingStateBoth)
+
+EVT_BUTTON(ID_BUTTON_FIND, FindPatterns)
 
 END_EVENT_TABLE()
 
@@ -102,6 +110,45 @@ void GetSingleJugglerPatternsWindow::SetStartingStateBoth(wxCommandEvent& event)
 
 
 
+void GetSingleJugglerPatternsWindow::FindPatterns(wxCommandEvent& event)
+{
+	bt_find->Disable();
+
+	const unsigned int
+		input_numberBalls = sp_numberBalls->GetValue(),
+		input_numberActions = type == PatternQuerySingleJugglerType::TYPE_ASYNC ? 1U : 2U,
+		input_numberThrows = sp_numberThrows->GetValue(),
+		input_maxThrow = sp_throwHeightMax->GetValue();
+
+	auto* patterns = SiteswapGraph::GetPatterns(
+		input_numberBalls,
+		input_numberActions,
+		input_numberThrows,
+		input_maxThrow,
+		startingState);
+
+	ls_patterns->ClearAll();
+
+	if (patterns != NULL)
+	{
+		unsigned int id = 0U;
+
+		for (auto i = patterns->begin(); i != patterns->end(); i++)
+		{
+			wxListItem item;
+			item.SetId(id++);
+			item.SetText(StructFunctions::GetSiteswapPatternLookupLabel(*i));
+			ls_patterns->InsertItem(item);
+		}
+
+		delete patterns;
+	}
+
+	bt_find->Enable();
+}
+
+
+
 GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	: wxWindow(parent, wxID_ANY),
 	sp_numberBalls(NULL),
@@ -112,6 +159,8 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	rd_startingStateStandard(NULL),
 	rd_startingStateExcited(NULL),
 	rd_startingStateBoth(NULL),
+	ls_patterns(NULL),
+	bt_find(NULL),
 	type(PatternQuerySingleJugglerType::TYPE_SYNC),
 	startingState(PatternQueryStartingState::STATE_EXCITED_ONLY)
 {
@@ -171,11 +220,11 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	wxStaticText* st_patternTypeHeader = new wxStaticText(this, wxID_ANY, "Pattern type");
 
 	rd_patternTypeAsync = new wxRadioButton(
-		this, wxID_ANY, "Asynchronous",
+		this, ID_RADIO_TYPE_ASYNC, "Asynchronous",
 		wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
 
 	rd_patternTypeSync = new wxRadioButton(
-		this, wxID_ANY, "Synchronous");
+		this, ID_RADIO_TYPE_SYNC, "Synchronous");
 
 	sz_1->AddStretchSpacer();
 
@@ -199,14 +248,14 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	wxStaticText* st_startingStateHeader = new wxStaticText(this, wxID_ANY, "Starting state");
 
 	rd_startingStateStandard = new wxRadioButton(
-		this, wxID_ANY, "Standard",
+		this, ID_RADIO_STARTING_STATE_STANDARD, "Standard",
 		wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
 
 	rd_startingStateExcited = new wxRadioButton(
-		this, wxID_ANY, "Excited");
+		this, ID_RADIO_STARTING_STATE_EXCITED, "Excited");
 
 	rd_startingStateBoth = new wxRadioButton(
-		this, wxID_ANY, "Both");
+		this, ID_RADIO_STARTING_STATE_BOTH, "Both");
 
 	sz_2->AddStretchSpacer();
 
@@ -225,13 +274,17 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 
 	// Section 4.
 
-	wxButton* bt_FindPatterns = new wxButton(
-		this, wxID_ANY, "Find");
+	bt_find = new wxButton(this, ID_BUTTON_FIND, "Find");
 
-	sz->Add(bt_FindPatterns, 1, wxEXPAND);
+	sz->Add(bt_find, 1, wxEXPAND);
 
 	sz_base->Add(sz, 1, wxEXPAND);
-	sz_base->AddStretchSpacer();
+	
+	ls_patterns = new wxListCtrl(this, ID_LIST_PATTERNS,
+		wxDefaultPosition, wxDefaultSize,
+		wxLC_LIST | wxLC_SINGLE_SEL);
+	
+	sz_base->Add(ls_patterns, 1, wxEXPAND);
 
 	SetSizer(sz_base);
 

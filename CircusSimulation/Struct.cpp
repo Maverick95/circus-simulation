@@ -154,3 +154,65 @@ bool StructFunctions::IsThrowValid(const SiteswapState& s1, const SiteswapState&
 
 	return true;
 }
+
+std::string StructFunctions::GetSiteswapPatternLookupLabel(const SiteswapPattern& pattern)
+{
+	switch (pattern.num_actions)
+	{
+	case 1U:
+	{
+		std::string result;
+
+		for (auto i = pattern.throws.begin(); i != pattern.throws.end(); i++)
+		{
+			const unsigned int nextThrow =
+				i->state_transfer.size() == 0U ?
+				0U :
+				i->state_transfer[0].state_transfer_throw;
+
+			result += std::to_string(nextThrow) + " ";
+		}
+
+		if (result.length() > 0U)
+		{
+			result.erase(result.length() - 1U);
+		}
+
+		return result;
+	}
+	case 2U:
+	{
+		std::string result;
+
+		for (auto i = pattern.throws.begin(); i != pattern.throws.end(); i++)
+		{
+			unsigned int throws[2] = { 0U, 0U };
+			bool transfer[2] = { false, false };
+
+			for (auto j = i->state_transfer.begin(); j != i->state_transfer.end(); j++)
+			{
+				throws[j->index_state_source] = 2 * j->state_transfer_throw;
+				transfer[j->index_state_source] = j->index_state_source != j->index_state_destination;
+			}
+
+			result += "[";
+			for (unsigned int j = 0U; j < 2U; j++)
+			{
+				result += std::to_string(throws[j]) +
+					(transfer[j] ? "x" : "") +
+					(j == 0U ? " " : "");
+			}
+			result += "] ";
+		}
+
+		if (result.length() > 0U)
+		{
+			result.erase(result.length() - 1U);
+		}
+
+		return result;
+	}
+	}
+
+	return "N/A";
+}

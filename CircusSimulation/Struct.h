@@ -4,6 +4,7 @@
 #include "stdafx.h"
 
 #include <deque>
+#include <string>
 #include <vector>
 
 #include "UIntStore.h"
@@ -26,6 +27,8 @@ namespace StructFunctions
 {
 	bool IsSiteswapPatternValid(const SiteswapPattern&);
 	bool IsThrowValid(const SiteswapState&, const SiteswapState&, const SiteswapThrow&);
+	
+	std::string GetSiteswapPatternLookupLabel(const SiteswapPattern& pattern);
 }
 
 bool operator==(const SiteswapGraphConnection&, const SiteswapGraphConnection&);

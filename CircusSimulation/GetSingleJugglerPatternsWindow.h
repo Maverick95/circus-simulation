@@ -4,6 +4,7 @@
 #include "Enum.h"
 
 #include <wx\wx.h>
+#include <wx\listctrl.h>
 
 class GetSingleJugglerPatternsWindow : public wxWindow
 {
@@ -21,6 +22,10 @@ private:
 	wxRadioButton* rd_startingStateExcited;
 	wxRadioButton* rd_startingStateBoth;
 
+	wxListCtrl* ls_patterns;
+
+	wxButton* bt_find;
+
 	PatternQuerySingleJugglerType type;
 	PatternQueryStartingState startingState;
 
@@ -34,6 +39,8 @@ private:
 	void SetStartingStateStandard(wxCommandEvent& event);
 	void SetStartingStateExcited(wxCommandEvent& event);
 	void SetStartingStateBoth(wxCommandEvent& event);
+
+	void FindPatterns(wxCommandEvent& event);
 
 public:
 
