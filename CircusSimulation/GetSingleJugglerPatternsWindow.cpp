@@ -28,7 +28,7 @@ static const unsigned int ID_LIST_PATTERNS = 8U;
 
 BEGIN_EVENT_TABLE(GetSingleJugglerPatternsWindow, wxWindow)
 
-EVT_SPINCTRL(ID_SPIN_NUMBER_BALLS, SetThrowHeightMaxBoundaries)
+EVT_SPINCTRL(ID_SPIN_NUMBER_BALLS, SetNumberBalls)
 
 EVT_RADIOBUTTON(ID_RADIO_TYPE_ASYNC, SetTypeAsync)
 EVT_RADIOBUTTON(ID_RADIO_TYPE_SYNC, SetTypeSync)
@@ -45,7 +45,7 @@ END_EVENT_TABLE()
 
 void GetSingleJugglerPatternsWindow::SetRadioButtonStatuses()
 {
-	switch (type)
+	switch (singleJugglerType)
 	{
 	case PatternQuerySingleJugglerType::TYPE_ASYNC:
 		rd_patternTypeAsync->SetValue(true);
@@ -71,26 +71,62 @@ void GetSingleJugglerPatternsWindow::SetRadioButtonStatuses()
 
 
 
-void GetSingleJugglerPatternsWindow::SetThrowHeightMaxBoundaries(wxSpinEvent& event)
+void GetSingleJugglerPatternsWindow::SetThrowHeightMaxBoundaries(
+	const unsigned int& numberBalls,
+	const unsigned int& throwHeightMax,
+	const PatternQuerySingleJugglerType& type)
 {
-	const unsigned int
-		settings_numberBallsMin = event.GetPosition(),
-		settings_throwHeightMax = Settings::ThrowHeight_Maximum();
+	switch (type)
+	{
+	case PatternQuerySingleJugglerType::TYPE_ASYNC:
+	{
+		const unsigned int
+			lowerBound = numberBalls,
+			upperBound = throwHeightMax < lowerBound ? lowerBound : throwHeightMax;
 
-	sp_throwHeightMax->SetRange(settings_numberBallsMin,
-		settings_throwHeightMax < settings_numberBallsMin ? settings_numberBallsMin : settings_throwHeightMax);
+		sp_throwHeightMax->SetRange(lowerBound, upperBound);
+	}
+	break;
+	case PatternQuerySingleJugglerType::TYPE_SYNC:
+	{
+		const unsigned int
+			lowerBound = numberBalls + (numberBalls % 2U == 0U ? 0U : 1U),
+			upperBound = 2 * (throwHeightMax < lowerBound ? lowerBound : throwHeightMax);
+
+		sp_throwHeightMax->SetRange(lowerBound, upperBound);
+	}
+	break;
+	}
 }
 
 
 
+void GetSingleJugglerPatternsWindow::SetNumberBalls(wxSpinEvent& event)
+{
+	SetThrowHeightMaxBoundaries(
+		event.GetPosition(),
+		Settings::ThrowHeight_Maximum(),
+		singleJugglerType);
+}
+
 void GetSingleJugglerPatternsWindow::SetTypeAsync(wxCommandEvent& event)
 {
-	type = PatternQuerySingleJugglerType::TYPE_ASYNC;
+	singleJugglerType = PatternQuerySingleJugglerType::TYPE_ASYNC;
+
+	SetThrowHeightMaxBoundaries(
+		sp_numberBalls->GetValue(),
+		Settings::ThrowHeight_Maximum(),
+		PatternQuerySingleJugglerType::TYPE_ASYNC);
 }
 
 void GetSingleJugglerPatternsWindow::SetTypeSync(wxCommandEvent& event)
 {
-	type = PatternQuerySingleJugglerType::TYPE_SYNC;
+	singleJugglerType = PatternQuerySingleJugglerType::TYPE_SYNC;
+
+	SetThrowHeightMaxBoundaries(
+		sp_numberBalls->GetValue(),
+		Settings::ThrowHeight_Maximum(),
+		PatternQuerySingleJugglerType::TYPE_SYNC);
 }
 
 void GetSingleJugglerPatternsWindow::SetStartingStateStandard(wxCommandEvent& event)
@@ -116,9 +152,15 @@ void GetSingleJugglerPatternsWindow::FindPatterns(wxCommandEvent& event)
 
 	const unsigned int
 		input_numberBalls = sp_numberBalls->GetValue(),
-		input_numberActions = type == PatternQuerySingleJugglerType::TYPE_ASYNC ? 1U : 2U,
-		input_numberThrows = sp_numberThrows->GetValue(),
-		input_maxThrow = sp_throwHeightMax->GetValue();
+		input_numberActions = singleJugglerType == PatternQuerySingleJugglerType::TYPE_ASYNC ? 1U : 2U,
+		input_numberThrows = sp_numberThrows->GetValue();
+
+	unsigned int input_maxThrow = sp_throwHeightMax->GetValue();
+
+	if (singleJugglerType == PatternQuerySingleJugglerType::TYPE_SYNC)
+	{
+		input_maxThrow /= 2U;
+	}
 
 	auto* patterns = SiteswapGraph::GetPatterns(
 		input_numberBalls,
@@ -161,7 +203,7 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	rd_startingStateBoth(NULL),
 	ls_patterns(NULL),
 	bt_find(NULL),
-	type(PatternQuerySingleJugglerType::TYPE_SYNC),
+	singleJugglerType(PatternQuerySingleJugglerType::TYPE_SYNC),
 	startingState(PatternQueryStartingState::STATE_EXCITED_ONLY)
 {
 	wxBoxSizer* sz_base = new wxBoxSizer(wxHORIZONTAL);
@@ -193,10 +235,7 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 		wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
 		1U, settings_numberThrowsMax);
 
-	sp_throwHeightMax = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
-		wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
-		settings_numberBallsMin,
-		settings_throwHeightMax < settings_numberBallsMin ? settings_numberBallsMin : settings_throwHeightMax);
+	sp_throwHeightMax = new wxSpinCtrl(this, wxID_ANY);
 
 	wxSizerFlags st_flags = wxSizerFlags().Center();
 	wxSizerFlags sp_flags = wxSizerFlags().Expand();
@@ -289,6 +328,11 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	SetSizer(sz_base);
 
 	SetRadioButtonStatuses();
+
+	SetThrowHeightMaxBoundaries(
+		settings_numberBallsMin,
+		settings_numberThrowsMax,
+		singleJugglerType);
 }
 
 GetSingleJugglerPatternsWindow::~GetSingleJugglerPatternsWindow()

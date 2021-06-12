@@ -26,12 +26,17 @@ private:
 
 	wxButton* bt_find;
 
-	PatternQuerySingleJugglerType type;
+	PatternQuerySingleJugglerType singleJugglerType;
 	PatternQueryStartingState startingState;
 
 	void SetRadioButtonStatuses();
 
-	void SetThrowHeightMaxBoundaries(wxSpinEvent& event);
+	void SetThrowHeightMaxBoundaries(
+		const unsigned int& numberBalls,
+		const unsigned int& throwHeightMax,
+		const PatternQuerySingleJugglerType& type);
+
+	void SetNumberBalls(wxSpinEvent& event);
 
 	void SetTypeAsync(wxCommandEvent& event);
 	void SetTypeSync(wxCommandEvent& event);
