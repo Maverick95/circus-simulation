@@ -24,18 +24,7 @@ private:
 	void OnExit(wxCommandEvent &);
 	void OnAbout(wxCommandEvent &);
 
-	// Placeholder function for now - this will be replaced later.
-
-	SiteswapPattern* GetRandomPattern();
-
-	unsigned int num_balls;
-	unsigned int num_throws;
-
-	void UpdateNumberBalls(wxSpinEvent &);
-	void UpdateNumberThrows(wxSpinEvent &);
-
 	void Reset(wxCommandEvent &);
-	void Populate(wxCommandEvent &);
 
 	void PopulateFromSingleJugglerPatternsWindow(wxCommandEvent& event);
 

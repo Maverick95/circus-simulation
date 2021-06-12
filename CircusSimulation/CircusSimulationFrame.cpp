@@ -11,12 +11,7 @@
 
 
 
-static const int SPIN_BALLS = 1;
-static const int SPIN_THROWS = 2;
-
 static const int BUTTON_RESET = 1;
-static const int BUTTON_POPULATE = 2;
-
 static const int WINDOW_SINGLE_JUGGLER_PATTERNS = 1;
 
 
@@ -26,10 +21,7 @@ wxBEGIN_EVENT_TABLE(CircusSimulationFrame, wxFrame)
 EVT_MENU(1, CircusSimulationFrame::OnHello)
 EVT_MENU(wxID_EXIT, CircusSimulationFrame::OnExit)
 EVT_MENU(wxID_ABOUT, CircusSimulationFrame::OnAbout)
-EVT_SPINCTRL(SPIN_BALLS, CircusSimulationFrame::UpdateNumberBalls)
-EVT_SPINCTRL(SPIN_THROWS, CircusSimulationFrame::UpdateNumberThrows)
 EVT_BUTTON(BUTTON_RESET, CircusSimulationFrame::Reset)
-EVT_BUTTON(BUTTON_POPULATE, CircusSimulationFrame::Populate)
 EVT_SIZE(CircusSimulationFrame::Resize)
 EVT_COMMAND(WINDOW_SINGLE_JUGGLER_PATTERNS, POPULATE_PATTERN_EVENT, PopulateFromSingleJugglerPatternsWindow)
 
@@ -48,37 +40,9 @@ void CircusSimulationFrame::OnAbout(wxCommandEvent & event)
 		"About Hello World", wxOK | wxICON_INFORMATION);
 }
 
-SiteswapPattern* CircusSimulationFrame::GetRandomPattern()
-{
-	return SiteswapGraph::GetRandomPattern(num_balls, 1U, num_throws, Settings::ThrowHeight_Maximum());
-}
-
-void CircusSimulationFrame::UpdateNumberBalls(wxSpinEvent & e)
-{
-	num_balls = e.GetPosition();
-}
-
-void CircusSimulationFrame::UpdateNumberThrows(wxSpinEvent & e)
-{
-	num_throws = e.GetPosition();
-}
-
 void CircusSimulationFrame::Reset(wxCommandEvent & e)
 {
 	pattern_handler.Reset();
-}
-
-void CircusSimulationFrame::Populate(wxCommandEvent & e)
-{
-	SiteswapPattern* s = GetRandomPattern();
-
-	if (s != NULL)
-	{
-		pattern_handler.Populate(*s);
-		delete s;
-	}
-
-	Resize_Internal();
 }
 
 void CircusSimulationFrame::PopulateFromSingleJugglerPatternsWindow(wxCommandEvent& event)
@@ -107,9 +71,7 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 	: wxFrame(NULL, wxID_ANY, title, pos, size),
 	pattern_handler(this),
 	window_1(NULL),
-	window_2(NULL),
-	num_balls(Settings::NumberBalls_Minimum()),
-	num_throws(1u)
+	window_2(NULL)
 {
 	// Obtain the starting window client size settings and use this to set the horizontal sizes.
 
@@ -143,21 +105,9 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 
 	wxBoxSizer * sz_1_2 = new wxBoxSizer(wxHORIZONTAL);
 
-	wxSpinCtrl * sp_1 = new wxSpinCtrl(this, SPIN_BALLS, wxEmptyString,
-		wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
-		Settings::NumberBalls_Minimum(), Settings::NumberBalls_Maximum(), Settings::NumberBalls_Minimum());
-
-	wxSpinCtrl * sp_2 = new wxSpinCtrl(this, SPIN_THROWS, wxEmptyString,
-		wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS,
-		1u, 10u, 1u);
-
 	wxButton * bt_1 = new wxButton(this, BUTTON_RESET, wxString("Reset"));
-	wxButton * bt_2 = new wxButton(this, BUTTON_POPULATE, wxString("Populate"));
 
-	sz_1_2->Add(sp_1, 1, wxEXPAND);
-	sz_1_2->Add(sp_2, 1, wxEXPAND);
 	sz_1_2->Add(bt_1, 1, wxEXPAND);
-	sz_1_2->Add(bt_2, 1, wxEXPAND);
 
 	sz_0->Add(sz_1_2, 1, wxEXPAND);
 
