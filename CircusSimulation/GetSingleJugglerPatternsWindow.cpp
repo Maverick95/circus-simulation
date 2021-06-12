@@ -1,9 +1,14 @@
 #include "GetSingleJugglerPatternsWindow.h"
 #include "Settings.h"
-#include "Struct.h"
 #include "SiteswapGraph.h"
 
 #include <wx/spinctrl.h>
+
+
+
+/* Event definition. */
+
+wxDEFINE_EVENT(POPULATE_PATTERN_EVENT, wxCommandEvent);
 
 
 
@@ -38,6 +43,8 @@ EVT_RADIOBUTTON(ID_RADIO_STARTING_STATE_EXCITED, SetStartingStateExcited)
 EVT_RADIOBUTTON(ID_RADIO_STARTING_STATE_BOTH, SetStartingStateBoth)
 
 EVT_BUTTON(ID_BUTTON_FIND, FindPatterns)
+
+EVT_LIST_ITEM_ACTIVATED(ID_LIST_PATTERNS, PopulatePattern)
 
 END_EVENT_TABLE()
 
@@ -101,6 +108,14 @@ void GetSingleJugglerPatternsWindow::SetThrowHeightMaxBoundaries(
 
 
 
+void GetSingleJugglerPatternsWindow::PopulatePattern(wxListEvent& event)
+{
+	wxCommandEvent cmdEvent(POPULATE_PATTERN_EVENT, GetId());
+	cmdEvent.SetEventObject(this);
+	cmdEvent.SetClientData((void*)(event.GetData()));
+	ProcessWindowEvent(cmdEvent);
+}
+
 void GetSingleJugglerPatternsWindow::SetNumberBalls(wxSpinEvent& event)
 {
 	SetThrowHeightMaxBoundaries(
@@ -162,14 +177,19 @@ void GetSingleJugglerPatternsWindow::FindPatterns(wxCommandEvent& event)
 		input_maxThrow /= 2U;
 	}
 
-	auto* patterns = SiteswapGraph::GetPatterns(
+	ls_patterns->ClearAll();
+	if (patterns != NULL)
+	{
+		delete patterns;
+		patterns = NULL;
+	}
+
+	patterns = SiteswapGraph::GetPatterns(
 		input_numberBalls,
 		input_numberActions,
 		input_numberThrows,
 		input_maxThrow,
 		startingState);
-
-	ls_patterns->ClearAll();
 
 	if (patterns != NULL)
 	{
@@ -180,10 +200,9 @@ void GetSingleJugglerPatternsWindow::FindPatterns(wxCommandEvent& event)
 			wxListItem item;
 			item.SetId(id++);
 			item.SetText(StructFunctions::GetSiteswapPatternLookupLabel(*i));
+			item.SetData((void*)(&(*i)));
 			ls_patterns->InsertItem(item);
 		}
-
-		delete patterns;
 	}
 
 	bt_find->Enable();
@@ -191,8 +210,8 @@ void GetSingleJugglerPatternsWindow::FindPatterns(wxCommandEvent& event)
 
 
 
-GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
-	: wxWindow(parent, wxID_ANY),
+GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent, int id)
+	: wxWindow(parent, id),
 	sp_numberBalls(NULL),
 	sp_numberThrows(NULL),
 	sp_throwHeightMax(NULL),
@@ -203,6 +222,7 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	rd_startingStateBoth(NULL),
 	ls_patterns(NULL),
 	bt_find(NULL),
+	patterns(NULL),
 	singleJugglerType(PatternQuerySingleJugglerType::TYPE_SYNC),
 	startingState(PatternQueryStartingState::STATE_EXCITED_ONLY)
 {
@@ -314,7 +334,6 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 	// Section 4.
 
 	bt_find = new wxButton(this, ID_BUTTON_FIND, "Find");
-
 	sz->Add(bt_find, 1, wxEXPAND);
 
 	sz_base->Add(sz, 1, wxEXPAND);
@@ -337,5 +356,9 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent)
 
 GetSingleJugglerPatternsWindow::~GetSingleJugglerPatternsWindow()
 {
-
+	if (patterns != NULL)
+	{
+		delete patterns;
+		patterns = NULL;
+	}
 }

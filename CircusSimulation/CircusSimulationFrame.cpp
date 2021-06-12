@@ -17,6 +17,8 @@ static const int SPIN_THROWS = 2;
 static const int BUTTON_RESET = 1;
 static const int BUTTON_POPULATE = 2;
 
+static const int WINDOW_SINGLE_JUGGLER_PATTERNS = 1;
+
 
 
 wxBEGIN_EVENT_TABLE(CircusSimulationFrame, wxFrame)
@@ -29,6 +31,7 @@ EVT_SPINCTRL(SPIN_THROWS, CircusSimulationFrame::UpdateNumberThrows)
 EVT_BUTTON(BUTTON_RESET, CircusSimulationFrame::Reset)
 EVT_BUTTON(BUTTON_POPULATE, CircusSimulationFrame::Populate)
 EVT_SIZE(CircusSimulationFrame::Resize)
+EVT_COMMAND(WINDOW_SINGLE_JUGGLER_PATTERNS, POPULATE_PATTERN_EVENT, PopulateFromSingleJugglerPatternsWindow)
 
 wxEND_EVENT_TABLE()
 
@@ -78,6 +81,12 @@ void CircusSimulationFrame::Populate(wxCommandEvent & e)
 	Resize_Internal();
 }
 
+void CircusSimulationFrame::PopulateFromSingleJugglerPatternsWindow(wxCommandEvent& event)
+{
+	pattern_handler.Populate(*(SiteswapPattern*)(event.GetClientData()));
+	Resize_Internal();
+}
+
 void CircusSimulationFrame::Resize_Internal()
 {
 	Layout();
@@ -119,7 +128,7 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 	window_1 = new SingleJugglerWindow(this, &(window_ratios_x[0]), &(window_ratios_y[0]), 0.4);
 	window_2 = new BallStatusWindow(this);
 
-	GetSingleJugglerPatternsWindow* window_3 = new GetSingleJugglerPatternsWindow(this);
+	GetSingleJugglerPatternsWindow* window_3 = new GetSingleJugglerPatternsWindow(this, WINDOW_SINGLE_JUGGLER_PATTERNS);
 
 	pattern_handler.AddWindow(window_1);
 	pattern_handler.AddWindow(window_2);

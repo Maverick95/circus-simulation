@@ -37,6 +37,8 @@ private:
 	void Reset(wxCommandEvent &);
 	void Populate(wxCommandEvent &);
 
+	void PopulateFromSingleJugglerPatternsWindow(wxCommandEvent& event);
+
 	void Resize_Internal();
 	void Resize(wxSizeEvent &);
 

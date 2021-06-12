@@ -2,9 +2,14 @@
 #define GET_SINGLE_JUGGLER_PATTERNS_WINDOW_H
 
 #include "Enum.h"
+#include "Struct.h"
+
+#include <set>
 
 #include <wx\wx.h>
 #include <wx\listctrl.h>
+
+wxDECLARE_EVENT(POPULATE_PATTERN_EVENT, wxCommandEvent);
 
 class GetSingleJugglerPatternsWindow : public wxWindow
 {
@@ -25,6 +30,8 @@ private:
 	wxListCtrl* ls_patterns;
 
 	wxButton* bt_find;
+
+	std::set<SiteswapPattern>* patterns;
 
 	PatternQuerySingleJugglerType singleJugglerType;
 	PatternQueryStartingState startingState;
@@ -47,9 +54,11 @@ private:
 
 	void FindPatterns(wxCommandEvent& event);
 
+	void PopulatePattern(wxListEvent& event);
+
 public:
 
-	GetSingleJugglerPatternsWindow(wxWindow* parent);
+	GetSingleJugglerPatternsWindow(wxWindow* parent, int id);
 	virtual ~GetSingleJugglerPatternsWindow();
 
 	wxDECLARE_EVENT_TABLE();
