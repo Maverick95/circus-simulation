@@ -275,8 +275,7 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent,
 
 	wxBoxSizer* sz_1 = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer* sz_1_v = new wxBoxSizer(wxVERTICAL);
-
-	wxStaticText* st_patternTypeHeader = new wxStaticText(this, wxID_ANY, "Pattern type");
+	wxBoxSizer* sz_2_v = new wxBoxSizer(wxVERTICAL);
 
 	rd_patternTypeAsync = new wxRadioButton(
 		this, ID_RADIO_TYPE_ASYNC, "Asynchronous",
@@ -285,26 +284,12 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent,
 	rd_patternTypeSync = new wxRadioButton(
 		this, ID_RADIO_TYPE_SYNC, "Synchronous");
 
-	sz_1->AddStretchSpacer();
-
 	sz_1_v->AddStretchSpacer();
-	sz_1_v->Add(st_patternTypeHeader, 0, wxALIGN_CENTER_HORIZONTAL);
 	sz_1_v->Add(rd_patternTypeAsync);
 	sz_1_v->Add(rd_patternTypeSync);
 	sz_1_v->AddStretchSpacer();
 
-	sz_1->Add(sz_1_v, 0, wxEXPAND);
-
-	sz_1->AddStretchSpacer();
-
-	sz->Add(sz_1, 1, wxEXPAND);
-
-	// Section 3.
-
-	wxBoxSizer* sz_2 = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* sz_2_v = new wxBoxSizer(wxVERTICAL);
-
-	wxStaticText* st_startingStateHeader = new wxStaticText(this, wxID_ANY, "Starting state");
+	sz_1->Add(sz_1_v, 1, wxEXPAND);
 
 	rd_startingStateStandard = new wxRadioButton(
 		this, ID_RADIO_STARTING_STATE_STANDARD, "Standard",
@@ -316,27 +301,24 @@ GetSingleJugglerPatternsWindow::GetSingleJugglerPatternsWindow(wxWindow* parent,
 	rd_startingStateBoth = new wxRadioButton(
 		this, ID_RADIO_STARTING_STATE_BOTH, "Both");
 
-	sz_2->AddStretchSpacer();
-
 	sz_2_v->AddStretchSpacer();
-	sz_2_v->Add(st_startingStateHeader, 0, wxALIGN_CENTER_HORIZONTAL);
 	sz_2_v->Add(rd_startingStateStandard);
 	sz_2_v->Add(rd_startingStateExcited);
 	sz_2_v->Add(rd_startingStateBoth);
 	sz_2_v->AddStretchSpacer();
 
-	sz_2->Add(sz_2_v, 0, wxEXPAND);
+	sz_1->Add(sz_2_v, 1, wxEXPAND);
 
-	sz_2->AddStretchSpacer();
+	sz->Add(sz_1, 1, wxEXPAND);
 
-	sz->Add(sz_2, 1, wxEXPAND);
-
-	// Section 4.
+	// Section 3.
 
 	bt_find = new wxButton(this, ID_BUTTON_FIND, "Find");
 	sz->Add(bt_find, 1, wxEXPAND);
 
 	sz_base->Add(sz, 1, wxEXPAND);
+
+	// Section 4.
 	
 	ls_patterns = new wxListCtrl(this, ID_LIST_PATTERNS,
 		wxDefaultPosition, wxDefaultSize,
