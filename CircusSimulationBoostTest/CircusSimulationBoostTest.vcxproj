@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CircusSimulationBoostTest.cpp" />
+    <ClCompile Include="Data.cpp" />
+    <ClCompile Include="DataConverters.cpp" />
     <ClCompile Include="Helpers.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +31,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChooseGeneratorTest.hpp" />
+    <ClInclude Include="Data.h" />
+    <ClInclude Include="DataConverters.h" />
     <ClInclude Include="DisplayPatternTest.hpp" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="SiteswapGraphMultiActionHelpersTest.hpp" />

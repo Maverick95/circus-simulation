@@ -17,6 +17,9 @@
 #include "SiteswapGraphMultiAction.h"
 #include "SiteswapGraphMultiActionHelpers.h"
 
+#include "Data.h"
+#include "DataConverters.h"
+
 #include "ChooseGeneratorTest.hpp"
 #include "DisplayPatternTest.hpp"
 #include "SiteswapGraphMultiActionHelpersTest.hpp"
