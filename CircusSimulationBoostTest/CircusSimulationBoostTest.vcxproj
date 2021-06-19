@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChooseGeneratorTest.hpp" />
+    <ClInclude Include="DisplayPatternTest.hpp" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="SiteswapGraphMultiActionHelpersTest.hpp" />
     <ClInclude Include="SiteswapGraphMultiActionTest.hpp" />

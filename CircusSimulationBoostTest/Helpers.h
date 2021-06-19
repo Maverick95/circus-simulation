@@ -8,4 +8,6 @@ SiteswapGraphConnection GenerateSingleActionConnection(
 	const unsigned int& state_destination,
 	const unsigned int& state_transfer_throw);
 
+SiteswapPattern GenerateDataset(const unsigned int* data);
+
 #endif

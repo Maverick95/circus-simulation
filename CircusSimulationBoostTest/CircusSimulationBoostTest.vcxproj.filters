@@ -44,5 +44,8 @@
     <ClInclude Include="SiteswapGraphMultiActionHelpersTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DisplayPatternTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
