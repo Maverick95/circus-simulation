@@ -6,14 +6,14 @@ SiteswapPattern DataConverters::Convert_DisplayPatternTest_DisplayPattern_Constr
 {
 	/*
 
-	[0]		balls
-	[1]		actions
-	[2]		throws
+	[0] = balls
+	[1] = actions
+	[2]	= throws
 
-	[3]						-		[3 + (actions - 1)]										state_begin of first throw
-	[3 + actions]			-		[3 + (2 * actions) - 1]									state_end of first throw
-	[3 + (2 * actions)]																		number of state_transfer elements (num_state_transfer)
-	[3 + (2 * actions) + 1]	-		[3 + (2 * actions) + (3 * num_state_transfer)]			state_transfer details
+	[3] - [3 + (actions - 1)] = state_begin of first throw
+	[3 + actions] - [3 + (2 * actions) - 1] = state_end of first throw
+	[3 + (2 * actions)] = number of state_transfer elements (num_state_transfer)
+	[3 + (2 * actions) + 1]	- [3 + (2 * actions) + (3 * num_state_transfer)] = state_transfer details
 
 	and then next throw
 

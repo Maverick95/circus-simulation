@@ -176,15 +176,21 @@ DisplayPattern::DisplayPattern(const SiteswapPattern& sp)
 
 		for (unsigned int i = 0U; i < mapping_length; i++)
 		{
-			for (unsigned int k = 0U; k < num_actions; k++)
+			for (unsigned int j = 0U; j < num_actions; j++)
 			{
-				if (mapping_balls[i][k] == NULL && mapping_throws[i][k] > 0U)
+				if (mapping_balls[i][j] == NULL && mapping_throws[i][j] > 0U)
 				{
-					unsigned int k_copy = k;
-					for (unsigned int j = i; j < mapping_length; j += mapping_throws[j][k_copy])
+					unsigned int i_step = i, j_step = j;
+
+					while (i_step < mapping_length)
 					{
-						mapping_balls[j][k_copy] = indices_balls + mapping_ball_index;
-						k_copy = *(mapping_actions[j][k_copy]);
+						mapping_balls[i_step][j_step] = indices_balls + mapping_ball_index;
+
+						unsigned int i_step_new = i_step + mapping_throws[i_step][j_step];
+						unsigned int j_step_new = *(mapping_actions[i_step][j_step]);
+						
+						i_step = i_step_new;
+						j_step = j_step_new;
 					}
 
 					mapping_ball_index++;
