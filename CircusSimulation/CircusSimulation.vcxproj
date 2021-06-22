@@ -172,7 +172,7 @@
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GetSingleJugglerPatternsWindow.h" />
-    <ClInclude Include="RenderWindow.h" />
+    <ClInclude Include="RenderPatternWindow.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SiteswapGraph.h" />

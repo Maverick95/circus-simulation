@@ -150,7 +150,7 @@
     <ClInclude Include="GetSingleJugglerPatternsWindow.h">
       <Filter>Header Files\wxWidgets elements\Unclassified</Filter>
     </ClInclude>
-    <ClInclude Include="RenderWindow.h">
+    <ClInclude Include="RenderPatternWindow.h">
       <Filter>Header Files\wxWidgets elements\Display processing</Filter>
     </ClInclude>
   </ItemGroup>
