@@ -42,10 +42,12 @@ void BallStatusWindow::OnScreenUpdateD1(const long & time_elapsed)
 
 }
 
-void BallStatusWindow::OnScreenPaintD1(wxAutoBufferedPaintDC& context)
+void BallStatusWindow::OnScreenPaintD1(wxAutoBufferedPaintDC* context)
 {
-	context.SetBackground(*wxWHITE_BRUSH);
-	context.Clear();
+	context->SetBackground(*wxWHITE_BRUSH);
+	context->Clear();
+
+	delete context;
 }
 
 void BallStatusWindow::ResetD1()
@@ -65,6 +67,11 @@ void BallStatusWindow::ResetD1()
 	}
 
 	pattern_balls = NULL;
+}
+
+void BallStatusWindow::OnScreenResizeD1()
+{
+	this->Layout();
 }
 
 void BallStatusWindow::PopulateD1()
@@ -127,7 +134,7 @@ void BallStatusWindow::StopD1()
 
 BallStatusWindow::BallStatusWindow(wxWindow * parent)
 	:
-	DisplayPatternWxWindow(parent),
+	ContextPatternWindow(parent),
 	pattern_balls(NULL)
 {
 

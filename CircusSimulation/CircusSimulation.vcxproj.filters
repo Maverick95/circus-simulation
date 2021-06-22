@@ -135,12 +135,6 @@
     <ClInclude Include="SiteswapGraphMultiAction.h">
       <Filter>Header Files\Graph data processing</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayPatternDirect2dWindow.h">
-      <Filter>Header Files\wxWidgets elements\Display processing</Filter>
-    </ClInclude>
-    <ClInclude Include="DisplayPatternWxWindow.h">
-      <Filter>Header Files\wxWidgets elements\Display processing</Filter>
-    </ClInclude>
     <ClInclude Include="SingleJugglerWindow.h">
       <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
     </ClInclude>
@@ -205,12 +199,6 @@
     </ClCompile>
     <ClCompile Include="SiteswapGraphMultiAction.cpp">
       <Filter>Source Files\Graph data processing</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayPatternDirect2dWindow.cpp">
-      <Filter>Source Files\wxWidgets elements\Display processing</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayPatternWxWindow.cpp">
-      <Filter>Source Files\wxWidgets elements\Display processing</Filter>
     </ClCompile>
     <ClCompile Include="Direct2dFactory.cpp">
       <Filter>Source Files\Drawing</Filter>

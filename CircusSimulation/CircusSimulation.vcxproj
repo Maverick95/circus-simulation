@@ -162,12 +162,10 @@
     <ClInclude Include="ChooseGenerator.h" />
     <ClInclude Include="CircusSimulationApp.h" />
     <ClInclude Include="CircusSimulationFrame.h" />
-    <ClInclude Include="DisplayPatternDirect2dWindow.h" />
     <ClInclude Include="DisplayPatternHandler.h" />
     <ClInclude Include="DisplayPattern.h" />
     <ClInclude Include="DisplayPatternBall.h" />
     <ClInclude Include="DisplayPatternWindow.h" />
-    <ClInclude Include="DisplayPatternWxWindow.h" />
     <ClInclude Include="Direct2dFactory.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Functions.h" />
@@ -191,8 +189,6 @@
     <ClCompile Include="CircusSimulationApp.cpp" />
     <ClCompile Include="DisplayPattern.cpp" />
     <ClCompile Include="DisplayPatternBall.cpp" />
-    <ClCompile Include="DisplayPatternDirect2dWindow.cpp" />
-    <ClCompile Include="DisplayPatternWxWindow.cpp" />
     <ClCompile Include="Direct2dFactory.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="GetSingleJugglerPatternsWindow.cpp" />
