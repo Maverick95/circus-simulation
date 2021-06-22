@@ -39,7 +39,7 @@ void BallStatusWindow::OnBallsUpdate()
 
 void BallStatusWindow::OnScreenUpdateD1(const long & time_elapsed)
 {
-	Refresh(false, NULL);
+
 }
 
 void BallStatusWindow::OnScreenPaintD1(wxAutoBufferedPaintDC& context)

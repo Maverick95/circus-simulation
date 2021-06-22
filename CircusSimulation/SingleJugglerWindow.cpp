@@ -249,8 +249,6 @@ void SingleJugglerWindow::OnScreenUpdateD1(const long & time_elapsed)
 			plot_x[i] = lp_plot_x;
 			plot_y[i] = lp_plot_y;
 		}
-
-		Refresh(false, NULL);
 	}
 }
 
