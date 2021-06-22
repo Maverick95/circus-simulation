@@ -1,5 +1,5 @@
-#ifndef STDAFWX_H
-#define STDAFWX_H
+#ifndef SINGLE_JUGGLER_WINDOW_H
+#define SINGLE_JUGGLER_WINDOW_H
 
 #include "stdafx.h"
 #include "d2d1.h"
@@ -8,7 +8,9 @@
 
 #include "DisplayJugglingWindow.h"
 
-class SingleJugglerWindow : public DisplayJugglingWindow
+
+
+class SingleJugglerWindow : public DisplayJugglingWindow<ID2D1HwndRenderTarget>
 {
 
 private:
@@ -30,8 +32,8 @@ private:
 protected:
 
 	virtual void OnScreenUpdateD1(const long &);
-	virtual void OnScreenResizeD1();
-	virtual void OnScreenPaintD1(ID2D1HwndRenderTarget& context);
+	virtual void OnScreenResizeD2();
+	virtual void OnScreenPaintD1(ID2D1HwndRenderTarget* context);
 
 	virtual void OnBallsUpdateD1();
 
@@ -45,6 +47,7 @@ public:
 	virtual ~SingleJugglerWindow();
 
 };
+
 
 
 #endif

@@ -1,8 +1,8 @@
-#include "SingleJugglerWindow.h"
+#include "SingleJugglerWxWindow.h"
 
 
 
-void SingleJugglerWindow::OnScreenResizeD2()
+void SingleJugglerWxWindow::OnScreenResizeD1()
 {
 	wxSize size = GetClientSize();
 
@@ -17,12 +17,12 @@ void SingleJugglerWindow::OnScreenResizeD2()
 	}
 }
 
-void SingleJugglerWindow::OnBallsUpdateD1()
+void SingleJugglerWxWindow::OnBallsUpdateD1()
 {
 
 }
 
-void SingleJugglerWindow::OnScreenUpdateD1(const long& time_elapsed)
+void SingleJugglerWxWindow::OnScreenUpdateD1(const long& time_elapsed)
 {
 	auto h = GetValidHandler();
 
@@ -248,30 +248,30 @@ void SingleJugglerWindow::OnScreenUpdateD1(const long& time_elapsed)
 	}
 }
 
-void SingleJugglerWindow::OnScreenPaintD1(ID2D1HwndRenderTarget* context)
+void SingleJugglerWxWindow::OnScreenPaintD1(wxAutoBufferedPaintDC* context)
 {
-	context->BeginDraw();
-	context->Clear(D2D1::ColorF(D2D1::ColorF::White));
+	context->SetBackground(*wxWHITE_BRUSH);
+	context->Clear();
 
 	auto h = GetValidHandler();
 
 	if (h != NULL)
 	{
+		context->SetBrush(*wxRED_BRUSH);
+
 		for (unsigned int i = 0; i < h->GetNumberBalls(); i++)
 		{
 			if (h->GetBall(i)->GetState() == STATE_BEING_THROWN)
 			{
-				D2D1_ELLIPSE point = { { plot_x[i], this->GetClientSize().GetHeight() - plot_y[i] }, 10, 10 };
-				context->FillEllipse(point, brushCircles);
-				context->DrawEllipse(point, brushCirclesOutlines);
+				context->DrawCircle(wxPoint(plot_x[i], this->GetClientSize().GetHeight() - plot_y[i]), 10);
 			}
 		}
 	}
 
-	context->EndDraw();
+	delete context;
 }
 
-void SingleJugglerWindow::ResetD2()
+void SingleJugglerWxWindow::ResetD2()
 {
 	auto h = GetValidHandler();
 
@@ -286,7 +286,7 @@ void SingleJugglerWindow::ResetD2()
 	Refresh(false, NULL);
 }
 
-void SingleJugglerWindow::PopulateD2()
+void SingleJugglerWxWindow::PopulateD2()
 {
 	auto h = GetValidHandler();
 
@@ -300,13 +300,12 @@ void SingleJugglerWindow::PopulateD2()
 	}
 }
 
-SingleJugglerWindow::SingleJugglerWindow(wxWindow* parent, const unsigned int* w_r_x, const unsigned int* w_r_y, const double& dr)
+SingleJugglerWxWindow::SingleJugglerWxWindow(wxWindow* parent, const unsigned int* w_r_x, const unsigned int* w_r_y, const double& dr)
 	: DisplayJugglingWindow(parent, 2),
 	plot_x(NULL), plot_y(NULL),
 	window_ratios_x(NULL), window_ratios_y(NULL),
 	window_widths_x(NULL), window_widths_y(NULL),
-	dwell_ratio(dr),
-	brushCircles(NULL)
+	dwell_ratio(dr)
 {
 	// Modify the dwell ratio as appropriate.
 
@@ -369,17 +368,9 @@ SingleJugglerWindow::SingleJugglerWindow(wxWindow* parent, const unsigned int* w
 	window_widths_y = new unsigned int[4];
 
 	OnScreenResizeD1();
-
-	GetContext()->CreateSolidColorBrush(
-		D2D1::ColorF(D2D1::ColorF::Red),
-		&brushCircles);
-
-	GetContext()->CreateSolidColorBrush(
-		D2D1::ColorF(D2D1::ColorF::Black),
-		&brushCirclesOutlines);
 }
 
-SingleJugglerWindow::~SingleJugglerWindow()
+SingleJugglerWxWindow::~SingleJugglerWxWindow()
 {
 	auto h = GetValidHandler();
 
@@ -394,7 +385,4 @@ SingleJugglerWindow::~SingleJugglerWindow()
 
 	delete[] window_widths_x;
 	delete[] window_widths_y;
-
-	brushCircles->Release();
-	brushCirclesOutlines->Release();
 }

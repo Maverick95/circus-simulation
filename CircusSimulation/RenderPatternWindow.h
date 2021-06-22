@@ -22,8 +22,8 @@ private:
 
 protected:
 
-	virtual T& GetContext() = 0;
-	virtual void OnScreenPaintD1(T& context) = 0;
+	virtual T* GetContext() = 0;
+	virtual void OnScreenPaintD1(T* context) = 0;
 	virtual void OnScreenResizeD1() = 0;
 
 public:
@@ -50,7 +50,7 @@ void RenderPatternWindow<T>::OnScreenResize(wxSizeEvent& e)
 template <class T>
 void RenderPatternWindow<T>::OnScreenPaint(wxPaintEvent& e)
 {
-	T& context = GetContext();
+	T* context = GetContext();
 	OnScreenPaintD1(context);
 }
 
@@ -94,7 +94,7 @@ class ContextPatternWindow<wxAutoBufferedPaintDC> : public RenderPatternWindow<w
 
 protected:
 
-	virtual wxAutoBufferedPaintDC& GetContext();
+	virtual wxAutoBufferedPaintDC* GetContext();
 
 public:
 
@@ -102,22 +102,6 @@ public:
 	virtual ~ContextPatternWindow();
 
 };
-
-wxAutoBufferedPaintDC& ContextPatternWindow<wxAutoBufferedPaintDC>::GetContext()
-{
-	return wxAutoBufferedPaintDC(this);
-}
-
-ContextPatternWindow<wxAutoBufferedPaintDC>::ContextPatternWindow(wxWindow* parent)
-	: RenderPatternWindow(parent)
-{
-
-}
-
-ContextPatternWindow<wxAutoBufferedPaintDC>::~ContextPatternWindow()
-{
-
-}
 
 
 
@@ -131,7 +115,9 @@ private:
 
 protected:
 
-	virtual ID2D1HwndRenderTarget& GetContext();
+	virtual ID2D1HwndRenderTarget* GetContext();
+	virtual void OnScreenResizeD1();
+	virtual void OnScreenResizeD2() = 0;
 
 public:
 
@@ -139,35 +125,6 @@ public:
 	virtual ~ContextPatternWindow();
 
 };
-
-ContextPatternWindow<ID2D1HwndRenderTarget>::ContextPatternWindow(wxWindow* parent)
-	: RenderPatternWindow(parent),
-	renderTarget(NULL)
-{
-	const wxSize size = GetClientSize();
-
-	Direct2dFactory::GetDrawingFactory()->CreateHwndRenderTarget(
-		D2D1::RenderTargetProperties(),
-		D2D1::HwndRenderTargetProperties(
-			(HWND)GetHandle(),
-			D2D1::SizeU(size.GetWidth(), size.GetHeight())
-		),
-		&renderTarget
-	);
-}
-
-ContextPatternWindow<ID2D1HwndRenderTarget>::~ContextPatternWindow()
-{
-	renderTarget->Release();
-}
-
-ID2D1HwndRenderTarget& ContextPatternWindow<ID2D1HwndRenderTarget>::GetContext()
-{
-	return *renderTarget;
-}
-
-
-
 
 
 

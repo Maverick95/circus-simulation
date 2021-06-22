@@ -153,6 +153,9 @@
     <ClInclude Include="RenderPatternWindow.h">
       <Filter>Header Files\wxWidgets elements\Display processing</Filter>
     </ClInclude>
+    <ClInclude Include="SingleJugglerWxWindow.h">
+      <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -165,9 +168,6 @@
       <Filter>Source Files\wxWidgets elements\wxWidgets main elements</Filter>
     </ClCompile>
     <ClCompile Include="DisplayPatternWindow.cpp">
-      <Filter>Source Files\wxWidgets elements\Display processing</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayJugglingWindow.cpp">
       <Filter>Source Files\wxWidgets elements\Display processing</Filter>
     </ClCompile>
     <ClCompile Include="BallStatusWindow.cpp">
@@ -212,14 +212,20 @@
     <ClCompile Include="DisplayPatternWxWindow.cpp">
       <Filter>Source Files\wxWidgets elements\Display processing</Filter>
     </ClCompile>
-    <ClCompile Include="SingleJugglerWindow.cpp">
-      <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
-    </ClCompile>
     <ClCompile Include="Direct2dFactory.cpp">
       <Filter>Source Files\Drawing</Filter>
     </ClCompile>
     <ClCompile Include="GetSingleJugglerPatternsWindow.cpp">
       <Filter>Source Files\wxWidgets elements\Unclassified</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleJugglerWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderPatternWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Display processing</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleJugglerWxWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
