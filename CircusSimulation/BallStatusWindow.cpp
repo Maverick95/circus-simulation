@@ -32,19 +32,20 @@ void BallStatusWindow::OnBallsUpdate()
 				pattern_balls[i]->SetBackgroundColour(*wxLIGHT_GREY);
 			}
 
-			pattern_balls[i]->Refresh(false, NULL);
+			//pattern_balls[i]->Refresh(false, NULL);
 		}
 	}
 }
 
 void BallStatusWindow::OnScreenUpdateD1(const long & time_elapsed)
 {
-
+	Refresh(false, NULL);
 }
 
-void BallStatusWindow::OnScreenPaintD1(wxAutoBufferedPaintDC& dc)
+void BallStatusWindow::OnScreenPaintD1(wxAutoBufferedPaintDC& context)
 {
-
+	context.SetBackground(*wxWHITE_BRUSH);
+	context.Clear();
 }
 
 void BallStatusWindow::ResetD1()

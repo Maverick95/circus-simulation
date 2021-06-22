@@ -35,7 +35,7 @@ void DisplayPatternWindow::OnScreenUpdate(wxTimerEvent& event)
 		// Update screen - note that all screen won't automatically need refreshing
 		// derived functionality invalidates the area.
 
-		Update();
+		//Update();
 	}
 }
 

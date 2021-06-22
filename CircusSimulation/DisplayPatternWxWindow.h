@@ -14,7 +14,7 @@ private:
 
 protected:
 
-	virtual void OnScreenPaintD1(wxAutoBufferedPaintDC& dc) = 0;
+	virtual void OnScreenPaintD1(wxAutoBufferedPaintDC& context) = 0;
 
 public:
 

@@ -31,7 +31,7 @@ protected:
 
 	virtual void OnScreenUpdateD1(const long &);
 	virtual void OnScreenResizeD1();
-	virtual void OnScreenPaintD1();
+	virtual void OnScreenPaintD1(ID2D1HwndRenderTarget& context);
 
 	virtual void OnBallsUpdateD1();
 

@@ -23,7 +23,7 @@ protected:
 	virtual void PopulateD1();
 	virtual void StopD1();
 	
-	virtual void OnScreenPaintD1(wxAutoBufferedPaintDC& dc);
+	virtual void OnScreenPaintD1(wxAutoBufferedPaintDC& context);
 
 
 public:

@@ -14,19 +14,7 @@ wxEND_EVENT_TABLE()
 
 void DisplayPatternDirect2dWindow::OnScreenPaint(wxPaintEvent& e)
 {
-	renderTarget->BeginDraw();
-	renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-
-	auto h = GetValidHandler();
-
-	if (h != NULL)
-	{
-		// Apply any derived additional functionality.
-
-		OnScreenPaintD1();
-	}
-
-	renderTarget->EndDraw();
+	OnScreenPaintD1(*renderTarget);
 }
 
 
@@ -65,7 +53,7 @@ DisplayPatternDirect2dWindow::~DisplayPatternDirect2dWindow()
 
 
 
-ID2D1HwndRenderTarget* DisplayPatternDirect2dWindow::GetRenderTarget()
+ID2D1HwndRenderTarget& DisplayPatternDirect2dWindow::GetRenderTarget()
 {
-	return renderTarget;
+	return *renderTarget;
 }

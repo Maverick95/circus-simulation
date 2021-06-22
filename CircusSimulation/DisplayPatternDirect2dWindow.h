@@ -18,10 +18,10 @@ private:
 
 protected:
 
-	virtual ID2D1HwndRenderTarget* GetRenderTarget();
+	ID2D1HwndRenderTarget& GetRenderTarget();
 
 	virtual void OnScreenResizeD1() = 0;
-	virtual void OnScreenPaintD1() = 0;
+	virtual void OnScreenPaintD1(ID2D1HwndRenderTarget& context) = 0;
 
 public:
 
