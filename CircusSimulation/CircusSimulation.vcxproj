@@ -173,7 +173,6 @@
     <ClInclude Include="RenderPatternWindow.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Settings.h" />
-    <ClInclude Include="SingleJugglerWxWindow.h" />
     <ClInclude Include="SiteswapGraph.h" />
     <ClInclude Include="SiteswapGraphMultiAction.h" />
     <ClInclude Include="SiteswapGraphMultiActionHelpers.h" />
@@ -196,7 +195,6 @@
     <ClCompile Include="RenderPatternWindow.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SingleJugglerWindow.cpp" />
-    <ClCompile Include="SingleJugglerWxWindow.cpp" />
     <ClCompile Include="SiteswapGraph.cpp" />
     <ClCompile Include="SiteswapGraphMultiAction.cpp" />
     <ClCompile Include="SiteswapGraphMultiActionHelpers.cpp" />

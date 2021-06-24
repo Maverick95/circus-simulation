@@ -31,9 +31,9 @@ private:
 
 protected:
 
-	virtual void OnScreenUpdateD1(const long &);
+	virtual void OnScreenUpdate(const long &);
 	virtual void OnScreenResizeD2();
-	virtual void OnScreenPaintD1(ID2D1HwndRenderTarget* context);
+	virtual void OnScreenPaint(ID2D1HwndRenderTarget* context);
 
 	virtual void OnBallsUpdateD1();
 

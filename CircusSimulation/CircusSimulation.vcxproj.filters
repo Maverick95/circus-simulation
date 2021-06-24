@@ -147,9 +147,6 @@
     <ClInclude Include="RenderPatternWindow.h">
       <Filter>Header Files\wxWidgets elements\Display processing</Filter>
     </ClInclude>
-    <ClInclude Include="SingleJugglerWxWindow.h">
-      <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -211,9 +208,6 @@
     </ClCompile>
     <ClCompile Include="RenderPatternWindow.cpp">
       <Filter>Source Files\wxWidgets elements\Display processing</Filter>
-    </ClCompile>
-    <ClCompile Include="SingleJugglerWxWindow.cpp">
-      <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

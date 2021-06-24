@@ -30,7 +30,7 @@ void DisplayPatternWindow::OnScreenUpdate(wxTimerEvent& event)
 
 		// Apply any derived additional functionality.
 
-		OnScreenUpdateD1(time_elapsed);
+		OnScreenUpdate(time_elapsed);
 
 		Refresh(false, NULL);
 	}

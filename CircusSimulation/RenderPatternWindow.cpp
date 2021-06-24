@@ -2,18 +2,18 @@
 
 
 
-wxAutoBufferedPaintDC* ContextPatternWindow<wxAutoBufferedPaintDC>::GetContext()
+wxWindow* ContextPatternWindow<wxWindow>::GetContext()
 {
-	return (new wxAutoBufferedPaintDC(this));
+	return this;
 }
 
-ContextPatternWindow<wxAutoBufferedPaintDC>::ContextPatternWindow(wxWindow* parent)
+ContextPatternWindow<wxWindow>::ContextPatternWindow(wxWindow* parent)
 	: RenderPatternWindow(parent)
 {
 
 }
 
-ContextPatternWindow<wxAutoBufferedPaintDC>::~ContextPatternWindow()
+ContextPatternWindow<wxWindow>::~ContextPatternWindow()
 {
 
 }
@@ -26,7 +26,7 @@ ID2D1HwndRenderTarget* ContextPatternWindow<ID2D1HwndRenderTarget>::GetContext()
 	return renderTarget;
 }
 
-void ContextPatternWindow<ID2D1HwndRenderTarget>::OnScreenResizeD1()
+void ContextPatternWindow<ID2D1HwndRenderTarget>::OnScreenResize()
 {
 	const wxSize size = GetClientSize();
 	renderTarget->Resize(D2D1::SizeU(size.GetWidth(), size.GetHeight()));

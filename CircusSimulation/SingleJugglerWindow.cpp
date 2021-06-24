@@ -22,7 +22,7 @@ void SingleJugglerWindow::OnBallsUpdateD1()
 
 }
 
-void SingleJugglerWindow::OnScreenUpdateD1(const long& time_elapsed)
+void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 {
 	auto h = GetValidHandler();
 
@@ -248,7 +248,7 @@ void SingleJugglerWindow::OnScreenUpdateD1(const long& time_elapsed)
 	}
 }
 
-void SingleJugglerWindow::OnScreenPaintD1(ID2D1HwndRenderTarget* context)
+void SingleJugglerWindow::OnScreenPaint(ID2D1HwndRenderTarget* context)
 {
 	context->BeginDraw();
 	context->Clear(D2D1::ColorF(D2D1::ColorF::White));
@@ -368,7 +368,7 @@ SingleJugglerWindow::SingleJugglerWindow(wxWindow* parent, const unsigned int* w
 	window_widths_x = new unsigned int[3];
 	window_widths_y = new unsigned int[4];
 
-	OnScreenResizeD1();
+	OnScreenResize();
 
 	GetContext()->CreateSolidColorBrush(
 		D2D1::ColorF(D2D1::ColorF::Red),

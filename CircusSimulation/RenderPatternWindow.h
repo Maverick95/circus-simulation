@@ -7,6 +7,10 @@
 
 
 
+/* ### LEVEL 1 ### */
+
+
+
 /* ### DECLARE ### */
 
 
@@ -23,8 +27,8 @@ private:
 protected:
 
 	virtual T* GetContext() = 0;
-	virtual void OnScreenPaintD1(T* context) = 0;
-	virtual void OnScreenResizeD1() = 0;
+	virtual void OnScreenPaint(T* context) = 0;
+	virtual void OnScreenResize() = 0;
 
 public:
 
@@ -42,19 +46,15 @@ public:
 template <class T>
 void RenderPatternWindow<T>::OnScreenResize(wxSizeEvent& e)
 {
-	OnScreenResizeD1();
+	OnScreenResize();
 }
-
-
 
 template <class T>
 void RenderPatternWindow<T>::OnScreenPaint(wxPaintEvent& e)
 {
 	T* context = GetContext();
-	OnScreenPaintD1(context);
+	OnScreenPaint(context);
 }
-
-
 
 template <class T>
 RenderPatternWindow<T>::RenderPatternWindow(wxWindow* parent)
@@ -63,8 +63,6 @@ RenderPatternWindow<T>::RenderPatternWindow(wxWindow* parent)
 	this->Bind(wxEVT_PAINT, &RenderPatternWindow<T>::OnScreenPaint, this);
 	this->Bind(wxEVT_SIZE, &RenderPatternWindow<T>::OnScreenResize, this);
 }
-
-
 
 template <class T>
 RenderPatternWindow<T>::~RenderPatternWindow<T>()
@@ -78,23 +76,21 @@ RenderPatternWindow<T>::~RenderPatternWindow<T>()
 
 
 
+/* ### DECLARE ### */
+
+
+
 template<class T>
 class ContextPatternWindow : public RenderPatternWindow<T>
-{
-
-public:
-
-};
-
-
+{ };
 
 template<>
-class ContextPatternWindow<wxAutoBufferedPaintDC> : public RenderPatternWindow<wxAutoBufferedPaintDC>
+class ContextPatternWindow<wxWindow> : public RenderPatternWindow<wxWindow>
 {
 
 protected:
 
-	virtual wxAutoBufferedPaintDC* GetContext();
+	wxWindow* GetContext();
 
 public:
 
@@ -102,8 +98,6 @@ public:
 	virtual ~ContextPatternWindow();
 
 };
-
-
 
 template<>
 class ContextPatternWindow<ID2D1HwndRenderTarget> : public RenderPatternWindow<ID2D1HwndRenderTarget>
@@ -115,8 +109,8 @@ private:
 
 protected:
 
-	virtual ID2D1HwndRenderTarget* GetContext();
-	virtual void OnScreenResizeD1();
+	ID2D1HwndRenderTarget* GetContext();
+	void OnScreenResize();
 	virtual void OnScreenResizeD2() = 0;
 
 public:

@@ -7,7 +7,7 @@
 
 #include "RenderPatternWindow.h"
 
-class BallStatusWindow : public ContextPatternWindow<wxAutoBufferedPaintDC>
+class BallStatusWindow : public ContextPatternWindow<wxWindow>
 {
 
 private:
@@ -17,14 +17,14 @@ private:
 protected:
 
 	virtual void OnBallsUpdate();
-	virtual void OnScreenUpdateD1(const long &);
+	virtual void OnScreenUpdate(const long &);
 	
 	virtual void ResetD1();
 	virtual void PopulateD1();
 	virtual void StopD1();
 	
-	virtual void OnScreenPaintD1(wxAutoBufferedPaintDC* context);
-	virtual void OnScreenResizeD1();
+	virtual void OnScreenPaint(wxWindow* context);
+	virtual void OnScreenResize();
 
 
 public:
