@@ -1,4 +1,5 @@
 #include "BallStatusWindow.h"
+#include <algorithm>
 
 
 
@@ -10,28 +11,28 @@ void BallStatusWindow::OnBallsUpdate()
 
 	if (h != NULL)
 	{
-		// TODO : for now, apply index = 0 to the action, but this will be modified later.
+		unsigned int numberBalls = h->GetNumberBalls();
+		unsigned int numberActions = h->GetDisplayPattern()->GetNumberActions();
 
-		const unsigned int * next_ball = h->GetDisplayPattern()->GetBall(h->GetMappingCurrent(), 0);
+		bool* ballStatus = new bool[numberBalls];
 
-		for (unsigned int i = 0; i < h->GetNumberBalls(); i++)
+		for (unsigned int i = 0U; i < numberBalls; i++)
 		{
-			if (next_ball != NULL)
-			{
-				if ((*next_ball) == i)
-				{
-					pattern_balls[i]->SetBackgroundColour(*wxGREEN);
-				}
-				else
-				{
-					pattern_balls[i]->SetBackgroundColour(*wxLIGHT_GREY);
-				}
-			}
-			else
-			{
-				pattern_balls[i]->SetBackgroundColour(*wxLIGHT_GREY);
-			}
+			ballStatus[i] = false;
 		}
+		
+		for (unsigned int i = 0U; i < numberActions; i++)
+		{
+			const unsigned int* n = h->GetDisplayPattern()->GetBall(h->GetMappingCurrent(), i);
+			if (n != NULL) { ballStatus[*n] = true; }
+		};
+
+		for (unsigned int i = 0U; i < numberBalls; i++)
+		{
+			pattern_balls[i]->SetBackgroundColour(ballStatus[i] ? (*wxGREEN) : (*wxLIGHT_GREY));
+		}
+
+		delete[] ballStatus;
 	}
 }
 
