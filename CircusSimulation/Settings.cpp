@@ -34,6 +34,8 @@ static const double SETTINGS_DISPLAY_PATTERN_PADDING[4] =
 
 static const long SETTINGS_PATTERN_BEAT_TIME_MILLISECONDS = 500L;
 
+static const double SETTINGS_PATTERN_BEAT_TIME_INCREASE_MULTI_FACTOR = 1.75;
+
 static const unsigned int SETTINGS_PATTERN_MAX_HEIGHT_PIXELS = 100;
 static const unsigned int SETTINGS_PATTERN_MAX_WIDTH_PIXELS = 50;
 
@@ -90,6 +92,11 @@ const double * Settings::DisplayPattern_Padding()
 long Settings::Pattern_BeatTime_Milliseconds()
 {
 	return SETTINGS_PATTERN_BEAT_TIME_MILLISECONDS == 0L ? 1L : SETTINGS_PATTERN_BEAT_TIME_MILLISECONDS;
+}
+
+double Settings::Pattern_BeatTime_Increase_MultiFactor()
+{
+	return SETTINGS_PATTERN_BEAT_TIME_INCREASE_MULTI_FACTOR == 0.0 ? 1.0 : SETTINGS_PATTERN_BEAT_TIME_INCREASE_MULTI_FACTOR;
 }
 
 unsigned int Settings::Pattern_MaxHeight_Pixels()

@@ -22,6 +22,7 @@ namespace Settings
 	const double * DisplayPattern_Padding();
 
 	long Pattern_BeatTime_Milliseconds();
+	double Pattern_BeatTime_Increase_MultiFactor();
 
 	unsigned int Pattern_MaxHeight_Pixels();
 	unsigned int Pattern_MaxWidth_Pixels();

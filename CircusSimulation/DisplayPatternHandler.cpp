@@ -54,7 +54,14 @@ void DisplayPatternHandler::Calculate_PatternBeatTime_Milliseconds()
 	case SPD_DOUBLE: speed_factor = 0.5; break;
 	}
 
-	long pbtm = (long)(speed_factor * Settings::Pattern_BeatTime_Milliseconds());
+	long pbtm = Settings::Pattern_BeatTime_Milliseconds();
+	
+	if (num_actions > 1U)
+	{
+		pbtm *= Settings::Pattern_BeatTime_Increase_MultiFactor();
+	}
+
+	pbtm *= speed_factor;
 
 	if (pbtm == 0L) { pbtm = 1L; }
 
@@ -201,7 +208,8 @@ DisplayPatternHandler::DisplayPatternHandler(wxWindow * parent)
 	speed_change(SPD_CHG_NONE),
 	display_pattern(NULL),
 	is_valid(false),
-	num_balls(0),
+	num_balls(0U),
+	num_actions(0U),
 	update_balls_to_pause(-1),
 	data_balls(NULL),
 	mapping_current(0),
@@ -380,7 +388,8 @@ void DisplayPatternHandler::Reset()
 
 	display_pattern = NULL;
 	is_valid = false;
-	num_balls = 0;
+	num_balls = 0U;
+	num_actions = 0U;
 	update_balls_to_pause = -1;
 	data_balls = NULL;
 	mapping_current = 0;
@@ -406,6 +415,7 @@ void DisplayPatternHandler::Populate(const SiteswapPattern& pattern)
 
 		is_valid = true;
 		num_balls = display_pattern->GetNumberBalls();
+		num_actions = display_pattern->GetNumberActions();
 		data_balls = new DisplayPatternBall[num_balls];
 
 		timer_update_balls = new wxTimer(this, TIMER_BALLS_UPDATE);

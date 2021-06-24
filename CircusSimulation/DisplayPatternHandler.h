@@ -24,7 +24,7 @@ private:
 	DisplayPattern * display_pattern;
 	bool is_valid;
 
-	unsigned int num_balls;
+	unsigned int num_balls, num_actions;
 
 	int update_balls_to_pause;
 
