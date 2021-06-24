@@ -52,7 +52,20 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 
 				unsigned int lp_throw_value = b->GetThrowValue();
 
-				PatternHand lp_hand = (*GetBallSiteSource(i)) == 0 ? PatternHand::HAND_LEFT : PatternHand::HAND_RIGHT;
+				PatternHand handSource =
+					(*GetBallSiteSource(i)) == 0 ?
+					PatternHand::HAND_LEFT :
+					PatternHand::HAND_RIGHT;
+				
+				PatternHand handDestination =
+					(*GetBallSiteDestination(i)) == 0U ?
+					PatternHand::HAND_LEFT :
+					PatternHand::HAND_RIGHT;
+				
+				PatternQuerySingleJugglerType patternType =
+					h->GetDisplayPattern()->GetNumberActions() > 1U ?
+					PatternQuerySingleJugglerType::TYPE_SYNC :
+					PatternQuerySingleJugglerType::TYPE_ASYNC;
 
 				unsigned int lp_beats_elapsed = b->GetBeatsElapsed();
 
@@ -63,7 +76,8 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 				// Modify position based on throw being processed.
 				// Throw >= 3, regular throw.
 
-				if (lp_throw_value >= 3)
+				if ((patternType == PatternQuerySingleJugglerType::TYPE_ASYNC && lp_throw_value >= 3U) ||
+					(patternType == PatternQuerySingleJugglerType::TYPE_SYNC && lp_throw_value >= 2U))
 				{
 					// Either ball is in hand or being thrown.
 
@@ -72,19 +86,17 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 						// Note - opposite hands where relevant.
 
 						// Offset
-
-						switch (lp_hand)
+						
+						switch (handDestination)
 						{
-						case HAND_LEFT:
-							if (lp_throw_value % 2 > 0) { lp_plot_x += window_widths_x[0] + 2 * (window_widths_x[1] + window_widths_x[2]); }
-							else { lp_plot_x += window_widths_x[0]; }
+						case PatternHand::HAND_LEFT:
+							lp_plot_x += window_widths_x[0];
 							break;
-						case HAND_RIGHT:
-							if (lp_throw_value % 2 > 0) { lp_plot_x += window_widths_x[0]; }
-							else { lp_plot_x += window_widths_x[0] + 2 * (window_widths_x[1] + window_widths_x[2]); }
+						case PatternHand::HAND_RIGHT:
+							lp_plot_x += window_widths_x[0] + 2 * (window_widths_x[1] + window_widths_x[2]);
 							break;
 						}
-
+						
 						// Time
 
 						double percent_elapsed = (time_elapsed_seconds - throw_time_seconds) / (total_time_seconds - throw_time_seconds);
@@ -92,20 +104,8 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 						double rotation_x = window_widths_x[1] * (1 - cos(M_PI * percent_elapsed)) / 2;
 						double rotation_y = window_widths_y[1] * sin(M_PI * percent_elapsed) / 2;
 
-						double multiplier_x = 0.0;
+						double multiplier_x = handDestination == PatternHand::HAND_LEFT ? 1.0 : -1.0;
 						double multiplier_y = -1.0;
-
-						switch (lp_hand)
-						{
-						case HAND_LEFT:
-							if (lp_throw_value % 2 > 0) { multiplier_x = -1.0; }
-							else { multiplier_x = 1.0; }
-							break;
-						case HAND_RIGHT:
-							if (lp_throw_value % 2 > 0) { multiplier_x = 1.0; }
-							else { multiplier_x = -1.0; }
-							break;
-						}
 
 						lp_plot_x += multiplier_x * rotation_x;
 						lp_plot_y += multiplier_y * rotation_y;
@@ -124,49 +124,69 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 
 						// Offset
 
-						switch (lp_hand)
+						switch (handSource)
 						{
-						case HAND_LEFT: lp_plot_x += window_widths_x[0] + window_widths_x[1]; break;
-						case HAND_RIGHT: lp_plot_x += window_widths_x[0] + window_widths_x[1] + 2 * window_widths_x[2]; break;
+						case HAND_LEFT:
+							lp_plot_x += window_widths_x[0] + window_widths_x[1];
+							break;
+						case HAND_RIGHT:
+							lp_plot_x += window_widths_x[0] + window_widths_x[1] + 2 * window_widths_x[2];
+							break;
 						}
 
 						// Time
 
-						if (lp_throw_value % 2 > 0)
+						double multiplier = 0.0;
+
+						switch (handSource)
 						{
-							double multiplier = 0.0;
-
-							switch (lp_hand)
+						case PatternHand::HAND_LEFT:
+						{
+							switch (handDestination)
 							{
-							case HAND_LEFT: multiplier = 1.0; break;
-							case HAND_RIGHT: multiplier = -1.0; break;
+							case PatternHand::HAND_LEFT:
+								multiplier = -1.0;
+								lp_plot_x += multiplier * window_widths_x[1] * time_elapsed_seconds / throw_time_seconds;
+								break;
+							case PatternHand::HAND_RIGHT:
+								multiplier = 1.0;
+								lp_plot_x += multiplier * max_width_pixels * time_elapsed_seconds / throw_time_seconds;
+								break;
 							}
-
-							lp_plot_x += multiplier * max_width_pixels * time_elapsed_seconds / throw_time_seconds;
 						}
-						else
+						break;
+						case PatternHand::HAND_RIGHT:
 						{
-							double multiplier = 0.0;
-
-							switch (lp_hand)
+							switch (handDestination)
 							{
-							case HAND_LEFT: multiplier = -1.0; break;
-							case HAND_RIGHT: multiplier = 1.0; break;
+							case PatternHand::HAND_LEFT:
+								multiplier = -1.0;
+								lp_plot_x += multiplier * max_width_pixels * time_elapsed_seconds / throw_time_seconds;
+								break;
+							case PatternHand::HAND_RIGHT:
+								multiplier = 1.0;
+								lp_plot_x += multiplier * window_widths_x[1] * time_elapsed_seconds / throw_time_seconds;
+								break;
 							}
-
-							lp_plot_x += multiplier * window_widths_x[1] * time_elapsed_seconds / throw_time_seconds;
+						}
+						break;
 						}
 					}
 				}
 
-				else if (lp_throw_value == 2)
+				else if ((patternType == PatternQuerySingleJugglerType::TYPE_ASYNC && lp_throw_value == 2U) ||
+					(patternType == PatternQuerySingleJugglerType::TYPE_SYNC && lp_throw_value == 1U && handSource == handDestination))
 				{
 					// Offset
 
-					switch (lp_hand)
+					switch (handSource)
 					{
-					case HAND_LEFT: lp_plot_x += window_widths_x[0] + window_widths_x[1]; break;
-					case HAND_RIGHT: lp_plot_x += window_widths_x[0] + window_widths_x[1] + 2 * window_widths_x[2]; break;
+					case PatternHand::HAND_LEFT:
+						lp_plot_x += window_widths_x[0] + window_widths_x[1];
+						break;
+					case PatternHand::HAND_RIGHT:
+						lp_plot_x += window_widths_x[0] + window_widths_x[1] + 2 * window_widths_x[2];
+						break;
 					}
 
 					// Time
@@ -179,17 +199,22 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 					double multiplier_x = 0.0;
 					double multiplier_y = 1.0;
 
-					switch (lp_hand)
+					switch (handSource)
 					{
-					case HAND_LEFT: multiplier_x = -1.0; break;
-					case HAND_RIGHT: multiplier_x = 1.0; break;
+					case PatternHand::HAND_LEFT:
+						multiplier_x = -1.0;
+						break;
+					case PatternHand::HAND_RIGHT:
+						multiplier_x = 1.0;
+						break;
 					}
 
 					lp_plot_x += multiplier_x * rotation_x;
 					lp_plot_y += multiplier_y * rotation_y;
 				}
 
-				else if (lp_throw_value == 1)
+				else if ((patternType == PatternQuerySingleJugglerType::TYPE_ASYNC && lp_throw_value == 1U) ||
+				(patternType == PatternQuerySingleJugglerType::TYPE_SYNC && lp_throw_value == 1U && handSource != handDestination))
 				{
 					// Special relationship.
 
@@ -200,10 +225,14 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 						// Offset
 						// Note - opposite hands apply.
 
-						switch (lp_hand)
+						switch (handSource)
 						{
-						case HAND_LEFT: lp_plot_x += window_widths_x[0] + window_widths_x[1] + 2 * window_widths_x[2]; break;
-						case HAND_RIGHT: lp_plot_x += window_widths_x[0] + window_widths_x[1]; break;
+						case PatternHand::HAND_LEFT:
+							lp_plot_x += window_widths_x[0] + window_widths_x[1] + 2 * window_widths_x[2];
+							break;
+						case PatternHand::HAND_RIGHT:
+							lp_plot_x += window_widths_x[0] + window_widths_x[1];
+							break;
 						}
 
 						// Time
@@ -212,20 +241,28 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 					{
 						// Offset
 
-						switch (lp_hand)
+						switch (handSource)
 						{
-						case HAND_LEFT: lp_plot_x += window_widths_x[0] + window_widths_x[1]; break;
-						case HAND_RIGHT: lp_plot_x += window_widths_x[0] + window_widths_x[1] + 2 * window_widths_x[2]; break;
+						case PatternHand::HAND_LEFT:
+							lp_plot_x += window_widths_x[0] + window_widths_x[1];
+							break;
+						case PatternHand::HAND_RIGHT:
+							lp_plot_x += window_widths_x[0] + window_widths_x[1] + 2 * window_widths_x[2];
+							break;
 						}
 
 						// Time
 
 						double multiplier = 0.0;
 
-						switch (lp_hand)
+						switch (handSource)
 						{
-						case HAND_LEFT: multiplier = 1.0; break;
-						case HAND_RIGHT: multiplier = -1.0; break;
+						case PatternHand::HAND_LEFT:
+							multiplier = 1.0;
+							break;
+						case PatternHand::HAND_RIGHT:
+							multiplier = -1.0;
+							break;
 						}
 
 						lp_plot_x += multiplier * 2 * window_widths_x[2] * time_elapsed_seconds / half_beat_time_seconds;
