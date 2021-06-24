@@ -52,9 +52,7 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 
 				unsigned int lp_throw_value = b->GetThrowValue();
 
-				// PatternHand lp_hand = b->GetOriginHand();
-				// This line is replaced.
-				PatternHand lp_hand = (*GetBallSiteSource(i)) == 0 ? HAND_LEFT : HAND_RIGHT;
+				PatternHand lp_hand = (*GetBallSiteSource(i)) == 0 ? PatternHand::HAND_LEFT : PatternHand::HAND_RIGHT;
 
 				unsigned int lp_beats_elapsed = b->GetBeatsElapsed();
 
