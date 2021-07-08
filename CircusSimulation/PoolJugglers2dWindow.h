@@ -13,6 +13,18 @@ private:
 	double* site_x;
 	double* site_y;
 
+protected:
+
+	virtual void OnScreenUpdate_DisplayPattern(const long&);
+
+	virtual void OnScreenPaint_RenderPattern(ID2D1HwndRenderTarget* context);
+
+	virtual void OnScreenResize_ContextPattern();
+
+	virtual void OnBallsUpdate_DisplayJuggling();
+	virtual void Reset_DisplayJuggling();
+	virtual void Populate_DisplayJuggling();
+
 public:
 
 	PoolJugglers2dWindow(wxWindow* parent, const unsigned int& ns);

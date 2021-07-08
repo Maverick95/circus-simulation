@@ -31,7 +31,7 @@ private:
 
 protected:
 
-	virtual void OnScreenUpdate_DisplayPattern(const long &);
+	virtual void OnScreenUpdate_DisplayPattern(const long& time_elapsed);
 
 	virtual void OnScreenPaint_RenderPattern(ID2D1HwndRenderTarget* context);
 	
