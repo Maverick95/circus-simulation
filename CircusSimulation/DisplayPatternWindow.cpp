@@ -30,7 +30,7 @@ void DisplayPatternWindow::OnScreenUpdate(wxTimerEvent& event)
 
 		// Apply any derived additional functionality.
 
-		OnScreenUpdate(time_elapsed);
+		OnScreenUpdate_DisplayPattern(time_elapsed);
 
 		Refresh(false, NULL);
 	}
@@ -89,7 +89,7 @@ void DisplayPatternWindow::Reset()
 
 	timer_update_screen = NULL;
 
-	ResetD1();
+	Reset_DisplayPattern();
 }
 
 void DisplayPatternWindow::Populate()
@@ -101,7 +101,7 @@ void DisplayPatternWindow::Populate()
 		timer_update_screen = new wxTimer(this, TIMER_SCREEN_UPDATE);
 	}
 
-	PopulateD1();
+	Populate_DisplayPattern();
 }
 
 
@@ -129,5 +129,5 @@ void DisplayPatternWindow::Stop()
 		timer_update_screen->Stop();
 	}
 
-	StopD1();
+	Stop_DisplayPattern();
 }

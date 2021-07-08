@@ -3,7 +3,7 @@
 
 
 
-void BallStatusWindow::OnBallsUpdate()
+void BallStatusWindow::OnBallsUpdate_DisplayPattern()
 {
 	// Colour the throw boxes.
 
@@ -36,19 +36,19 @@ void BallStatusWindow::OnBallsUpdate()
 	}
 }
 
-void BallStatusWindow::OnScreenUpdate(const long & time_elapsed)
+void BallStatusWindow::OnScreenUpdate_DisplayPattern(const long & time_elapsed)
 {
 
 }
 
-void BallStatusWindow::OnScreenPaint(wxWindow* context)
+void BallStatusWindow::OnScreenPaint_RenderPattern(wxWindow* context)
 {
 	wxAutoBufferedPaintDC dc(context);
 	dc.SetBackground(*wxWHITE_BRUSH);
 	dc.Clear();
 }
 
-void BallStatusWindow::ResetD1()
+void BallStatusWindow::Reset_DisplayPattern()
 {
 	auto h = GetValidHandler();
 
@@ -67,12 +67,12 @@ void BallStatusWindow::ResetD1()
 	pattern_balls = NULL;
 }
 
-void BallStatusWindow::OnScreenResize()
+void BallStatusWindow::OnScreenResize_RenderPattern()
 {
 	this->Layout();
 }
 
-void BallStatusWindow::PopulateD1()
+void BallStatusWindow::Populate_DisplayPattern()
 {
 	auto h = GetValidHandler();
 
@@ -113,7 +113,7 @@ void BallStatusWindow::PopulateD1()
 	}
 }
 
-void BallStatusWindow::StopD1()
+void BallStatusWindow::Stop_DisplayPattern()
 {
 	auto h = GetValidHandler();
 

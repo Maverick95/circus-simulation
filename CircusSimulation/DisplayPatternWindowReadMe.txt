@@ -8,7 +8,7 @@ visualise juggling patterns, and the functionality managed / included at each le
 DisplayPatternWindow
 
 1) Manages link to the Pattern Handler.
-2) Handles the regular drawing of the screen (but passes invalidation to child)
+2) Handles the regular drawing of the screen,
 3) Handles addition of a new pattern to the screen.
 3) Handles starting / stopping of timer for updating screen.
 
@@ -18,78 +18,96 @@ the valid handler (NULL if invalid - use as consistent test in derived functions
 
 Functions to be filled in -
 
-void OnBallsUpdate()
-void OnScreenUpdateD1(const long &)
-void ResetD1()
-void PopulateD1()
-void StopD1()
+void OnBallsUpdate_DisplayPattern()
+void OnScreenUpdate_DisplayPattern(const long &)
+void Reset_DisplayPattern()
+void Populate_DisplayPattern()
+void Stop_DisplayPattern()
 
 
 
-		DisplayPatternWxWindow
+		RenderPatternWindow<class T>
 
-		1) Manages basic painting and resizing for windows drawn with wxWidgets.
-		2) On drawing, automatically fills in white backgrounds.
+		T is the class required in order for the window to handle ALL drawing functionality.
+		This involves the creation / destruction of contexts.
 
-		Functions to be filled in -
-
-		void OnBallsUpdate()
-		void OnScreenUpdateD1(const long &)
-		void ResetD1()
-		void PopulateD1()
-		void StopD1()
-
-		void OnScreenPaintD1(wxAutoBufferedPaintDC& dc)
-
-
-
-		DisplayPatternDirect2dWindow
-
-		1) Manages basic painting and resizing for windows drawn with Direct2D.
-		2) On drawing, automatically fills in white backgrounds.
-
-		Properties retrieved -
-
-		the render target (used to create brushes and draw)
+		e.g.
+		for wxWidgets windows, T is wxWindow, because this creates / destroys the context.
+		for Direct2D windows, T is ID2D1HwndRenderTarget.
 
 		Functions to be filled in -
 
-		void OnBallsUpdate()
-		void OnScreenUpdateD1(const long &)
-		void ResetD1()
-		void PopulateD1()
-		void StopD1()
+		T* GetContext_RenderPattern()
+		void OnScreenPaint_RenderPattern(T* context)
+		void OnScreenResize_RenderPattern()
+		---
+		void OnBallsUpdate_DisplayPattern()
+		void OnScreenUpdate_DisplayPattern(const long &)
+		void Reset_DisplayPattern()
+		void Populate_DisplayPattern()
+		void Stop_DisplayPattern()
 
-		void OnScreenResizeD1()
-		void OnScreenPaintD1()
 
 
+				ContextPatternWindow<class T>
 
-				DisplayJugglingWindow
-				
-				1) Handles data regarding mapping of actions to sites.
+				Dummy empty class, this allows individual class types to customise their internal definition.
+
+				###
+
+				ContextPatternWindow<wxWindow>
 
 				Implemented functions -
 
-				void OnBallsUpdate()
-				void ResetD1();
-				void PopulateD1();
-				void StopD1();
+				wxWindow* GetContext_RenderPattern()
 
 				Functions to be filled in -
 
-				void OnScreenUpdateD1(const long &)
-				void OnScreenResizeD1()
-				void OnScreenPaintD1()
-				void OnBallsUpdateD1()
-				void ResetD2()
-				void PopulateD2()
+				void OnScreenPaint_RenderPattern(T* context)
+				void OnScreenResize_RenderPattern()
+				---
+				void OnBallsUpdate_DisplayPattern()
+				void OnScreenUpdate_DisplayPattern(const long &)
+				void Reset_DisplayPattern()
+				void Populate_DisplayPattern()
+				void Stop_DisplayPattern()
+
+				###
+
+				ContextPatternWindow<ID2D1HwndRenderTarget>
+
+				Implemented functions -
+
+				ID2D1HwndRenderTarget* GetContext_RenderPattern();
+				void OnScreenResize_RenderPattern();
+
+				Functions to be filled in -
+
+				void OnScreenResize_ContextPattern()
+				---
+				void OnScreenPaint_RenderPattern(T* context)
+				---
+				void OnBallsUpdate_DisplayPattern()
+				void OnScreenUpdate_DisplayPattern(const long &)
+				void Reset_DisplayPattern()
+				void Populate_DisplayPattern()
+				void Stop_DisplayPattern()
 
 
 
-		
+						DisplayJugglingWindow<class T>
+				
+						1) Handles data regarding mapping of actions to sites.
 
+						Implemented functions -
 
+						void OnBallsUpdate_DisplayPattern()
+						void Reset_DisplayPattern();
+						void Populate_DisplayPattern();
+						void Stop_DisplayPattern();
 
+						Functions to be filled in -
 
-
+						void OnBallsUpdate_DisplayJuggling()
+						void Reset_DisplayJuggling()
+						void Populate_DisplayJuggling()

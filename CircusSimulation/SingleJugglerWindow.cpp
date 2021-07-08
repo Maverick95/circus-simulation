@@ -2,7 +2,7 @@
 
 
 
-void SingleJugglerWindow::OnScreenResizeD2()
+void SingleJugglerWindow::OnScreenResize_ContextPattern()
 {
 	wxSize size = GetClientSize();
 
@@ -17,12 +17,12 @@ void SingleJugglerWindow::OnScreenResizeD2()
 	}
 }
 
-void SingleJugglerWindow::OnBallsUpdateD1()
+void SingleJugglerWindow::OnBallsUpdate_DisplayJuggling()
 {
 
 }
 
-void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
+void SingleJugglerWindow::OnScreenUpdate_DisplayPattern(const long& time_elapsed)
 {
 	auto h = GetValidHandler();
 
@@ -283,7 +283,7 @@ void SingleJugglerWindow::OnScreenUpdate(const long& time_elapsed)
 	}
 }
 
-void SingleJugglerWindow::OnScreenPaint(ID2D1HwndRenderTarget* context)
+void SingleJugglerWindow::OnScreenPaint_RenderPattern(ID2D1HwndRenderTarget* context)
 {
 	context->BeginDraw();
 	context->Clear(D2D1::ColorF(D2D1::ColorF::White));
@@ -306,7 +306,7 @@ void SingleJugglerWindow::OnScreenPaint(ID2D1HwndRenderTarget* context)
 	context->EndDraw();
 }
 
-void SingleJugglerWindow::ResetD2()
+void SingleJugglerWindow::Reset_DisplayJuggling()
 {
 	auto h = GetValidHandler();
 
@@ -321,7 +321,7 @@ void SingleJugglerWindow::ResetD2()
 	Refresh(false, NULL);
 }
 
-void SingleJugglerWindow::PopulateD2()
+void SingleJugglerWindow::Populate_DisplayJuggling()
 {
 	auto h = GetValidHandler();
 
@@ -403,13 +403,13 @@ SingleJugglerWindow::SingleJugglerWindow(wxWindow* parent, const unsigned int* w
 	window_widths_x = new unsigned int[3];
 	window_widths_y = new unsigned int[4];
 
-	OnScreenResize();
+	OnScreenResize_ContextPattern();
 
-	GetContext()->CreateSolidColorBrush(
+	GetContext_RenderPattern()->CreateSolidColorBrush(
 		D2D1::ColorF(D2D1::ColorF::Red),
 		&brushCircles);
 
-	GetContext()->CreateSolidColorBrush(
+	GetContext_RenderPattern()->CreateSolidColorBrush(
 		D2D1::ColorF(D2D1::ColorF::Black),
 		&brushCirclesOutlines);
 }

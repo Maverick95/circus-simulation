@@ -26,9 +26,9 @@ private:
 
 protected:
 
-	virtual T* GetContext() = 0;
-	virtual void OnScreenPaint(T* context) = 0;
-	virtual void OnScreenResize() = 0;
+	virtual T* GetContext_RenderPattern() = 0;
+	virtual void OnScreenPaint_RenderPattern(T* context) = 0;
+	virtual void OnScreenResize_RenderPattern() = 0;
 
 public:
 
@@ -46,14 +46,14 @@ public:
 template <class T>
 void RenderPatternWindow<T>::OnScreenResize(wxSizeEvent& e)
 {
-	OnScreenResize();
+	OnScreenResize_RenderPattern();
 }
 
 template <class T>
 void RenderPatternWindow<T>::OnScreenPaint(wxPaintEvent& e)
 {
-	T* context = GetContext();
-	OnScreenPaint(context);
+	T* context = GetContext_RenderPattern();
+	OnScreenPaint_RenderPattern(context);
 }
 
 template <class T>
@@ -90,7 +90,7 @@ class ContextPatternWindow<wxWindow> : public RenderPatternWindow<wxWindow>
 
 protected:
 
-	wxWindow* GetContext();
+	wxWindow* GetContext_RenderPattern();
 
 public:
 
@@ -109,9 +109,9 @@ private:
 
 protected:
 
-	ID2D1HwndRenderTarget* GetContext();
-	void OnScreenResize();
-	virtual void OnScreenResizeD2() = 0;
+	ID2D1HwndRenderTarget* GetContext_RenderPattern();
+	void OnScreenResize_RenderPattern();
+	virtual void OnScreenResize_ContextPattern() = 0;
 
 public:
 

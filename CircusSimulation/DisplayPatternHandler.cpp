@@ -142,7 +142,7 @@ void DisplayPatternHandler::OnBallsUpdate_ProcessNextActions()
 
 			for (auto i = windows.begin(); i != windows.end(); i++)
 			{
-				(*i)->OnBallsUpdate();
+				(*i)->OnBallsUpdate_DisplayPattern();
 				(*i)->Update();
 			}
 

@@ -35,11 +35,11 @@ protected:
 
 	// Abstract functions - defines DisplayPatternWindow as abstract base class.
 
-	virtual void OnBallsUpdate() = 0;
-	virtual void OnScreenUpdate(const long &) = 0;
-	virtual void ResetD1() = 0;
-	virtual void PopulateD1() = 0;
-	virtual void StopD1() = 0;
+	virtual void OnBallsUpdate_DisplayPattern() = 0;
+	virtual void OnScreenUpdate_DisplayPattern(const long &) = 0;
+	virtual void Reset_DisplayPattern() = 0;
+	virtual void Populate_DisplayPattern() = 0;
+	virtual void Stop_DisplayPattern() = 0;
 
 public:
 

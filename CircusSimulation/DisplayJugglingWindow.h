@@ -35,16 +35,14 @@ private:
 
 protected:
 
-	virtual void OnBallsUpdate();
+	virtual void OnBallsUpdate_DisplayPattern();
+	virtual void Reset_DisplayPattern();
+	virtual void Populate_DisplayPattern();
+	virtual void Stop_DisplayPattern();
 
-	virtual void ResetD1();
-	virtual void PopulateD1();
-	virtual void StopD1();
-
-	virtual void OnBallsUpdateD1() = 0;
-
-	virtual void ResetD2() = 0;
-	virtual void PopulateD2() = 0;
+	virtual void OnBallsUpdate_DisplayJuggling() = 0;
+	virtual void Reset_DisplayJuggling() = 0;
+	virtual void Populate_DisplayJuggling() = 0;
 	
 	virtual DisplayPatternHandler * GetValidHandler() override;
 
@@ -68,7 +66,7 @@ public:
 
 
 template <class T>
-void DisplayJugglingWindow<T>::ResetD1()
+void DisplayJugglingWindow<T>::Reset_DisplayPattern()
 {
 	auto h = GetValidHandler();
 
@@ -98,13 +96,13 @@ void DisplayJugglingWindow<T>::ResetD1()
 
 	mapping_current_factor = 0;
 
-	ResetD2();
+	Reset_DisplayJuggling();
 }
 
 
 
 template <class T>
-void DisplayJugglingWindow<T>::PopulateD1()
+void DisplayJugglingWindow<T>::Populate_DisplayPattern()
 {
 	auto h = GetValidHandler();
 
@@ -197,13 +195,13 @@ void DisplayJugglingWindow<T>::PopulateD1()
 		}
 	}
 
-	PopulateD2();
+	Populate_DisplayJuggling();
 }
 
 
 
 template<class T>
-void DisplayJugglingWindow<T>::StopD1()
+void DisplayJugglingWindow<T>::Stop_DisplayPattern()
 {
 	auto h = GetValidHandler();
 
@@ -278,7 +276,7 @@ unsigned int* DisplayJugglingWindow<T>::GetBallSiteDestination(const unsigned in
 
 
 template <class T>
-void DisplayJugglingWindow<T>::OnBallsUpdate()
+void DisplayJugglingWindow<T>::OnBallsUpdate_DisplayPattern()
 {
 	auto h = GetValidHandler();
 
@@ -307,7 +305,7 @@ void DisplayJugglingWindow<T>::OnBallsUpdate()
 
 	}
 
-	OnBallsUpdateD1();
+	OnBallsUpdate_DisplayJuggling();
 }
 
 

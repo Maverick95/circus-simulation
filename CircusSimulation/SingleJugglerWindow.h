@@ -10,7 +10,7 @@
 
 
 
-class SingleJugglerWindow : public DisplayJugglingWindow<ID2D1HwndRenderTarget>
+class SingleJugglerWindow final : public DisplayJugglingWindow<ID2D1HwndRenderTarget>
 {
 
 private:
@@ -31,14 +31,15 @@ private:
 
 protected:
 
-	virtual void OnScreenUpdate(const long &);
-	virtual void OnScreenResizeD2();
-	virtual void OnScreenPaint(ID2D1HwndRenderTarget* context);
+	virtual void OnScreenUpdate_DisplayPattern(const long &);
 
-	virtual void OnBallsUpdateD1();
+	virtual void OnScreenPaint_RenderPattern(ID2D1HwndRenderTarget* context);
+	
+	virtual void OnScreenResize_ContextPattern();
 
-	virtual void ResetD2();
-	virtual void PopulateD2();
+	virtual void OnBallsUpdate_DisplayJuggling();
+	virtual void Reset_DisplayJuggling();
+	virtual void Populate_DisplayJuggling();
 
 public:
 

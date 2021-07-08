@@ -2,7 +2,7 @@
 
 
 
-wxWindow* ContextPatternWindow<wxWindow>::GetContext()
+wxWindow* ContextPatternWindow<wxWindow>::GetContext_RenderPattern()
 {
 	return this;
 }
@@ -21,16 +21,16 @@ ContextPatternWindow<wxWindow>::~ContextPatternWindow()
 
 
 
-ID2D1HwndRenderTarget* ContextPatternWindow<ID2D1HwndRenderTarget>::GetContext()
+ID2D1HwndRenderTarget* ContextPatternWindow<ID2D1HwndRenderTarget>::GetContext_RenderPattern()
 {
 	return renderTarget;
 }
 
-void ContextPatternWindow<ID2D1HwndRenderTarget>::OnScreenResize()
+void ContextPatternWindow<ID2D1HwndRenderTarget>::OnScreenResize_RenderPattern()
 {
 	const wxSize size = GetClientSize();
 	renderTarget->Resize(D2D1::SizeU(size.GetWidth(), size.GetHeight()));
-	OnScreenResizeD2();
+	OnScreenResize_ContextPattern();
 }
 
 ContextPatternWindow<ID2D1HwndRenderTarget>::ContextPatternWindow(wxWindow* parent)
