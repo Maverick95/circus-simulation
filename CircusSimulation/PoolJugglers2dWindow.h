@@ -5,7 +5,7 @@
 #include <wx\wx.h>
 #include "d2d1.h"
 
-class PoolJugglers2dWindow : public DisplayJugglingWindow<ID2D1HwndRenderTarget>
+class PoolJugglers2dWindow final : public DisplayJugglingWindow<ID2D1HwndRenderTarget>
 {
 
 private:
@@ -15,7 +15,7 @@ private:
 
 protected:
 
-	virtual void OnScreenUpdate_DisplayPattern(const long&);
+	virtual void OnScreenUpdate_DisplayPattern(const long& time_elapsed);
 
 	virtual void OnScreenPaint_RenderPattern(ID2D1HwndRenderTarget* context);
 
