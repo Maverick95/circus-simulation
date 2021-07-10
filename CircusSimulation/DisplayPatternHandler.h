@@ -49,7 +49,17 @@ private:
 
 	void OnBallsUpdate(wxTimerEvent &);
 
+	void Reset();
 
+	// Control functions.
+
+	void Play(wxCommandEvent&);
+	void Stop(wxCommandEvent&);
+	void Pause(wxCommandEvent&);
+	void PlayOnce_Forward(wxCommandEvent&);
+	void SpeedChange_Down(wxCommandEvent&);
+	void SpeedChange_Up(wxCommandEvent&);
+	void Reset(wxCommandEvent&);
 
 	wxDECLARE_EVENT_TABLE();
 
@@ -61,18 +71,7 @@ public:
 	void AddWindow(DisplayPatternWindow *);
 	void RemoveWindow(DisplayPatternWindow *);
 
-	void Reset();
 	void Populate(const SiteswapPattern&);
-
-	// Control functions.
-
-	void Play(wxCommandEvent &);
-	void Stop(wxCommandEvent &);
-	void Pause(wxCommandEvent &);
-	void PlayOnce_Forward(wxCommandEvent &);
-	void SpeedChange_Down(wxCommandEvent &);
-	void SpeedChange_Up(wxCommandEvent &);
-	void Reset(wxCommandEvent &);
 	
 	bool IsValid();
 	const DisplayPattern * GetDisplayPattern();

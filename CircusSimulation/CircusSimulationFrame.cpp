@@ -12,7 +12,6 @@
 
 
 
-static const int BUTTON_RESET = 1;
 static const int WINDOW_SINGLE_JUGGLER_PATTERNS = 1;
 
 
@@ -22,7 +21,6 @@ wxBEGIN_EVENT_TABLE(CircusSimulationFrame, wxFrame)
 EVT_MENU(1, CircusSimulationFrame::OnHello)
 EVT_MENU(wxID_EXIT, CircusSimulationFrame::OnExit)
 EVT_MENU(wxID_ABOUT, CircusSimulationFrame::OnAbout)
-EVT_BUTTON(BUTTON_RESET, CircusSimulationFrame::Reset)
 EVT_SIZE(CircusSimulationFrame::Resize)
 EVT_COMMAND(WINDOW_SINGLE_JUGGLER_PATTERNS, POPULATE_PATTERN_EVENT, PopulateFromSingleJugglerPatternsWindow)
 
@@ -39,11 +37,6 @@ void CircusSimulationFrame::OnAbout(wxCommandEvent & event)
 {
 	wxMessageBox("This is a wxWidgets' Hello world sample",
 		"About Hello World", wxOK | wxICON_INFORMATION);
-}
-
-void CircusSimulationFrame::Reset(wxCommandEvent & e)
-{
-	pattern_handler.Reset();
 }
 
 void CircusSimulationFrame::PopulateFromSingleJugglerPatternsWindow(wxCommandEvent& event)
@@ -106,10 +99,6 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 	sz_0->Add(sz_1_1, 5, wxEXPAND);
 
 	wxBoxSizer * sz_1_2 = new wxBoxSizer(wxHORIZONTAL);
-
-	wxButton * bt_1 = new wxButton(this, BUTTON_RESET, wxString("Reset"));
-
-	sz_1_2->Add(bt_1, 1, wxEXPAND);
 
 	sz_0->Add(sz_1_2, 1, wxEXPAND);
 

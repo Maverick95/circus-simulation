@@ -24,8 +24,6 @@ private:
 	void OnExit(wxCommandEvent &);
 	void OnAbout(wxCommandEvent &);
 
-	void Reset(wxCommandEvent &);
-
 	void PopulateFromSingleJugglerPatternsWindow(wxCommandEvent& event);
 
 	void Resize_Internal();
