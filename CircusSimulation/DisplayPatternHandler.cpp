@@ -11,9 +11,9 @@ static const int BUTTON_PLAY = 1;
 static const int BUTTON_STOP = 2;
 static const int BUTTON_PAUSE = 3;
 static const int BUTTON_PLAY_ONCE_FORWARD = 4;
-static const int BUTTON_SPEED_CHANGE_HALF = 5;
-static const int BUTTON_SPEED_CHANGE_NORMAL = 6;
-static const int BUTTON_SPEED_CHANGE_DOUBLE = 7;
+static const int BUTTON_SPEED_CHANGE_DOWN = 5;
+static const int BUTTON_SPEED_CHANGE_UP = 6;
+static const int BUTTON_RESET = 7;
 
 
 
@@ -24,9 +24,9 @@ EVT_BUTTON(BUTTON_PLAY, DisplayPatternHandler::Play)
 EVT_BUTTON(BUTTON_STOP, DisplayPatternHandler::Stop)
 EVT_BUTTON(BUTTON_PAUSE, DisplayPatternHandler::Pause)
 EVT_BUTTON(BUTTON_PLAY_ONCE_FORWARD, DisplayPatternHandler::PlayOnce_Forward)
-EVT_BUTTON(BUTTON_SPEED_CHANGE_HALF, DisplayPatternHandler::SpeedChange_Half)
-EVT_BUTTON(BUTTON_SPEED_CHANGE_NORMAL, DisplayPatternHandler::SpeedChange_Normal)
-EVT_BUTTON(BUTTON_SPEED_CHANGE_DOUBLE, DisplayPatternHandler::SpeedChange_Double)
+EVT_BUTTON(BUTTON_SPEED_CHANGE_DOWN, DisplayPatternHandler::SpeedChange_Down)
+EVT_BUTTON(BUTTON_SPEED_CHANGE_UP, DisplayPatternHandler::SpeedChange_Up)
+EVT_BUTTON(BUTTON_RESET, DisplayPatternHandler::Reset)
 
 wxEND_EVENT_TABLE()
 
@@ -222,13 +222,14 @@ DisplayPatternHandler::DisplayPatternHandler(wxWindow * parent)
 
 	wxBoxSizer * sz_button_controls = new wxBoxSizer(wxHORIZONTAL);
 
-	wxButton * bt_play = new wxButton(this, BUTTON_PLAY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	wxButton * bt_stop = new wxButton(this, BUTTON_STOP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	wxButton * bt_pause = new wxButton(this, BUTTON_PAUSE, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	wxButton * bt_play_once_forward = new wxButton(this, BUTTON_PLAY_ONCE_FORWARD, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	//wxButton * bt_speed_change_half = new wxButton(this, BUTTON_SPEED_CHANGE_HALF, wxString("Half Speed"));
-	//wxButton * bt_speed_change_normal = new wxButton(this, BUTTON_SPEED_CHANGE_NORMAL, wxString("Normal Speed"));
-	//wxButton * bt_speed_change_double = new wxButton(this, BUTTON_SPEED_CHANGE_DOUBLE, wxString("Double Speed"));
+	wxButton* bt_play = new wxButton(this, BUTTON_PLAY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	wxButton* bt_stop = new wxButton(this, BUTTON_STOP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	wxButton* bt_pause = new wxButton(this, BUTTON_PAUSE, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	wxButton* bt_play_once_forward = new wxButton(this, BUTTON_PLAY_ONCE_FORWARD, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	
+	wxButton* bt_speed_change_down = new wxButton(this, BUTTON_SPEED_CHANGE_DOWN, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	wxButton* bt_speed_change_up = new wxButton(this, BUTTON_SPEED_CHANGE_UP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	wxButton* bt_reset = new wxButton(this, BUTTON_RESET, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
  
 	bt_play->SetBitmapLabel(wxBITMAP_PNG(IDB_PLAY_ENABLED));
 	bt_play->SetBitmapDisabled(wxBITMAP_PNG(IDB_PLAY_DISABLED));
@@ -245,16 +246,26 @@ DisplayPatternHandler::DisplayPatternHandler(wxWindow * parent)
 	bt_play_once_forward->SetBitmapLabel(wxBITMAP_PNG(IDB_FORWARD_ENABLED));
 	bt_play_once_forward->SetBitmapDisabled(wxBITMAP_PNG(IDB_FORWARD_DISABLED));
 	bt_play_once_forward->SetBitmapPressed(wxBITMAP_PNG(IDB_FORWARD_PRESSED));
+
+	bt_speed_change_down->SetBitmapLabel(wxBITMAP_PNG(IDB_SPEED_DOWN_ENABLED));
+	bt_speed_change_down->SetBitmapDisabled(wxBITMAP_PNG(IDB_SPEED_DOWN_DISABLED));
+	bt_speed_change_down->SetBitmapPressed(wxBITMAP_PNG(IDB_SPEED_DOWN_PRESSED));
+
+	bt_speed_change_up->SetBitmapLabel(wxBITMAP_PNG(IDB_SPEED_UP_ENABLED));
+	bt_speed_change_up->SetBitmapDisabled(wxBITMAP_PNG(IDB_SPEED_UP_DISABLED));
+	bt_speed_change_up->SetBitmapPressed(wxBITMAP_PNG(IDB_SPEED_UP_PRESSED));
+
+	bt_reset->SetBitmapLabel(wxBITMAP_PNG(IDB_RESET_ENABLED));
+	bt_reset->SetBitmapDisabled(wxBITMAP_PNG(IDB_RESET_DISABLED));
+	bt_reset->SetBitmapPressed(wxBITMAP_PNG(IDB_RESET_PRESSED));
 	
 	sz_button_controls->Add(bt_play);
 	sz_button_controls->Add(bt_stop);
 	sz_button_controls->Add(bt_pause);
 	sz_button_controls->Add(bt_play_once_forward);
-	
-	//sz_button_controls->Add(bt_speed_change_half);
-	//sz_button_controls->Add(bt_speed_change_normal);
-	//sz_button_controls->Add(bt_speed_change_double);
-	//sz_button_controls->Add(bt_speed_change_double, 1, wxEXPAND); For reference purposes.
+	sz_button_controls->Add(bt_speed_change_down);
+	sz_button_controls->Add(bt_speed_change_up);
+	sz_button_controls->Add(bt_reset);
 
 	SetSizer(sz_button_controls);
 }
@@ -529,28 +540,42 @@ void DisplayPatternHandler::PlayOnce_Forward(wxCommandEvent & e)
 	}
 }
 
-void DisplayPatternHandler::SpeedChange_Half(wxCommandEvent & e)
+void DisplayPatternHandler::SpeedChange_Down(wxCommandEvent & e)
 {
-	if (speed != SPD_HALF && speed_change != SPD_CHG_HALF)
+	if (speed_change == SPD_CHG_NONE && speed != SPD_HALF)
 	{
-		speed_change = SPD_CHG_HALF;
+		if (speed == SPD_DOUBLE)
+		{
+			speed_change = SPD_CHG_NORMAL;
+		}
+		else if (speed == SPD_NORMAL)
+		{
+			speed_change = SPD_CHG_HALF;
+		}
 	}
 }
 
-void DisplayPatternHandler::SpeedChange_Normal(wxCommandEvent & e)
+void DisplayPatternHandler::SpeedChange_Up(wxCommandEvent & e)
 {
-	if (speed != SPD_NORMAL && speed_change != SPD_CHG_NORMAL)
+	if (speed_change == SPD_CHG_NONE && speed != SPD_DOUBLE)
 	{
-		speed_change = SPD_CHG_NORMAL;
+		switch (speed)
+		{
+		case SPD_NORMAL:
+			speed_change = SPD_CHG_DOUBLE;
+			break;
+		case SPD_HALF:
+			speed_change = SPD_CHG_NORMAL;
+			break;
+		default:
+			break;
+		}
 	}
 }
 
-void DisplayPatternHandler::SpeedChange_Double(wxCommandEvent & e)
+void DisplayPatternHandler::Reset(wxCommandEvent & e)
 {
-	if (speed != SPD_DOUBLE && speed_change != SPD_CHG_DOUBLE)
-	{
-		speed_change = SPD_CHG_DOUBLE;
-	}
+	Reset();
 }
 
 bool DisplayPatternHandler::IsValid()

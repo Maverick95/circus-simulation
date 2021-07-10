@@ -209,11 +209,6 @@
   <ItemGroup>
     <ResourceCompile Include="CircusSimulation.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="Images\DisplayPatternHandler toolbar\Play_Disabled.png" />
-    <Image Include="Images\DisplayPatternHandler toolbar\Play_Enabled.png" />
-    <Image Include="Images\DisplayPatternHandler toolbar\Play_Pressed.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

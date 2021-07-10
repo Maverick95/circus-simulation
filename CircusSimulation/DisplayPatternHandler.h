@@ -70,9 +70,9 @@ public:
 	void Stop(wxCommandEvent &);
 	void Pause(wxCommandEvent &);
 	void PlayOnce_Forward(wxCommandEvent &);
-	void SpeedChange_Half(wxCommandEvent &);
-	void SpeedChange_Normal(wxCommandEvent &);
-	void SpeedChange_Double(wxCommandEvent &);
+	void SpeedChange_Down(wxCommandEvent &);
+	void SpeedChange_Up(wxCommandEvent &);
+	void Reset(wxCommandEvent &);
 	
 	bool IsValid();
 	const DisplayPattern * GetDisplayPattern();
