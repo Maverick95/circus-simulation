@@ -48,6 +48,8 @@ protected:
 
 	// Internal accessor functions.
 
+	unsigned int GetNumberSites() const;
+
 	unsigned int * GetBallSiteSource(const unsigned int &);
 	unsigned int * GetBallSiteDestination(const unsigned int &);
 
@@ -62,6 +64,14 @@ public:
 
 
 /* ### DEFINE ### */
+
+
+
+template<class T>
+unsigned int DisplayJugglingWindow<T>::GetNumberSites() const
+{
+	return num_sites;
+}
 
 
 

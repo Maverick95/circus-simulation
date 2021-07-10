@@ -13,6 +13,13 @@ private:
 	double* site_x;
 	double* site_y;
 
+	double* plot_x;
+	double* plot_y;
+
+	ID2D1SolidColorBrush* brushBlack;
+
+	void UpdateSiteCoordinates();
+
 protected:
 
 	virtual void OnScreenUpdate_DisplayPattern(const long& time_elapsed);

@@ -47,6 +47,7 @@ template <class T>
 void RenderPatternWindow<T>::OnScreenResize(wxSizeEvent& e)
 {
 	OnScreenResize_RenderPattern();
+	Refresh(false, NULL);
 }
 
 template <class T>
