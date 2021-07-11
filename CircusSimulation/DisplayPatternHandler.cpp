@@ -68,6 +68,51 @@ void DisplayPatternHandler::Calculate_PatternBeatTime_Milliseconds()
 	pattern_beat_time_milliseconds = pbtm;
 }
 
+void DisplayPatternHandler::UpdateButtonStatesActions()
+{
+	btnPlay->Enable(
+		state == DisplayPatternHandlerState::PH_STATE_PAUSE ||
+		state == DisplayPatternHandlerState::PH_STATE_STOP
+	);
+
+	btnStop->Enable(
+		state != DisplayPatternHandlerState::PH_STATE_STOP &&
+		state != DisplayPatternHandlerState::PH_STATE_EMPTY
+	);
+
+	btnPause->Enable(
+		state == DisplayPatternHandlerState::PH_STATE_PLAY
+	);
+
+	btnPlayOnceForward->Enable(
+		state == DisplayPatternHandlerState::PH_STATE_PAUSE
+	);
+
+	btnReset->Enable(
+		state != DisplayPatternHandlerState::PH_STATE_EMPTY
+	);
+}
+
+void DisplayPatternHandler::UpdateButtonStatesSpeedChanges()
+{
+	btnSpeedChangeDown->Enable(
+		state != DisplayPatternHandlerState::PH_STATE_EMPTY &&
+		speed != DisplayPatternHandlerSpeed::SPD_HALF
+	);
+
+	btnSpeedChangeUp->Enable(
+		state != DisplayPatternHandlerState::PH_STATE_EMPTY &&
+		speed != DisplayPatternHandlerSpeed::SPD_DOUBLE
+	);
+}
+
+
+void DisplayPatternHandler::SetState(DisplayPatternHandlerState stateUpdate)
+{
+	state = stateUpdate;
+	UpdateButtonStatesActions();
+	UpdateButtonStatesSpeedChanges();
+}
 
 void DisplayPatternHandler::OnBallsUpdate_CheckPause()
 {
@@ -84,7 +129,7 @@ void DisplayPatternHandler::OnBallsUpdate_CheckPause()
 			{
 				StopTimers();
 				update_balls_to_pause = -1;
-				state = PH_STATE_PAUSE;
+				SetState(DisplayPatternHandlerState::PH_STATE_PAUSE);
 			}
 		}
 		break;
@@ -184,6 +229,7 @@ void DisplayPatternHandler::OnBallsUpdate_CheckSpeed(bool start_timers = true)
 				speed_change = SPD_CHG_NONE;
 
 				Calculate_PatternBeatTime_Milliseconds();
+				UpdateButtonStatesSpeedChanges();
 				
 				if (start_timers) { StartTimers(); }
 			}
@@ -203,6 +249,13 @@ void DisplayPatternHandler::OnBallsUpdate(wxTimerEvent& event)
 
 DisplayPatternHandler::DisplayPatternHandler(wxWindow * parent)
 	: wxWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0L),
+	btnPlay(NULL),
+	btnStop(NULL),
+	btnPause(NULL),
+	btnPlayOnceForward(NULL),
+	btnSpeedChangeDown(NULL),
+	btnSpeedChangeUp(NULL),
+	btnReset(NULL),
 	state(PH_STATE_EMPTY),
 	speed(SPD_NORMAL),
 	speed_change(SPD_CHG_NONE),
@@ -222,50 +275,52 @@ DisplayPatternHandler::DisplayPatternHandler(wxWindow * parent)
 
 	wxBoxSizer * sz_button_controls = new wxBoxSizer(wxHORIZONTAL);
 
-	wxButton* bt_play = new wxButton(this, BUTTON_PLAY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	wxButton* bt_stop = new wxButton(this, BUTTON_STOP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	wxButton* bt_pause = new wxButton(this, BUTTON_PAUSE, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	wxButton* bt_play_once_forward = new wxButton(this, BUTTON_PLAY_ONCE_FORWARD, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	
-	wxButton* bt_speed_change_down = new wxButton(this, BUTTON_SPEED_CHANGE_DOWN, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	wxButton* bt_speed_change_up = new wxButton(this, BUTTON_SPEED_CHANGE_UP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-	wxButton* bt_reset = new wxButton(this, BUTTON_RESET, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	btnPlay = new wxButton(this, BUTTON_PLAY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	btnStop = new wxButton(this, BUTTON_STOP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	btnPause = new wxButton(this, BUTTON_PAUSE, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	btnPlayOnceForward = new wxButton(this, BUTTON_PLAY_ONCE_FORWARD, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	btnSpeedChangeDown = new wxButton(this, BUTTON_SPEED_CHANGE_DOWN, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	btnSpeedChangeUp = new wxButton(this, BUTTON_SPEED_CHANGE_UP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	btnReset = new wxButton(this, BUTTON_RESET, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
  
-	bt_play->SetBitmapLabel(wxBITMAP_PNG(IDB_PLAY_ENABLED));
-	bt_play->SetBitmapDisabled(wxBITMAP_PNG(IDB_PLAY_DISABLED));
-	bt_play->SetBitmapPressed(wxBITMAP_PNG(IDB_PLAY_PRESSED));
+	btnPlay->SetBitmapLabel(wxBITMAP_PNG(IDB_PLAY_ENABLED));
+	btnPlay->SetBitmapDisabled(wxBITMAP_PNG(IDB_PLAY_DISABLED));
+	btnPlay->SetBitmapPressed(wxBITMAP_PNG(IDB_PLAY_PRESSED));
 
-	bt_stop->SetBitmapLabel(wxBITMAP_PNG(IDB_STOP_ENABLED));
-	bt_stop->SetBitmapDisabled(wxBITMAP_PNG(IDB_STOP_DISABLED));
-	bt_stop->SetBitmapPressed(wxBITMAP_PNG(IDB_STOP_PRESSED));
+	btnStop->SetBitmapLabel(wxBITMAP_PNG(IDB_STOP_ENABLED));
+	btnStop->SetBitmapDisabled(wxBITMAP_PNG(IDB_STOP_DISABLED));
+	btnStop->SetBitmapPressed(wxBITMAP_PNG(IDB_STOP_PRESSED));
 
-	bt_pause->SetBitmapLabel(wxBITMAP_PNG(IDB_PAUSE_ENABLED));
-	bt_pause->SetBitmapDisabled(wxBITMAP_PNG(IDB_PAUSE_DISABLED));
-	bt_pause->SetBitmapPressed(wxBITMAP_PNG(IDB_PAUSE_PRESSED));
+	btnPause->SetBitmapLabel(wxBITMAP_PNG(IDB_PAUSE_ENABLED));
+	btnPause->SetBitmapDisabled(wxBITMAP_PNG(IDB_PAUSE_DISABLED));
+	btnPause->SetBitmapPressed(wxBITMAP_PNG(IDB_PAUSE_PRESSED));
 
-	bt_play_once_forward->SetBitmapLabel(wxBITMAP_PNG(IDB_FORWARD_ENABLED));
-	bt_play_once_forward->SetBitmapDisabled(wxBITMAP_PNG(IDB_FORWARD_DISABLED));
-	bt_play_once_forward->SetBitmapPressed(wxBITMAP_PNG(IDB_FORWARD_PRESSED));
+	btnPlayOnceForward->SetBitmapLabel(wxBITMAP_PNG(IDB_FORWARD_ENABLED));
+	btnPlayOnceForward->SetBitmapDisabled(wxBITMAP_PNG(IDB_FORWARD_DISABLED));
+	btnPlayOnceForward->SetBitmapPressed(wxBITMAP_PNG(IDB_FORWARD_PRESSED));
 
-	bt_speed_change_down->SetBitmapLabel(wxBITMAP_PNG(IDB_SPEED_DOWN_ENABLED));
-	bt_speed_change_down->SetBitmapDisabled(wxBITMAP_PNG(IDB_SPEED_DOWN_DISABLED));
-	bt_speed_change_down->SetBitmapPressed(wxBITMAP_PNG(IDB_SPEED_DOWN_PRESSED));
+	btnSpeedChangeDown->SetBitmapLabel(wxBITMAP_PNG(IDB_SPEED_DOWN_ENABLED));
+	btnSpeedChangeDown->SetBitmapDisabled(wxBITMAP_PNG(IDB_SPEED_DOWN_DISABLED));
+	btnSpeedChangeDown->SetBitmapPressed(wxBITMAP_PNG(IDB_SPEED_DOWN_PRESSED));
 
-	bt_speed_change_up->SetBitmapLabel(wxBITMAP_PNG(IDB_SPEED_UP_ENABLED));
-	bt_speed_change_up->SetBitmapDisabled(wxBITMAP_PNG(IDB_SPEED_UP_DISABLED));
-	bt_speed_change_up->SetBitmapPressed(wxBITMAP_PNG(IDB_SPEED_UP_PRESSED));
+	btnSpeedChangeUp->SetBitmapLabel(wxBITMAP_PNG(IDB_SPEED_UP_ENABLED));
+	btnSpeedChangeUp->SetBitmapDisabled(wxBITMAP_PNG(IDB_SPEED_UP_DISABLED));
+	btnSpeedChangeUp->SetBitmapPressed(wxBITMAP_PNG(IDB_SPEED_UP_PRESSED));
 
-	bt_reset->SetBitmapLabel(wxBITMAP_PNG(IDB_RESET_ENABLED));
-	bt_reset->SetBitmapDisabled(wxBITMAP_PNG(IDB_RESET_DISABLED));
-	bt_reset->SetBitmapPressed(wxBITMAP_PNG(IDB_RESET_PRESSED));
+	btnReset->SetBitmapLabel(wxBITMAP_PNG(IDB_RESET_ENABLED));
+	btnReset->SetBitmapDisabled(wxBITMAP_PNG(IDB_RESET_DISABLED));
+	btnReset->SetBitmapPressed(wxBITMAP_PNG(IDB_RESET_PRESSED));
 	
-	sz_button_controls->Add(bt_play);
-	sz_button_controls->Add(bt_stop);
-	sz_button_controls->Add(bt_pause);
-	sz_button_controls->Add(bt_play_once_forward);
-	sz_button_controls->Add(bt_speed_change_down);
-	sz_button_controls->Add(bt_speed_change_up);
-	sz_button_controls->Add(bt_reset);
+	sz_button_controls->Add(btnPlay);
+	sz_button_controls->Add(btnStop);
+	sz_button_controls->Add(btnPause);
+	sz_button_controls->Add(btnPlayOnceForward);
+	sz_button_controls->Add(btnSpeedChangeDown);
+	sz_button_controls->Add(btnSpeedChangeUp);
+	sz_button_controls->Add(btnReset);
+
+	UpdateButtonStatesActions();
+	UpdateButtonStatesSpeedChanges();
 
 	SetSizer(sz_button_controls);
 }
@@ -408,8 +463,7 @@ void DisplayPatternHandler::Reset()
 	timer_update_balls = NULL;
 	stopwatch_update_balls = NULL;
 
-	// Empty state due to reset.
-	state = PH_STATE_EMPTY;
+	SetState(PH_STATE_EMPTY);
 }
 
 void DisplayPatternHandler::Populate(const SiteswapPattern& pattern)
@@ -434,9 +488,7 @@ void DisplayPatternHandler::Populate(const SiteswapPattern& pattern)
 
 		Calculate_PatternBeatTime_Milliseconds();
 
-		// Set state.
-
-		state = PH_STATE_STOP;
+		SetState(PH_STATE_STOP);
 	}
 
 	// Now populate all of the associated windows.
@@ -460,7 +512,7 @@ void DisplayPatternHandler::Play(wxCommandEvent& e)
 	case PH_STATE_STOP:
 	case PH_STATE_PAUSE:
 	{
-		state = PH_STATE_PLAY;
+		SetState(PH_STATE_PLAY);
 		OnBallsUpdate_ProcessNextActions();
 		OnBallsUpdate_CheckSpeed(false);
 		StartTimers();
@@ -496,7 +548,7 @@ void DisplayPatternHandler::Stop(wxCommandEvent& e)
 
 		// Set state.
 
-		state = PH_STATE_STOP;
+		SetState(PH_STATE_STOP);
 
 		// Now stop all the associated windows.
 
@@ -516,7 +568,7 @@ void DisplayPatternHandler::Pause(wxCommandEvent& e)
 	case PH_STATE_PLAY:
 	{
 		update_balls_to_pause = 0;
-		state = PH_STATE_PAUSE_TRANSIT;
+		SetState(PH_STATE_PAUSE_TRANSIT);
 	}
 	break;
 	}
@@ -534,7 +586,7 @@ void DisplayPatternHandler::PlayOnce_Forward(wxCommandEvent & e)
 
 		// Modify state.
 		update_balls_to_pause = 0;
-		state = PH_STATE_SINGLE_BEAT_FORWARD;
+		SetState(PH_STATE_SINGLE_BEAT_FORWARD);
 	}
 	break;
 	}

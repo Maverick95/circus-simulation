@@ -17,6 +17,15 @@ class DisplayPatternHandler : public wxWindow
 
 private:
 
+	wxButton
+		* btnPlay,
+		* btnStop,
+		* btnPause,
+		* btnPlayOnceForward,
+		* btnSpeedChangeDown,
+		* btnSpeedChangeUp,
+		* btnReset;
+
 	DisplayPatternHandlerState state;
 	DisplayPatternHandlerSpeed speed;
 	DisplayPatternHandlerSpeedChange speed_change;
@@ -50,6 +59,10 @@ private:
 	void OnBallsUpdate(wxTimerEvent &);
 
 	void Reset();
+
+	void SetState(DisplayPatternHandlerState stateUpdate);
+	void UpdateButtonStatesActions();
+	void UpdateButtonStatesSpeedChanges();
 
 	// Control functions.
 
