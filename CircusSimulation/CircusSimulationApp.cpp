@@ -7,7 +7,7 @@
 
 bool CircusSimulationApp::OnInit()
 {
-	CircusSimulationFrame * frame = new CircusSimulationFrame("Hello World", wxPoint(50, 50), wxSize(450, 340));
+	CircusSimulationFrame * frame = new CircusSimulationFrame("Circus Simulation", wxPoint(50, 50), wxSize(450, 340));
 	frame->Show(true);
 	return true;
 }

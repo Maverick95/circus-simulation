@@ -20,9 +20,7 @@ private:
 	DisplayPatternWindow * window_1;
 	DisplayPatternWindow * window_2;
 
-	void OnHello(wxCommandEvent &);
 	void OnExit(wxCommandEvent &);
-	void OnAbout(wxCommandEvent &);
 
 	void PopulateFromSingleJugglerPatternsWindow(wxCommandEvent& event);
 
