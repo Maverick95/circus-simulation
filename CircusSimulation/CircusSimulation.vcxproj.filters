@@ -67,6 +67,9 @@
     <Filter Include="Source Files\wxWidgets elements\Unclassified">
       <UniqueIdentifier>{0646e767-0199-4d51-86f4-9131efb02799}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\wxWidgets elements\Settings">
+      <UniqueIdentifier>{a8caf5f4-2962-4cc6-8e71-676694796ea5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -149,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="PoolJugglers2dWindow.h">
       <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsWindow.h">
+      <Filter>Header Files\wxWidgets elements\Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
