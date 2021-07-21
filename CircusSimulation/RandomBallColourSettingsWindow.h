@@ -6,12 +6,12 @@
 #include "SettingsWindow.h"
 #include "SettingsMappers.h"
 
-class RandomBallColourSettingsWindow : public SettingsWindow<SettingsMappers::RandomBallColourMapper>
+class RandomBallColourSettingsWindow : public SettingsWindow<SettingsMappers::RandomColourMapper>
 {
 
 private:
 
-	void DoClick(wxCommandEvent& event);
+	void RandomBallColour(wxCommandEvent& event);
 
 public:
 

@@ -4,17 +4,20 @@
 
 wxBEGIN_EVENT_TABLE(SingleJugglerWindow, DisplayJugglingWindow<ID2D1HwndRenderTarget>)
 
-EVT_SET_COLOUR(SingleJugglerWindow::DoColour)
+EVT_SET_COLOUR(SingleJugglerWindow::SetBallColour)
 
 wxEND_EVENT_TABLE()
 
 
-void SingleJugglerWindow::DoColour(SettingsEvents::SetColourEvent& event)
+void SingleJugglerWindow::SetBallColour(SettingsEvents::SetColourEvent& event)
 {
 	brushCircles->Release();
 
 	GetContext_RenderPattern()->CreateSolidColorBrush(
-		D2D1::ColorF((float)(event.Red()) / 256, (float)(event.Green()) / 256, (float)(event.Blue()) / 256),
+		D2D1::ColorF(
+			(float)(event.Red()) / 256,
+			(float)(event.Green()) / 256,
+			(float)(event.Blue()) / 256),
 		&brushCircles);
 }
 

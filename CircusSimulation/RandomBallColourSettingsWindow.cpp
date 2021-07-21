@@ -1,31 +1,30 @@
 #include "RandomBallColourSettingsWindow.h"
 
-static const int click_button = 1;
+static const wxWindowID BTN_RANDOM_BALL_COLOUR = 1;
 
-void RandomBallColourSettingsWindow::DoClick(wxCommandEvent& event)
+static const unsigned int ACTION_RANDOM_COLOUR = 1U;
+
+void RandomBallColourSettingsWindow::RandomBallColour(wxCommandEvent& event)
 {
 	GenerateEventsForSource(event);
 }
 
-wxBEGIN_EVENT_TABLE(RandomBallColourSettingsWindow, SettingsWindow<SettingsMappers::RandomBallColourMapper>)
+wxBEGIN_EVENT_TABLE(RandomBallColourSettingsWindow, SettingsWindow<SettingsMappers::RandomColourMapper>)
 
-EVT_BUTTON(click_button, DoClick)
+EVT_BUTTON(BTN_RANDOM_BALL_COLOUR, RandomBallColourSettingsWindow::RandomBallColour)
 
 wxEND_EVENT_TABLE()
 
 RandomBallColourSettingsWindow::RandomBallColourSettingsWindow(wxWindow* parent)
-	: SettingsWindow<SettingsMappers::RandomBallColourMapper>(parent)
+	: SettingsWindow<SettingsMappers::RandomColourMapper>(parent)
 {
-	wxButton* btn1 = new wxButton(this, click_button, "Test this");
-
+	wxButton* btnRandomBallColour = new wxButton(this, BTN_RANDOM_BALL_COLOUR, "Random Ball Colour");
 	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-
-	sizer->Add(btn1, 1, wxEXPAND);
-
+	sizer->Add(btnRandomBallColour, 1, wxEXPAND);
 	SetSizer(sizer);
 
-	MapControlToAction(click_button, 1U);
-	MapActionToEvent(1U, &SettingsMappers::RandomBallColourMapper::GetRandomColour);
+	MapControlToAction(BTN_RANDOM_BALL_COLOUR, ACTION_RANDOM_COLOUR);
+	MapActionToEvent(ACTION_RANDOM_COLOUR, &SettingsMappers::RandomColourMapper::CreateRandomColourEvent);
 }
 
 RandomBallColourSettingsWindow::~RandomBallColourSettingsWindow()

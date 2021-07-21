@@ -31,9 +31,7 @@ private:
 	ID2D1SolidColorBrush* brushCircles;
 	ID2D1SolidColorBrush* brushCirclesOutlines;
 
-	void DoColour(SettingsEvents::SetColourEvent& event);
-
-	wxDECLARE_EVENT_TABLE();
+	void SetBallColour(SettingsEvents::SetColourEvent& event);
 
 protected:
 
@@ -53,6 +51,7 @@ public:
 
 	virtual ~SingleJugglerWindow();
 
+	wxDECLARE_EVENT_TABLE();
 
 };
 

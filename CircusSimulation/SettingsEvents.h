@@ -36,6 +36,4 @@ wxDECLARE_EVENT(SET_COLOUR, SettingsEvents::SetColourEvent);
 
 #define EVT_SET_COLOUR(func) wx__DECLARE_EVT0(SET_COLOUR, &func)
 
-
-
 #endif

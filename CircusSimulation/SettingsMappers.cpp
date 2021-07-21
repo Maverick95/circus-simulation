@@ -3,19 +3,18 @@
 #include "SettingsEvents.h"
 #include "SettingsMappers.h"
 
-SettingsMappers::RandomBallColourMapper::RandomBallColourMapper()
+SettingsMappers::RandomColourMapper::RandomColourMapper()
 {
 
 }
 
-SettingsMappers::RandomBallColourMapper::~RandomBallColourMapper()
+SettingsMappers::RandomColourMapper::~RandomColourMapper()
 {
 
 }
 
-wxEvent* SettingsMappers::RandomBallColourMapper::GetRandomColour(const wxWindowID& window)
+wxEvent* SettingsMappers::RandomColourMapper::CreateRandomColourEvent(const wxWindowID& window)
 {
 	srand(time(NULL));
-	wxEvent* newEvent = new SettingsEvents::SetColourEvent(SET_COLOUR, window, rand(), rand(), rand());
-	return newEvent;
+	return new SettingsEvents::SetColourEvent(SET_COLOUR, window, rand(), rand(), rand());
 }

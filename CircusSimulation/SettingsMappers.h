@@ -7,15 +7,15 @@
 
 namespace SettingsMappers
 {
-	class RandomBallColourMapper
+	class RandomColourMapper
 	{
 
 	public:
 
-		RandomBallColourMapper();
-		virtual ~RandomBallColourMapper();
+		RandomColourMapper();
+		virtual ~RandomColourMapper();
 
-		wxEvent* GetRandomColour(const wxWindowID& window);
+		wxEvent* CreateRandomColourEvent(const wxWindowID& window);
 
 	};
 }
