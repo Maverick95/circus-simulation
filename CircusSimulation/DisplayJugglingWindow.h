@@ -132,8 +132,33 @@ void DisplayJugglingWindow<T>::Populate_DisplayPattern()
 			balls_site_destination[i] = NULL;
 		}
 
-		// Use data to obtain and set mapping_length, initialize arrays.
+		/*
+		
+		Calculate mapping_length, the total "beat" length of the repetitive pattern.
+		
+		This is based on -
+		a) number of sites,
+		b) number of actions,
+		c) method of cycling through the sites,
+		d) the pattern.
 
+		By default, sites are cycled through in a linear fashion.
+		e.g. 5 sites and 2 actions, the choice of sites would be -
+		[1 2] [3 4] [5 1] [2 3] [4 5] [1 2] ...
+
+		lcm_result_1 = how many sites are cycled through until the site/action pattern repeats
+
+		However this is the number of sites
+		lcm_result_1 / num_actions is the "beat" length until the site/action pattern repeats
+
+		balls_mapping_length = "beat" length of the pattern just mapping balls to actions
+
+		Therefore -
+
+		mapping_length = LCM(lcm_result_1, balls_mapping_length)
+
+		*/
+		
 		num_actions = h->GetDisplayPattern()->GetNumberActions();
 
 		unsigned int balls_mapping_length = h->GetDisplayPattern()->GetTotalLength();
