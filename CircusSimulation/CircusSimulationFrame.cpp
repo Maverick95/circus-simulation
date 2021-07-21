@@ -10,6 +10,7 @@
 
 #include "GetSingleJugglerPatternsWindow.h"
 
+#include "RandomBallColourSettingsWindow.h"
 
 
 static const int WINDOW_SINGLE_JUGGLER_PATTERNS = 1;
@@ -80,6 +81,12 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 	wxBoxSizer* sz_1 = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer * sz_1_1 = new wxBoxSizer(wxHORIZONTAL);
 	sz_1_1->Add(window_1, 1, wxEXPAND);
+
+	auto* window_4 = new RandomBallColourSettingsWindow(this);
+	window_4->AddWindow(window_1);
+
+	sz_1_1->Add(window_4, 1, wxEXPAND);
+
 	sz_1_1->Add(window_2, 1, wxEXPAND);
 	
 	sz_1->Add(sz_1_1, 1, wxEXPAND);

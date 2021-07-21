@@ -171,9 +171,12 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GetSingleJugglerPatternsWindow.h" />
     <ClInclude Include="PoolJugglers2dWindow.h" />
+    <ClInclude Include="RandomBallColourSettingsWindow.h" />
     <ClInclude Include="RenderPatternWindow.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="SettingsEvents.h" />
+    <ClInclude Include="SettingsMappers.h" />
     <ClInclude Include="SettingsWindow.h" />
     <ClInclude Include="SiteswapGraph.h" />
     <ClInclude Include="SiteswapGraphMultiAction.h" />
@@ -195,8 +198,11 @@
     <ClCompile Include="GetSingleJugglerPatternsWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PoolJugglers2dWindow.cpp" />
+    <ClCompile Include="RandomBallColourSettingsWindow.cpp" />
     <ClCompile Include="RenderPatternWindow.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="SettingsEvents.cpp" />
+    <ClCompile Include="SettingsMappers.cpp" />
     <ClCompile Include="SingleJugglerWindow.cpp" />
     <ClCompile Include="SiteswapGraph.cpp" />
     <ClCompile Include="SiteswapGraphMultiAction.cpp" />

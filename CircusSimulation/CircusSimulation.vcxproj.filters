@@ -70,6 +70,9 @@
     <Filter Include="Header Files\wxWidgets elements\Settings">
       <UniqueIdentifier>{a8caf5f4-2962-4cc6-8e71-676694796ea5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\wxWidgets elements\Settings">
+      <UniqueIdentifier>{047db81d-62e7-469a-9820-a237676c5baa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -156,6 +159,15 @@
     <ClInclude Include="SettingsWindow.h">
       <Filter>Header Files\wxWidgets elements\Settings</Filter>
     </ClInclude>
+    <ClInclude Include="RandomBallColourSettingsWindow.h">
+      <Filter>Header Files\wxWidgets elements\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsEvents.h">
+      <Filter>Header Files\wxWidgets elements\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsMappers.h">
+      <Filter>Header Files\wxWidgets elements\Settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -220,6 +232,15 @@
     </ClCompile>
     <ClCompile Include="PoolJugglers2dWindow.cpp">
       <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsEvents.cpp">
+      <Filter>Source Files\wxWidgets elements\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsMappers.cpp">
+      <Filter>Source Files\wxWidgets elements\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomBallColourSettingsWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Settings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -21,21 +21,21 @@ private:
 	std::unordered_multimap<wxWindowID, unsigned int> mapControlsToActions;
 
 	// Unique based on action (first entered is retained).
-	std::unordered_map<unsigned int, wxEvent(T::*)()> mapActionsToEvents;
+	std::unordered_map<unsigned int, wxEvent*(T::*)(const wxWindowID&)> mapActionsToEvents;
 
 	std::unordered_set<DisplayPatternWindow*> windows;
 
 	// Fires all stored events to a single window (used when a window is added).
-	void GenerateEventsToWindow(wxWindow* window) const;
+	void GenerateEventsToWindow(wxWindow* window);
 
 protected:
 
 	T* const GetEventGenerator();
 	void MapControlToAction(const wxWindowID& window, const unsigned int& action);
-	void MapActionToEvent(const unsigned int& action, wxEvent(T::* generateEvent)());
+	void MapActionToEvent(const unsigned int& action, wxEvent*(T::* generateEvent)(const wxWindowID&));
 
 	// Fires all events when a control is changed.
-	void GenerateEventsForSource(const wxEvent& source) const;
+	void GenerateEventsForSource(const wxEvent& source);
 
 	void ClearMappings();
 
@@ -96,11 +96,11 @@ void SettingsWindow<T>::MapControlToAction(const wxWindowID& window, const unsig
 }
 
 template<class T>
-void SettingsWindow<T>::MapActionToEvent(const unsigned int& action, wxEvent(T::* generateEvent)())
+void SettingsWindow<T>::MapActionToEvent(const unsigned int& action, wxEvent*(T::* generateEvent)(const wxWindowID&))
 {
 	if (mapActionsToEvents.find(action) == mapActionsToEvents.end())
 	{
-		mapActionsToEvents.insert(action, generateEvent);
+		mapActionsToEvents.emplace(action, generateEvent);
 	}
 }
 
@@ -110,6 +110,7 @@ void SettingsWindow<T>::AddWindow(DisplayPatternWindow* window)
 	if (window != NULL)
 	{
 		windows.insert(window);
+		GenerateEventsToWindow(window);
 	}
 }
 
@@ -123,16 +124,19 @@ void SettingsWindow<T>::RemoveWindow(DisplayPatternWindow* window)
 }
 
 template<class T>
-void SettingsWindow<T>::GenerateEventsToWindow(wxWindow* window) const
+void SettingsWindow<T>::GenerateEventsToWindow(wxWindow* window)
 {
 	for (auto i = mapActionsToEvents.begin(); i != mapActionsToEvents.end(); i++)
 	{
-		window->QueueEvent(eventGenerator.(*i)());
+		wxEvent* eventToSend = (eventGenerator.*(i->second))(window->GetId());
+		eventToSend->SetEventObject(this);
+		window->ProcessWindowEvent(*eventToSend);
+		delete eventToSend;
 	}
 }
 
 template<class T>
-void SettingsWindow<T>::GenerateEventsForSource(const wxEvent& source) const
+void SettingsWindow<T>::GenerateEventsForSource(const wxEvent& source)
 {
 	auto* object = source.GetEventObject();
 
@@ -146,13 +150,18 @@ void SettingsWindow<T>::GenerateEventsForSource(const wxEvent& source) const
 
 		for (auto i = range.first; i != range.second; i++)
 		{
-			auto generateEvent = mapActionsToEvents.find(i->second);
+			std::unordered_map<unsigned int, wxEvent*(T::*)(const wxWindowID&)>::iterator itrGenerateEvent = mapActionsToEvents.find(i->second);
 
-			if (generateEvent != mapActionsToEvents.end())
+			if (itrGenerateEvent != mapActionsToEvents.end())
 			{
+				wxEvent* (T::*generateEvent)(const wxWindowID&) = itrGenerateEvent->second;
+
 				for (auto j = windows.begin(); j != windows.end(); j++)
 				{
-					(*j)->QueueEvent(eventGenerator.(*generateEvent)());
+					wxEvent* eventToSend = (eventGenerator.*(generateEvent))((*j)->GetId());
+					eventToSend->SetEventObject(this);
+					(*j)->ProcessWindowEvent(*eventToSend);
+					delete eventToSend;
 				}
 			}
 		}
