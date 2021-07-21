@@ -9,6 +9,7 @@
 
 #include "DisplayPatternHandler.h"
 #include "DisplayPatternWindow.h"
+#include "SingleJugglerWithRandomColourPicker.h"
 
 class CircusSimulationFrame : public wxFrame
 {
@@ -17,7 +18,7 @@ private:
 
 	DisplayPatternHandler pattern_handler;
 
-	DisplayPatternWindow * window_1;
+	SingleJugglerWithRandomColourPicker* window_1;
 	DisplayPatternWindow * window_2;
 
 	void OnExit(wxCommandEvent &);

@@ -73,6 +73,12 @@
     <Filter Include="Source Files\wxWidgets elements\Settings">
       <UniqueIdentifier>{047db81d-62e7-469a-9820-a237676c5baa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\wxWidgets elements\Full Window Designs">
+      <UniqueIdentifier>{64dbabb6-d550-4a24-bf14-e82fc31f5974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\wxWidgets elements\Full Window Designs">
+      <UniqueIdentifier>{d5175394-2c02-4d38-adb9-abf472fb4a29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -168,6 +174,9 @@
     <ClInclude Include="SettingsMappers.h">
       <Filter>Header Files\wxWidgets elements\Settings</Filter>
     </ClInclude>
+    <ClInclude Include="SingleJugglerWithRandomColourPicker.h">
+      <Filter>Header Files\wxWidgets elements\Full Window Designs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -241,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="RandomBallColourSettingsWindow.cpp">
       <Filter>Source Files\wxWidgets elements\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleJugglerWithRandomColourPicker.cpp">
+      <Filter>Source Files\wxWidgets elements\Full Window Designs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

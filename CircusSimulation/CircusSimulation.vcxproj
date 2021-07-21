@@ -178,6 +178,7 @@
     <ClInclude Include="SettingsEvents.h" />
     <ClInclude Include="SettingsMappers.h" />
     <ClInclude Include="SettingsWindow.h" />
+    <ClInclude Include="SingleJugglerWithRandomColourPicker.h" />
     <ClInclude Include="SiteswapGraph.h" />
     <ClInclude Include="SiteswapGraphMultiAction.h" />
     <ClInclude Include="SiteswapGraphMultiActionHelpers.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="SettingsEvents.cpp" />
     <ClCompile Include="SettingsMappers.cpp" />
     <ClCompile Include="SingleJugglerWindow.cpp" />
+    <ClCompile Include="SingleJugglerWithRandomColourPicker.cpp" />
     <ClCompile Include="SiteswapGraph.cpp" />
     <ClCompile Include="SiteswapGraphMultiAction.cpp" />
     <ClCompile Include="SiteswapGraphMultiActionHelpers.cpp" />
