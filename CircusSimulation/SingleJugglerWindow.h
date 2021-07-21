@@ -8,6 +8,8 @@
 
 #include "DisplayJugglingWindow.h"
 
+#include "SettingsEvents.h"
+
 
 
 class SingleJugglerWindow final : public DisplayJugglingWindow<ID2D1HwndRenderTarget>
@@ -29,6 +31,8 @@ private:
 	ID2D1SolidColorBrush* brushCircles;
 	ID2D1SolidColorBrush* brushCirclesOutlines;
 
+	void SetBallColour(SettingsEvents::SetColourEvent& event);
+
 protected:
 
 	virtual void OnScreenUpdate_DisplayPattern(const long& time_elapsed);
@@ -46,6 +50,8 @@ public:
 	SingleJugglerWindow(wxWindow * parent, const unsigned int * w_r_x = NULL, const unsigned int * w_r_y = NULL, const double & dr = 1.0);
 
 	virtual ~SingleJugglerWindow();
+
+	wxDECLARE_EVENT_TABLE();
 
 };
 

@@ -1,5 +1,25 @@
 #include "SingleJugglerWindow.h"
+#include "SettingsEvents.h"
 
+
+wxBEGIN_EVENT_TABLE(SingleJugglerWindow, DisplayJugglingWindow<ID2D1HwndRenderTarget>)
+
+EVT_SET_COLOUR(SingleJugglerWindow::SetBallColour)
+
+wxEND_EVENT_TABLE()
+
+
+void SingleJugglerWindow::SetBallColour(SettingsEvents::SetColourEvent& event)
+{
+	brushCircles->Release();
+
+	GetContext_RenderPattern()->CreateSolidColorBrush(
+		D2D1::ColorF(
+			(float)(event.Red()) / 256,
+			(float)(event.Green()) / 256,
+			(float)(event.Blue()) / 256),
+		&brushCircles);
+}
 
 
 void SingleJugglerWindow::OnScreenResize_ContextPattern()

@@ -67,6 +67,18 @@
     <Filter Include="Source Files\wxWidgets elements\Unclassified">
       <UniqueIdentifier>{0646e767-0199-4d51-86f4-9131efb02799}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\wxWidgets elements\Settings">
+      <UniqueIdentifier>{a8caf5f4-2962-4cc6-8e71-676694796ea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\wxWidgets elements\Settings">
+      <UniqueIdentifier>{047db81d-62e7-469a-9820-a237676c5baa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\wxWidgets elements\Full Window Designs">
+      <UniqueIdentifier>{64dbabb6-d550-4a24-bf14-e82fc31f5974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\wxWidgets elements\Full Window Designs">
+      <UniqueIdentifier>{d5175394-2c02-4d38-adb9-abf472fb4a29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -150,6 +162,21 @@
     <ClInclude Include="PoolJugglers2dWindow.h">
       <Filter>Header Files\wxWidgets elements\Custom windows</Filter>
     </ClInclude>
+    <ClInclude Include="SettingsWindow.h">
+      <Filter>Header Files\wxWidgets elements\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomBallColourSettingsWindow.h">
+      <Filter>Header Files\wxWidgets elements\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsEvents.h">
+      <Filter>Header Files\wxWidgets elements\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsMappers.h">
+      <Filter>Header Files\wxWidgets elements\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleJugglerWithRandomColourPicker.h">
+      <Filter>Header Files\wxWidgets elements\Full Window Designs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -214,6 +241,18 @@
     </ClCompile>
     <ClCompile Include="PoolJugglers2dWindow.cpp">
       <Filter>Source Files\wxWidgets elements\Custom windows</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsEvents.cpp">
+      <Filter>Source Files\wxWidgets elements\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsMappers.cpp">
+      <Filter>Source Files\wxWidgets elements\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomBallColourSettingsWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleJugglerWithRandomColourPicker.cpp">
+      <Filter>Source Files\wxWidgets elements\Full Window Designs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
