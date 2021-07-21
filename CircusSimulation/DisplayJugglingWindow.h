@@ -21,15 +21,15 @@ private:
 	unsigned int num_actions;
 	unsigned int num_balls;
 
-	unsigned int * * balls_site_source;
-	unsigned int * * balls_site_destination;
+	unsigned int* * balls_site_source;
+	unsigned int* * balls_site_destination;
 
 	unsigned int mapping_length;
 
-	unsigned int * indices_sites;
+	unsigned int* indices_sites;
 
-	unsigned int ** * mapping_site_source;
-	unsigned int ** * mapping_site_destination;
+	unsigned int* ** mapping_site_source;
+	unsigned int* ** mapping_site_destination;
 
 	unsigned int mapping_current_factor;
 
@@ -40,7 +40,6 @@ protected:
 	virtual void Populate_DisplayPattern();
 	virtual void Stop_DisplayPattern();
 
-	virtual void OnBallsUpdate_DisplayJuggling() = 0;
 	virtual void Reset_DisplayJuggling() = 0;
 	virtual void Populate_DisplayJuggling() = 0;
 	
@@ -314,8 +313,6 @@ void DisplayJugglingWindow<T>::OnBallsUpdate_DisplayPattern()
 		if (mapping_current_factor * handler_total_length == mapping_length) { mapping_current_factor = 0; }
 
 	}
-
-	OnBallsUpdate_DisplayJuggling();
 }
 
 

@@ -41,7 +41,6 @@ protected:
 	
 	virtual void OnScreenResize_ContextPattern();
 
-	virtual void OnBallsUpdate_DisplayJuggling();
 	virtual void Reset_DisplayJuggling();
 	virtual void Populate_DisplayJuggling();
 

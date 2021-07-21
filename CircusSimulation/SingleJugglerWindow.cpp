@@ -37,11 +37,6 @@ void SingleJugglerWindow::OnScreenResize_ContextPattern()
 	}
 }
 
-void SingleJugglerWindow::OnBallsUpdate_DisplayJuggling()
-{
-
-}
-
 void SingleJugglerWindow::OnScreenUpdate_DisplayPattern(const long& time_elapsed)
 {
 	auto h = GetValidHandler();

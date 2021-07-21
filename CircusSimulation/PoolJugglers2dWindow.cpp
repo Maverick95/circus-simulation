@@ -142,11 +142,6 @@ void PoolJugglers2dWindow::OnScreenResize_ContextPattern()
 	UpdateSiteCoordinates();
 }
 
-void PoolJugglers2dWindow::OnBallsUpdate_DisplayJuggling()
-{
-
-}
-
 void PoolJugglers2dWindow::Reset_DisplayJuggling()
 {
 	auto h = GetValidHandler();

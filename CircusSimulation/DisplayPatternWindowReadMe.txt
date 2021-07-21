@@ -108,6 +108,5 @@ void Stop_DisplayPattern()
 
 						Functions to be filled in -
 
-						void OnBallsUpdate_DisplayJuggling()
 						void Reset_DisplayJuggling()
 						void Populate_DisplayJuggling()
