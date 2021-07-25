@@ -18,6 +18,24 @@ namespace SettingsMappers
 		wxEvent* CreateRandomColourEvent(const wxWindowID& window);
 
 	};
+
+	class NumberSitesMapper
+	{
+
+	private:
+
+		unsigned int numberSites;
+
+	public:
+
+		NumberSitesMapper();
+		virtual ~NumberSitesMapper();
+
+		void SetNumberSites(const unsigned int& s);
+
+		wxEvent* CreateNumberSitesEvent(const wxWindowID& window);
+
+	};
 }
 
 #endif

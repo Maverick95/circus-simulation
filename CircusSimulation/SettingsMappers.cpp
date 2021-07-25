@@ -3,18 +3,47 @@
 #include "SettingsEvents.h"
 #include "SettingsMappers.h"
 
-SettingsMappers::RandomColourMapper::RandomColourMapper()
+
+
+using namespace SettingsMappers;
+
+
+RandomColourMapper::RandomColourMapper()
 {
 
 }
 
-SettingsMappers::RandomColourMapper::~RandomColourMapper()
+RandomColourMapper::~RandomColourMapper()
 {
 
 }
 
-wxEvent* SettingsMappers::RandomColourMapper::CreateRandomColourEvent(const wxWindowID& window)
+wxEvent* RandomColourMapper::CreateRandomColourEvent(const wxWindowID& window)
 {
 	srand(time(NULL));
 	return new SettingsEvents::SetColourEvent(SET_COLOUR, window, rand(), rand(), rand());
 }
+
+
+
+NumberSitesMapper::NumberSitesMapper()
+	: numberSites(1U)
+{
+
+}
+
+NumberSitesMapper::~NumberSitesMapper()
+{
+
+}
+
+void NumberSitesMapper::SetNumberSites(const unsigned int& s)
+{
+	numberSites = s == 0U ? 1U : s;
+}
+
+wxEvent* NumberSitesMapper::CreateNumberSitesEvent(const wxWindowID& window)
+{
+	return new SettingsEvents::SetNumberSitesEvent(SET_NUMBER_SITES, window, numberSites);
+}
+

@@ -1,13 +1,21 @@
 #ifndef DISPLAY_JUGGLING_WINDOW_H
 #define DISPLAY_JUGGLING_WINDOW_H
 
+#include <wx\wx.h>
+
+#include "Macro.h"
 #include "stdafx.h"
 #include "Functions.h"
 #include "RenderPatternWindow.h"
+#include "SettingsEvents.h"
 
 
 
 /* ### DECLARE ### */
+
+
+
+
 
 
 
@@ -33,6 +41,8 @@ private:
 
 	unsigned int mapping_current_factor;
 
+	void SetNumberSites(const SettingsEvents::SetNumberSitesEvent& event);
+
 protected:
 
 	virtual void OnBallsUpdate_DisplayPattern();
@@ -42,6 +52,7 @@ protected:
 
 	virtual void Reset_DisplayJuggling() = 0;
 	virtual void Populate_DisplayJuggling() = 0;
+	virtual void SetNumberSites_DisplayJuggling() = 0;
 	
 	virtual DisplayPatternHandler * GetValidHandler() override;
 
@@ -58,11 +69,140 @@ public:
 
 	virtual ~DisplayJugglingWindow();
 
+	wxDECLARE_EVENT_TABLE();
+
 };
 
 
 
 /* ### DEFINE ### */
+
+
+
+wxBEGIN_EVENT_TABLE_INHERITED_TEMPLATE1(DisplayJugglingWindow, ContextPatternWindow, T1)
+
+EVT_SET_NUMBER_SITES(DisplayJugglingWindow<T1>::SetNumberSites)
+
+wxEND_EVENT_TABLE()
+
+
+
+template<class T>
+void DisplayJugglingWindow<T>::SetNumberSites(const SettingsEvents::SetNumberSitesEvent& event)
+{
+	if (num_sites != event.NumberSites())
+	{
+		num_sites = event.NumberSites();
+		
+		delete[] indices_sites;
+		indices_sites = new unsigned int[num_sites];
+		for (unsigned int i = 0U; i < num_sites; i++)
+		{
+			indices_sites[i] = i;
+		}
+
+		auto h = GetValidHandler();
+
+		if (h != NULL)
+		{
+			// Reset
+
+			for (unsigned int i = 0; i < mapping_length; i++)
+			{
+				delete[] mapping_site_source[i];
+				delete[] mapping_site_destination[i];
+			}
+
+			delete[] mapping_site_source;
+			delete[] mapping_site_destination;
+
+			for (unsigned int i = 0U; i < num_balls; i++)
+			{
+				balls_site_source[i] = NULL;
+				balls_site_destination[i] = NULL;
+			}
+
+			mapping_length = 0;
+			mapping_current_factor = 0;
+
+			// Recalculate
+
+			/* See large comment in Populate for full description. */
+
+			unsigned int balls_mapping_length = h->GetDisplayPattern()->GetTotalLength();
+
+			unsigned int* lcm_data_1 = new unsigned int[2];
+			lcm_data_1[0] = num_actions;
+			lcm_data_1[1] = num_sites;
+			unsigned int lcm_result_1 = Functions::LowestCommonMultiple(lcm_data_1, 2);
+			delete[] lcm_data_1;
+
+			unsigned int* lcm_data_2 = new unsigned int[2];
+			lcm_data_2[0] = lcm_result_1 / num_actions;
+			lcm_data_2[1] = balls_mapping_length;
+			unsigned int lcm_result_2 = Functions::LowestCommonMultiple(lcm_data_2, 2);
+			delete[] lcm_data_2;
+
+			mapping_length = lcm_result_2;
+
+			mapping_site_source = new unsigned int** [mapping_length];
+			mapping_site_destination = new unsigned int** [mapping_length];
+
+			for (unsigned int i = 0; i < mapping_length; i++)
+			{
+				mapping_site_source[i] = new unsigned int* [num_actions];
+				mapping_site_destination[i] = new unsigned int* [num_actions];
+
+				for (unsigned int j = 0; j < num_actions; j++)
+				{
+					mapping_site_source[i][j] = NULL;
+					mapping_site_destination[i][j] = NULL;
+				}
+			}
+
+			// Set up the source sites (cyclical).
+
+			unsigned int site_index = 0;
+
+			for (unsigned int i = 0; i < mapping_length; i++)
+			{
+				for (unsigned int j = 0; j < num_actions; j++)
+				{
+					if (h->GetDisplayPattern()->GetBall(i % balls_mapping_length, j) != NULL)
+					{
+						mapping_site_source[i][j] = &(indices_sites[site_index]);
+					}
+
+					site_index++;
+					if (site_index == num_sites) { site_index = 0; }
+				}
+			}
+
+			// Set up the destination sites.
+
+			for (unsigned int i = 0; i < mapping_length; i++)
+			{
+				for (unsigned int j = 0; j < num_actions; j++)
+				{
+					if (mapping_site_source[i][j] != NULL)
+					{
+						unsigned int current_throw = *(h->GetDisplayPattern()->GetThrow(i % balls_mapping_length, j));
+						unsigned int current_action_index = *(h->GetDisplayPattern()->GetAction(i % balls_mapping_length, j));
+
+						unsigned int destination_index = (i + current_throw) % mapping_length;
+
+						mapping_site_destination[i][j] = mapping_site_source[destination_index][current_action_index];
+					}
+				}
+			}
+
+			// Potentially may need to copy in ball mappings here, maybe not.
+
+		}
+
+		SetNumberSites_DisplayJuggling();
+	}
+}
 
 
 
@@ -336,7 +476,6 @@ void DisplayJugglingWindow<T>::OnBallsUpdate_DisplayPattern()
 
 		if (handler_mapping_current == (handler_total_length - 1)) { mapping_current_factor++; }
 		if (mapping_current_factor * handler_total_length == mapping_length) { mapping_current_factor = 0; }
-
 	}
 }
 

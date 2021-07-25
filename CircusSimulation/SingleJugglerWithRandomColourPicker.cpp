@@ -1,6 +1,5 @@
 #include "SingleJugglerWithRandomColourPicker.h"
 
-#include "SingleJugglerWindow.h"
 #include "RandomBallColourSettingsWindow.h"
 
 SingleJugglerWithRandomColourPicker::SingleJugglerWithRandomColourPicker(wxWindow* parent)

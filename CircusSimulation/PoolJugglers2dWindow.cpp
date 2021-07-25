@@ -94,11 +94,14 @@ void PoolJugglers2dWindow::OnScreenUpdate_DisplayPattern(const long& time_elapse
 						0.0 :
 						time_elapsed_seconds / total_time_seconds);
 
-				const auto site_source = (*GetBallSiteSource(i));
-				const auto site_destination = (*GetBallSiteDestination(i));
-
-				lp_plot_x = (1.0 - time_percentage_passed) * site_x[site_source] + time_percentage_passed * site_x[site_destination];
-				lp_plot_y = (1.0 - time_percentage_passed) * site_y[site_source] + time_percentage_passed * site_y[site_destination];
+				const auto* ptr_site_source = GetBallSiteSource(i);
+				const auto* ptr_site_destination = GetBallSiteDestination(i);
+				
+				if (ptr_site_source != NULL && ptr_site_destination != NULL)
+				{
+					lp_plot_x = (1.0 - time_percentage_passed) * site_x[*ptr_site_source] + time_percentage_passed * site_x[*ptr_site_destination];
+					lp_plot_y = (1.0 - time_percentage_passed) * site_y[*ptr_site_source] + time_percentage_passed * site_y[*ptr_site_destination];
+				}
 			}
 
 			plot_x[i] = lp_plot_x;
@@ -126,7 +129,9 @@ void PoolJugglers2dWindow::OnScreenPaint_RenderPattern(ID2D1HwndRenderTarget* co
 	{
 		for (unsigned int i = 0; i < h->GetNumberBalls(); i++)
 		{
-			if (h->GetBall(i)->GetState() == STATE_BEING_THROWN)
+			if (h->GetBall(i)->GetState() == STATE_BEING_THROWN &&
+				GetBallSiteSource(i) != NULL &&
+				GetBallSiteDestination(i) != NULL)
 			{
 				D2D1_ELLIPSE point = { { plot_x[i], plot_y[i] }, 10, 10 };
 				context->DrawEllipse(point, brushBlack);
@@ -170,5 +175,19 @@ void PoolJugglers2dWindow::Populate_DisplayJuggling()
 		plot_y = new double[num_balls];
 	}
 
+}
+
+void PoolJugglers2dWindow::SetNumberSites_DisplayJuggling()
+{
+	delete[] site_x;
+	delete[] site_y;
+
+	const auto num_sites = GetNumberSites();
+	site_x = new double[num_sites];
+	site_y = new double[num_sites];
+
+	UpdateSiteCoordinates();
+
+	Refresh(true, NULL);
 }
 

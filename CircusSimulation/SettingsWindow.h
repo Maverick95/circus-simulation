@@ -71,7 +71,7 @@ SettingsWindow<T>::~SettingsWindow()
 template<class T>
 T* const SettingsWindow<T>::GetEventGenerator()
 {
-	return eventGenerator;
+	return &eventGenerator;
 }
 
 template<class T>

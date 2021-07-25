@@ -177,6 +177,15 @@
     <ClInclude Include="SingleJugglerWithRandomColourPicker.h">
       <Filter>Header Files\wxWidgets elements\Full Window Designs</Filter>
     </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>Header Files\Program maintenance</Filter>
+    </ClInclude>
+    <ClInclude Include="NumberSitesSettingsWindow.h">
+      <Filter>Header Files\wxWidgets elements\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="PoolJugglers2dWithNumberSitesPicker.h">
+      <Filter>Header Files\wxWidgets elements\Full Window Designs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -252,6 +261,12 @@
       <Filter>Source Files\wxWidgets elements\Settings</Filter>
     </ClCompile>
     <ClCompile Include="SingleJugglerWithRandomColourPicker.cpp">
+      <Filter>Source Files\wxWidgets elements\Full Window Designs</Filter>
+    </ClCompile>
+    <ClCompile Include="NumberSitesSettingsWindow.cpp">
+      <Filter>Source Files\wxWidgets elements\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="PoolJugglers2dWithNumberSitesPicker.cpp">
       <Filter>Source Files\wxWidgets elements\Full Window Designs</Filter>
     </ClCompile>
   </ItemGroup>

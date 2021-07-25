@@ -1,8 +1,17 @@
 #include "SettingsEvents.h"
 
-wxDEFINE_EVENT(SET_COLOUR, SettingsEvents::SetColourEvent);
 
-SettingsEvents::SetColourEvent::SetColourEvent(
+
+wxDEFINE_EVENT(SET_COLOUR, SettingsEvents::SetColourEvent);
+wxDEFINE_EVENT(SET_NUMBER_SITES, SettingsEvents::SetNumberSitesEvent);
+
+
+
+using namespace SettingsEvents;
+
+
+
+SetColourEvent::SetColourEvent(
 	wxEventType eventType,
 	wxWindowID winid,
 	const int& r,
@@ -14,28 +23,55 @@ SettingsEvents::SetColourEvent::SetColourEvent(
 
 }
 
-SettingsEvents::SetColourEvent::~SetColourEvent()
+SetColourEvent::~SetColourEvent()
 {
 
 }
 
-wxEvent* SettingsEvents::SetColourEvent::Clone() const
+wxEvent* SetColourEvent::Clone() const
 {
-	return new SettingsEvents::SetColourEvent(*this);
+	return new SetColourEvent(*this);
 }
 
-int SettingsEvents::SetColourEvent::Red() const
+int SetColourEvent::Red() const
 {
 	return red;
 }
 
-int SettingsEvents::SetColourEvent::Green() const
+int SetColourEvent::Green() const
 {
 	return green;
 }
 
-int SettingsEvents::SetColourEvent::Blue() const
+int SetColourEvent::Blue() const
 {
 	return blue;
+}
+
+
+
+SetNumberSitesEvent::SetNumberSitesEvent(
+	wxEventType eventType,
+	wxWindowID winid,
+	const unsigned int& s)
+	: wxEvent(winid, eventType),
+	numberSites(s == 0U ? 1U : s)
+{
+
+}
+
+SetNumberSitesEvent::~SetNumberSitesEvent()
+{
+
+}
+
+wxEvent* SetNumberSitesEvent::Clone() const
+{
+	return new SetNumberSitesEvent(*this);
+}
+
+unsigned int SetNumberSitesEvent::NumberSites() const
+{
+	return numberSites;
 }
 

@@ -30,10 +30,34 @@ namespace SettingsEvents
 		int Blue() const;
 
 	};
+
+	class SetNumberSitesEvent : public wxEvent
+	{
+
+	private:
+
+		unsigned int numberSites;
+
+	public:
+
+		SetNumberSitesEvent(
+			wxEventType eventType,
+			wxWindowID winid,
+			const unsigned int& s);
+
+		virtual ~SetNumberSitesEvent();
+
+		virtual wxEvent* Clone() const;
+
+		unsigned int NumberSites() const;
+		
+	};
 }
 
 wxDECLARE_EVENT(SET_COLOUR, SettingsEvents::SetColourEvent);
+wxDECLARE_EVENT(SET_NUMBER_SITES, SettingsEvents::SetNumberSitesEvent);
 
 #define EVT_SET_COLOUR(func) wx__DECLARE_EVT0(SET_COLOUR, &func)
+#define EVT_SET_NUMBER_SITES(func) wx__DECLARE_EVT0(SET_NUMBER_SITES, &func)
 
 #endif

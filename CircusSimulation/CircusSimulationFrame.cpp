@@ -1,8 +1,6 @@
 #include <wx\spinctrl.h>
 
 #include "Settings.h"
-#include "SingleJugglerWithRandomColourPicker.h"
-#include "PoolJugglers2dWindow.h"
 
 #include "CircusSimulationFrame.h"
 #include "SiteswapGraph.h"
@@ -60,19 +58,19 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 	wxBoxSizer * sz_0 = new wxBoxSizer(wxHORIZONTAL);
 
 	window_1 = new SingleJugglerWithRandomColourPicker(this);
-	window_2 = new PoolJugglers2dWindow(this, 3U);
+	window_2 = new PoolJugglers2dWithNumberSitesPicker(this);
 	
 	GetSingleJugglerPatternsWindow* window_3 = new GetSingleJugglerPatternsWindow(this, WINDOW_SINGLE_JUGGLER_PATTERNS);
 
 	pattern_handler.AddWindow(window_1->GetDisplayPatternWindow());
-	pattern_handler.AddWindow(window_2);
+	pattern_handler.AddWindow(window_2->GetDisplayPatternWindow());
 
 	wxBoxSizer* sz_1 = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer * sz_1_1 = new wxBoxSizer(wxHORIZONTAL);
-	sz_1_1->Add(window_1, 1, wxEXPAND);
-
-	sz_1_1->Add(window_2, 1, wxEXPAND);
 	
+	sz_1_1->Add(window_1, 1, wxEXPAND);
+	sz_1_1->Add(window_2, 1, wxEXPAND);
+
 	sz_1->Add(sz_1_1, 1, wxEXPAND);
 	sz_1->Add(&pattern_handler);
 	
@@ -87,7 +85,6 @@ CircusSimulationFrame::CircusSimulationFrame(const wxString & title, const wxPoi
 
 CircusSimulationFrame::~CircusSimulationFrame()
 {
-	delete window_1;
-	delete window_2;
+
 }
 

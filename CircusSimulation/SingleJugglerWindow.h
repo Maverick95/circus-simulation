@@ -43,6 +43,7 @@ protected:
 
 	virtual void Reset_DisplayJuggling();
 	virtual void Populate_DisplayJuggling();
+	virtual void SetNumberSites_DisplayJuggling();
 
 public:
 

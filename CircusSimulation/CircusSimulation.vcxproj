@@ -170,7 +170,10 @@
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GetSingleJugglerPatternsWindow.h" />
+    <ClInclude Include="Macro.h" />
+    <ClInclude Include="NumberSitesSettingsWindow.h" />
     <ClInclude Include="PoolJugglers2dWindow.h" />
+    <ClInclude Include="PoolJugglers2dWithNumberSitesPicker.h" />
     <ClInclude Include="RandomBallColourSettingsWindow.h" />
     <ClInclude Include="RenderPatternWindow.h" />
     <ClInclude Include="resource.h" />
@@ -198,7 +201,9 @@
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="GetSingleJugglerPatternsWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NumberSitesSettingsWindow.cpp" />
     <ClCompile Include="PoolJugglers2dWindow.cpp" />
+    <ClCompile Include="PoolJugglers2dWithNumberSitesPicker.cpp" />
     <ClCompile Include="RandomBallColourSettingsWindow.cpp" />
     <ClCompile Include="RenderPatternWindow.cpp" />
     <ClCompile Include="Settings.cpp" />
