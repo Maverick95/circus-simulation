@@ -35,11 +35,22 @@ public:
 	RenderPatternWindow(wxWindow* parent);
 	virtual ~RenderPatternWindow();
 
+	wxDECLARE_EVENT_TABLE();
+
 };
 
 
 
 /* ### DEFINE ### */
+
+
+
+wxBEGIN_EVENT_TABLE_TEMPLATE1(RenderPatternWindow, DisplayPatternWindow, T)
+
+EVT_PAINT(RenderPatternWindow<T>::OnScreenPaint)
+EVT_SIZE(RenderPatternWindow<T>::OnScreenResize)
+
+wxEND_EVENT_TABLE()
 
 
 
@@ -61,8 +72,7 @@ template <class T>
 RenderPatternWindow<T>::RenderPatternWindow(wxWindow* parent)
 	: DisplayPatternWindow(parent)
 {
-	this->Bind(wxEVT_PAINT, &RenderPatternWindow<T>::OnScreenPaint, this);
-	this->Bind(wxEVT_SIZE, &RenderPatternWindow<T>::OnScreenResize, this);
+
 }
 
 template <class T>
