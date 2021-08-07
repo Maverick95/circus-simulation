@@ -3,7 +3,7 @@
 #include <cmath>
 
 PoolJugglers2dWindow::PoolJugglers2dWindow(wxWindow* parent, const unsigned int& ns)
-	: DisplayJugglingWindow(parent, ns),
+	: DisplayJugglingWindow(parent, ns, false),
 	site_x(NULL), site_y(NULL),
 	plot_x(NULL), plot_y(NULL),
 	brushBlack(NULL)

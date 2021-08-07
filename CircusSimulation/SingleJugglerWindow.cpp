@@ -356,7 +356,7 @@ void SingleJugglerWindow::SetNumberSites_DisplayJuggling()
 }
 
 SingleJugglerWindow::SingleJugglerWindow(wxWindow* parent, const unsigned int* w_r_x, const unsigned int* w_r_y, const double& dr)
-	: DisplayJugglingWindow(parent, 2),
+	: DisplayJugglingWindow(parent, 2, true),
 	plot_x(NULL), plot_y(NULL),
 	window_ratios_x(NULL), window_ratios_y(NULL),
 	window_widths_x(NULL), window_widths_y(NULL),

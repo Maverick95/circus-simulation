@@ -15,15 +15,13 @@
 
 
 
-
-
-
-
 template <class T>
 class DisplayJugglingWindow : public ContextPatternWindow<T>
 {
 
 private:
+
+	bool num_sites_fixed;
 
 	unsigned int num_sites;
 	unsigned int num_actions;
@@ -65,7 +63,7 @@ protected:
 
 public:
 
-	DisplayJugglingWindow(wxWindow *, const unsigned int &);
+	DisplayJugglingWindow(wxWindow * parent, const unsigned int& numberSites, const bool& isNumberSitesFixed);
 
 	virtual ~DisplayJugglingWindow();
 
@@ -90,7 +88,7 @@ wxEND_EVENT_TABLE()
 template<class T>
 void DisplayJugglingWindow<T>::SetNumberSites(const SettingsEvents::SetNumberSitesEvent& event)
 {
-	if (num_sites != event.NumberSites())
+	if (!num_sites_fixed && num_sites != event.NumberSites())
 	{
 		num_sites = event.NumberSites();
 		
@@ -482,9 +480,10 @@ void DisplayJugglingWindow<T>::OnBallsUpdate_DisplayPattern()
 
 
 template<class T>
-DisplayJugglingWindow<T>::DisplayJugglingWindow(wxWindow* parent, const unsigned int& ns)
+DisplayJugglingWindow<T>::DisplayJugglingWindow(wxWindow* parent, const unsigned int& numberSites, const bool& isNumberSitesFixed)
 	: ContextPatternWindow(parent),
-	num_sites(ns == 0 ? 1 : ns),
+	num_sites_fixed(isNumberSitesFixed),
+	num_sites(numberSites == 0 ? 1 : numberSites),
 	num_actions(0),
 	num_balls(0),
 	balls_site_source(NULL),
